@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
 {
-
-
-
     [SerializeField] private int gunDamage = 1;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
@@ -16,7 +13,7 @@ public class RaycastShoot : MonoBehaviour
     [SerializeField] private Transform gunBarrelExit;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject muzzleLight;
-    [SerializeField] private GameObject bulletImpact;
+    [SerializeField] private ParticleSystem bulletImpact;
 
     private Camera fpsCam;
     private WaitForSeconds shotDuration = new WaitForSeconds(.5f);
@@ -33,35 +30,40 @@ public class RaycastShoot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire) 
-        { 
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
+        {
             nextFire = Time.time + fireRate;
 
             StartCoroutine(ShotEffect());
 
-            Vector3 rayOrigin = fpsCam.transform.position;
-
             for (int i = 0; i < numberOfBullets; i++)
             {
-                // Calculate spread for each bullet
-                Vector3 spread = fpsCam.transform.forward;
-                spread += new Vector3(
-                    Random.Range(-spreadAngle, spreadAngle),
-                    Random.Range(-spreadAngle, spreadAngle),
-                    Random.Range(-spreadAngle, spreadAngle)
-                ).normalized * 0.1f;
+                Vector3 spread = CalculateSpread(fpsCam.transform.forward, spreadAngle);
+                ShootRay(fpsCam.transform.position, spread);
+            }
+        }
+    }
 
-                RaycastHit hit;
+    private Vector3 CalculateSpread(Vector3 direction, float angle)
+    {
+        float spreadRadius = Mathf.Tan(angle * Mathf.Deg2Rad);
+        float randomX = Random.Range(-spreadRadius, spreadRadius);
+        float randomY = Random.Range(-spreadRadius, spreadRadius);
+        Vector3 spread = new Vector3(randomX, randomY, 1).normalized;
 
-                if (Physics.Raycast(rayOrigin, spread, out hit, weaponRange))
-                {
-                    Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+        return fpsCam.transform.TransformDirection(spread);
+    }
 
-                    if (hit.rigidbody != null)
-                    {
-                        hit.rigidbody.AddForce(-hit.normal * hitForce);
-                    }
-                }
+    private void ShootRay(Vector3 origin, Vector3 direction)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(origin, direction, out hit, weaponRange))
+        {
+            Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(-hit.normal * hitForce);
             }
         }
     }
@@ -70,15 +72,15 @@ public class RaycastShoot : MonoBehaviour
     {
         gunAudio.Play();
         muzzleFlash.Play();
-
-        //handleLight();
+        handleLight();
 
         yield return shotDuration;
     }
 
     private void handleLight()
     {
-        if (!muzzleLight.activeSelf) {
+        if (!muzzleLight.activeSelf)
+        {
             muzzleLight.SetActive(true);
         }
         else
