@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
 {
+
+
+
     [SerializeField] private int gunDamage = 1;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
     [SerializeField] private float hitForce = 100f;
+    [SerializeField] private int numberOfBullets = 10;
+    [SerializeField] private float spreadAngle = 10f;
     [SerializeField] private Transform gunBarrelExit;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject muzzleLight;
@@ -35,16 +40,27 @@ public class RaycastShoot : MonoBehaviour
             StartCoroutine(ShotEffect());
 
             Vector3 rayOrigin = fpsCam.transform.position;
-            RaycastHit hit;
 
-
-            if (Physics.Raycast(rayOrigin, fpsCam.transform.forward, out hit, weaponRange))
+            for (int i = 0; i < numberOfBullets; i++)
             {
+                // Calculate spread for each bullet
+                Vector3 spread = fpsCam.transform.forward;
+                spread += new Vector3(
+                    Random.Range(-spreadAngle, spreadAngle),
+                    Random.Range(-spreadAngle, spreadAngle),
+                    Random.Range(-spreadAngle, spreadAngle)
+                ).normalized * 0.1f;
 
-                Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                RaycastHit hit;
 
-                if (hit.rigidbody != null) {
-                    hit.rigidbody.AddForce(-hit.normal * hitForce);
+                if (Physics.Raycast(rayOrigin, spread, out hit, weaponRange))
+                {
+                    Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+
+                    if (hit.rigidbody != null)
+                    {
+                        hit.rigidbody.AddForce(-hit.normal * hitForce);
+                    }
                 }
             }
         }
