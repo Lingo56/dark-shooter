@@ -131,5 +131,4 @@ public class MainEnemyMovement : MonoBehaviour
         // Ensure the scale is reset to original after the stutter effect
         transform.localScale = originalScale;
     }
-
 }

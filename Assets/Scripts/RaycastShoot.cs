@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
 {
+    [Header("Weapon Settings")]
     [SerializeField] private int gunDamage = 1;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
@@ -14,6 +15,14 @@ public class RaycastShoot : MonoBehaviour
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject muzzleLight;
     [SerializeField] private ParticleSystem bulletImpact;
+
+    [Header("Kickback Settings")]
+    [SerializeField] private float kickbackAmount = 0.1f;
+    [SerializeField] private float kickbackSpeed = 5f;
+    [SerializeField] private float resetDelay = 0.1f; // Delay before resetting after kickback
+
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
     private Camera fpsCam;
     private WaitForSeconds shotDuration = new WaitForSeconds(.5f);
@@ -26,6 +35,8 @@ public class RaycastShoot : MonoBehaviour
         gunAudio = GetComponent<AudioSource>();
         fpsCam = GetComponentInParent<Camera>();
         wfxLightScript = muzzleLight.GetComponent<WFX_LightFlicker>();
+        initialPosition = transform.localPosition;
+        initialRotation = transform.localRotation;
     }
 
     void Update()
@@ -35,6 +46,7 @@ public class RaycastShoot : MonoBehaviour
             nextFire = Time.time + fireRate;
 
             StartCoroutine(ShotEffect());
+            StartCoroutine(KickbackAndReset());
 
             for (int i = 0; i < numberOfBullets; i++)
             {
@@ -103,5 +115,27 @@ public class RaycastShoot : MonoBehaviour
                 wfxLightScript.ResetTimer();
             }
         }
+    }
+
+    private IEnumerator KickbackAndReset()
+    {
+        // Kickback
+        transform.localPosition -= transform.forward * kickbackAmount;
+
+        // Wait for reset delay
+        yield return new WaitForSeconds(resetDelay);
+
+        // Smoothly reset the position and rotation to initial state
+        while (Vector3.Distance(transform.localPosition, initialPosition) > 0.001f ||
+               Quaternion.Angle(transform.localRotation, initialRotation) > 0.001f)
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition, Time.deltaTime * kickbackSpeed);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, initialRotation, Time.deltaTime * kickbackSpeed);
+            yield return null;
+        }
+
+        // Ensure final position and rotation are exactly the initial ones
+        transform.localPosition = initialPosition;
+        transform.localRotation = initialRotation;
     }
 }
