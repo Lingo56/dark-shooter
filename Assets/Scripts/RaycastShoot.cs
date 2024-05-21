@@ -41,6 +41,13 @@ public class RaycastShoot : MonoBehaviour
                 Vector3 spread = CalculateSpread(fpsCam.transform.forward, spreadAngle);
                 ShootRay(fpsCam.transform.position, spread);
             }
+
+            // Apply the accumulated force to all enemies hit
+            MainEnemyMovement[] enemies = FindObjectsOfType<MainEnemyMovement>();
+            foreach (var enemy in enemies)
+            {
+                enemy.ApplyAccumulatedForce();
+            }
         }
     }
 
@@ -64,6 +71,12 @@ public class RaycastShoot : MonoBehaviour
             if (hit.rigidbody != null)
             {
                 hit.rigidbody.AddForce(-hit.normal * hitForce);
+            }
+
+            MainEnemyMovement enemyMovement = hit.collider.GetComponent<MainEnemyMovement>();
+            if (enemyMovement != null)
+            {
+                enemyMovement.ApplyHitNormal(hit.normal);
             }
         }
     }
