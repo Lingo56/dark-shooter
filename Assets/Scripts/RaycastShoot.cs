@@ -21,6 +21,10 @@ public class RaycastShoot : MonoBehaviour
     [SerializeField] private float kickbackSpeed = 5f;
     [SerializeField] private float resetDelay = 0.1f; // Delay before resetting after kickback
 
+    [Header("Shake Settings")]
+    [SerializeField] private float shakeAmount = 0.1f; // Amount to shake
+    [SerializeField] private float shakeDuration = 0.1f; // Duration of shake
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
@@ -47,6 +51,7 @@ public class RaycastShoot : MonoBehaviour
 
             StartCoroutine(ShotEffect());
             StartCoroutine(KickbackAndReset());
+            StartCoroutine(ShakeCamera());
 
             for (int i = 0; i < numberOfBullets; i++)
             {
@@ -141,4 +146,41 @@ public class RaycastShoot : MonoBehaviour
         transform.localPosition = initialPosition;
         transform.localRotation = initialRotation;
     }
+
+    private IEnumerator ShakeCamera()
+    {
+        Quaternion originalCamRotation = fpsCam.transform.localRotation;
+        Quaternion targetRotation = originalCamRotation * Quaternion.Euler(-shakeAmount, 0, 0);
+
+        float elapsed = 0.0f;
+
+        // Shake the camera
+        while (elapsed < shakeDuration)
+        {
+            float t = elapsed / shakeDuration; // Calculate interpolation parameter
+            fpsCam.transform.localRotation = Quaternion.Lerp(originalCamRotation, targetRotation, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final rotation is the target rotation
+        fpsCam.transform.localRotation = targetRotation;
+
+        // Reset the elapsed time and rotation
+        elapsed = 0.0f;
+        Quaternion newCameraRotation = fpsCam.transform.localRotation;
+
+        // Smoothly interpolate back to original rotation
+        while (elapsed < shakeDuration)
+        {
+            float t = elapsed / shakeDuration; // Calculate interpolation parameter
+            fpsCam.transform.localRotation = Quaternion.Lerp(newCameraRotation, originalCamRotation, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final rotation is exactly the original one
+        fpsCam.transform.localRotation = originalCamRotation;
+    }
+
 }

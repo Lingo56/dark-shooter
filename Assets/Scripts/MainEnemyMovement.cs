@@ -31,8 +31,6 @@ public class MainEnemyMovement : MonoBehaviour
     {
         if (player != null)
         {
-            Debug.Log("Target " + targetPosition);
-
             if (!isHit)
             {
                 // Calculate the direction from the enemy to the player
