@@ -650,8 +650,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 321602120}
   hoverSpeed: 2
-  backwardForce: 10
-  stopDistance: 5
+  backwardForce: 8
+  hitDistance: 2.5
+  rotationSpeed: 2
+  stutterDuration: 0.25
+  stutterScaleFactor: 1.2
+  stutterFrequency: 10
 --- !u!1 &338686131 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
@@ -1042,9 +1046,9 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 0.9245283, g: 0.7514912, b: 0.3331791, a: 1}
-  m_Intensity: 10
-  m_Range: 7.5
+  m_Color: {r: 0.7660377, g: 0.5280659, b: 0.2991883, a: 1}
+  m_Intensity: 15
+  m_Range: 12
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1756,13 +1760,16 @@ MonoBehaviour:
   gunDamage: 1
   fireRate: 0.4
   weaponRange: 50
-  hitForce: 40
+  hitForce: 55
   numberOfBullets: 10
   spreadAngle: 4
   gunBarrelExit: {fileID: 969144947}
   muzzleFlash: {fileID: 2047824594}
   muzzleLight: {fileID: 244111845}
   bulletImpact: {fileID: 19800002, guid: 99c73c92ac40473459640b165473206f, type: 3}
+  kickbackAmount: 0.1
+  kickbackSpeed: 5
+  resetDelay: 0.1
 --- !u!82 &1004979947
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2272,7 +2279,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 18
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalScale.y
@@ -2284,7 +2291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.169
+      value: 0.168
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2292,31 +2299,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.12
+      value: 0.115
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.48792267
+      value: -0.4988978
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.46635005
+      value: 0.5043938
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.50974154
+      value: -0.5016625
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.53349113
+      value: -0.4949976
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -92.6
+      value: -89.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -180.2
+      value: -185.68
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2611,6 +2618,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5416079390719117146, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 7434449128857556379, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: m_Name
       value: Enemy

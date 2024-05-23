@@ -5,7 +5,7 @@ using UnityEngine;
 public class RaycastShoot : MonoBehaviour
 {
     [Header("Weapon Settings")]
-    [SerializeField] private int gunDamage = 1;
+    //[SerializeField] private int gunDamage = 1;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
     [SerializeField] private float hitForce = 100f;
@@ -119,8 +119,11 @@ public class RaycastShoot : MonoBehaviour
 
     private IEnumerator KickbackAndReset()
     {
+        // Get the global up direction in local space
+        Vector3 localUp = transform.InverseTransformDirection(Vector3.up);
+
         // Kickback
-        transform.localPosition -= transform.forward * kickbackAmount;
+        transform.localPosition -= localUp * kickbackAmount;
 
         // Wait for reset delay
         yield return new WaitForSeconds(resetDelay);
