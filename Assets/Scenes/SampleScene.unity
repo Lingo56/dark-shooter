@@ -1757,7 +1757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c85fc46696816f44a64a73c57f7bd7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunDamage: 1
   fireRate: 0.4
   weaponRange: 50
   hitForce: 55
@@ -1768,8 +1767,11 @@ MonoBehaviour:
   muzzleLight: {fileID: 244111845}
   bulletImpact: {fileID: 19800002, guid: 99c73c92ac40473459640b165473206f, type: 3}
   kickbackAmount: 0.1
-  kickbackSpeed: 5
+  kickbackSpeed: 10
   resetDelay: 0.1
+  shakeAmount: 5
+  shakeRiseDuration: 0.001
+  shakeFallDuration: 0.3
 --- !u!82 &1004979947
 AudioSource:
   m_ObjectHideFlags: 0

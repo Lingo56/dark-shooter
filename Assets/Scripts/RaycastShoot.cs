@@ -23,7 +23,8 @@ public class RaycastShoot : MonoBehaviour
 
     [Header("Shake Settings")]
     [SerializeField] private float shakeAmount = 0.1f; // Amount to shake
-    [SerializeField] private float shakeDuration = 0.1f; // Duration of shake
+    [SerializeField] private float shakeRiseDuration = 0.1f; // Duration of shake
+    [SerializeField] private float shakeFallDuration = 0.1f; // Duration of shake
 
     private Vector3 initialPosition;
     private Quaternion initialRotation;
@@ -155,9 +156,9 @@ public class RaycastShoot : MonoBehaviour
         float elapsed = 0.0f;
 
         // Shake the camera
-        while (elapsed < shakeDuration)
+        while (elapsed < shakeRiseDuration)
         {
-            float t = elapsed / shakeDuration; // Calculate interpolation parameter
+            float t = elapsed / shakeRiseDuration; // Calculate interpolation parameter
             fpsCam.transform.localRotation = Quaternion.Lerp(originalCamRotation, targetRotation, t);
             elapsed += Time.deltaTime;
             yield return null;
@@ -171,9 +172,9 @@ public class RaycastShoot : MonoBehaviour
         Quaternion newCameraRotation = fpsCam.transform.localRotation;
 
         // Smoothly interpolate back to original rotation
-        while (elapsed < shakeDuration)
+        while (elapsed < shakeFallDuration)
         {
-            float t = elapsed / shakeDuration; // Calculate interpolation parameter
+            float t = elapsed / shakeFallDuration; // Calculate interpolation parameter
             fpsCam.transform.localRotation = Quaternion.Lerp(newCameraRotation, originalCamRotation, t);
             elapsed += Time.deltaTime;
             yield return null;
