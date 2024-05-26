@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
@@ -23,6 +24,7 @@ public class RaycastShoot : MonoBehaviour
 
     [Header("Shake Settings")]
     [SerializeField] private float shakeAmount = 0.1f; // Amount to shake
+    [SerializeField] private float shakeDuration = 0.1f; // Duration of shake
     [SerializeField] private float shakeRiseDuration = 0.1f; // Duration of shake
     [SerializeField] private float shakeFallDuration = 0.1f; // Duration of shake
 
@@ -34,11 +36,14 @@ public class RaycastShoot : MonoBehaviour
     private AudioSource gunAudio;
     private WFX_LightFlicker wfxLightScript;
     private float nextFire;
+    
+    private CameraShake cameraShake;
 
     void Start()
     {
         gunAudio = GetComponent<AudioSource>();
         fpsCam = GetComponentInParent<Camera>();
+        cameraShake = fpsCam.GetComponent<CameraShake>();
         wfxLightScript = muzzleLight.GetComponent<WFX_LightFlicker>();
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
@@ -52,7 +57,7 @@ public class RaycastShoot : MonoBehaviour
 
             StartCoroutine(ShotEffect());
             StartCoroutine(KickbackAndReset());
-            StartCoroutine(ShakeCamera());
+            StartCoroutine(cameraShake.Shake(shakeAmount, shakeDuration));
 
             for (int i = 0; i < numberOfBullets; i++)
             {
@@ -147,41 +152,4 @@ public class RaycastShoot : MonoBehaviour
         transform.localPosition = initialPosition;
         transform.localRotation = initialRotation;
     }
-
-    private IEnumerator ShakeCamera()
-    {
-        Quaternion originalCamRotation = fpsCam.transform.localRotation;
-        Quaternion targetRotation = originalCamRotation * Quaternion.Euler(-shakeAmount, 0, 0);
-
-        float elapsed = 0.0f;
-
-        // Shake the camera
-        while (elapsed < shakeRiseDuration)
-        {
-            float t = elapsed / shakeRiseDuration; // Calculate interpolation parameter
-            fpsCam.transform.localRotation = Quaternion.Lerp(originalCamRotation, targetRotation, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure final rotation is the target rotation
-        fpsCam.transform.localRotation = targetRotation;
-
-        // Reset the elapsed time and rotation
-        elapsed = 0.0f;
-        Quaternion newCameraRotation = fpsCam.transform.localRotation;
-
-        // Smoothly interpolate back to original rotation
-        while (elapsed < shakeFallDuration)
-        {
-            float t = elapsed / shakeFallDuration; // Calculate interpolation parameter
-            fpsCam.transform.localRotation = Quaternion.Lerp(newCameraRotation, originalCamRotation, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Ensure final rotation is exactly the original one
-        fpsCam.transform.localRotation = originalCamRotation;
-    }
-
 }
