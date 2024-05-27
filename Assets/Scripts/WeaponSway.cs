@@ -24,8 +24,8 @@ public class WeaponSway : MonoBehaviour
 
     [Header("Bob Settings")]
     [SerializeField] private float _speedCurve;
-    private float _curveSin { get => Mathf.Sin(_speedCurve); }
-    private float _curveCos { get => Mathf.Cos(_speedCurve); }
+    private float CurveSin { get => Mathf.Sin(_speedCurve); }
+    private float CurveCos { get => Mathf.Cos(_speedCurve); }
 
     [SerializeField] private Vector3 _travelLimit = Vector3.one * 0.025f;
     [SerializeField] private Vector3 _bobLimit = Vector3.one * 0.01f;
@@ -83,16 +83,16 @@ public class WeaponSway : MonoBehaviour
     {
         _speedCurve += Time.deltaTime * ((Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) * _bobExaggeration) + 0.01f;
 
-        _bobPosition.x = (_curveCos * _bobLimit.x) - (_walkInput.x * _travelLimit.x);
-        _bobPosition.y = (_curveSin * _bobLimit.y) - (Input.GetAxis("Vertical") * _travelLimit.y);
+        _bobPosition.x = (CurveCos * _bobLimit.x) - (_walkInput.x * _travelLimit.x);
+        _bobPosition.y = (CurveSin * _bobLimit.y) - (Input.GetAxis("Vertical") * _travelLimit.y);
         _bobPosition.z = -(_walkInput.y * _travelLimit.z);
     }
 
     void BobRotation()
     {
         _bobEulerRotation.x = (_walkInput != Vector2.zero ? _multiplier.x * (Mathf.Sin(2 * _speedCurve)) : _multiplier.x * (Mathf.Sin(2 * _speedCurve) / 2));
-        _bobEulerRotation.y = (_walkInput != Vector2.zero ? _multiplier.y * _curveCos : 0);
-        _bobEulerRotation.z = (_walkInput != Vector2.zero ? _multiplier.z * _curveCos * _walkInput.x : 0);
+        _bobEulerRotation.y = (_walkInput != Vector2.zero ? _multiplier.y * CurveCos : 0);
+        _bobEulerRotation.z = (_walkInput != Vector2.zero ? _multiplier.z * CurveCos * _walkInput.x : 0);
     }
 
     void CompositePositionRotation()

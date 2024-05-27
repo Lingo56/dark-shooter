@@ -1353,7 +1353,6 @@ GameObject:
   - component: {fileID: 834241489}
   - component: {fileID: 834241488}
   - component: {fileID: 834241492}
-  - component: {fileID: 834241493}
   m_Layer: 0
   m_Name: Phys Cube
   m_TagString: Untagged
@@ -1474,18 +1473,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &834241493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834241487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c41688e47e9917e4dae4fa48443da426, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,6 +1744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c85fc46696816f44a64a73c57f7bd7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 321602117}
   fireRate: 0.4
   weaponRange: 50
   hitForce: 55
@@ -1883,7 +1871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1038192628
 Transform:
   m_ObjectHideFlags: 0
@@ -2652,10 +2640,10 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1574256313}
   - {fileID: 831124992}
   - {fileID: 321602120}
   - {fileID: 1038192628}
-  - {fileID: 1574256313}
   - {fileID: 1926061050}
   - {fileID: 6047906123107910193}
   - {fileID: 2007481577}

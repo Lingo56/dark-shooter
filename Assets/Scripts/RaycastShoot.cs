@@ -19,14 +19,13 @@ public class RaycastShoot : MonoBehaviour
     [SerializeField] private GameObject muzzleLight;
     [SerializeField] private ParticleSystem bulletImpact;
 
-    [Header("Kickback Settings")]
+    [Header("Kickback Animation Settings")]
     [SerializeField] private float kickbackAmount = 0.1f;
     [SerializeField] private float kickbackSpeed = 5f;
     [SerializeField] private float resetDelay = 0.1f; // Delay before resetting after kickback
 
-    [Header("Shake Settings")]
+    [Header("Screen Shake Settings")]
     [SerializeField] private float shakeAmount = 0.1f; // Amount to shake
-    [SerializeField] private float shakeDuration = 0.1f; // Duration of shake
     [SerializeField] private float shakeRiseDuration = 0.1f; // Duration of shake
     [SerializeField] private float shakeFallDuration = 0.1f; // Duration of shake
 

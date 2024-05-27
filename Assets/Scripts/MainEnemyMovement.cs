@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class MainEnemyMovement : MonoBehaviour
 {
-    public Transform player; // Reference to the player's transform
-    public float hoverSpeed = 2f; // Speed at which the enemy hovers towards the player
-    public float backwardForce = 100f; // Force applied when hit by the gun
-    public float hitDistance = 1f; // Distance to move when hit
-    public float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
+    [SerializeField] private Transform player; // Reference to the player's transform
+    [SerializeField] private float hoverSpeed = 2f; // Speed at which the enemy hovers towards the player
+    [SerializeField] private float backwardForce = 100f; // Force applied when hit by the gun
+    [SerializeField] private float hitDistance = 1f; // Distance to move when hit
+    [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
 
     private bool isHit = false; // Flag to indicate if the enemy is hit by the gun
     private Vector3 direction;
     private Vector3 targetPosition;
     private Vector3 originalScale; // Store the original scale of the enemy
 
-    public float stutterDuration = 0.5f; // Duration of the stutter effect
-    public float stutterScaleFactor = 1.2f; // Scale factor for the stutter effect
-    public int stutterFrequency = 10; // Number of times the scale stutters
+    [SerializeField] private float stutterDuration = 0.5f; // Duration of the stutter effect
+    [SerializeField] private float stutterScaleFactor = 1.2f; // Scale factor for the stutter effect
+    [SerializeField] private int stutterFrequency = 10; // Number of times the scale stutters
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
