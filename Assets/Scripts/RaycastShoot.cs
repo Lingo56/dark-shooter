@@ -133,11 +133,11 @@ public class RaycastShoot : MonoBehaviour
 
     private IEnumerator KickbackAndReset()
     {
-        // Get the global up direction in local space
-        Vector3 localUp = transform.InverseTransformDirection(Vector3.up);
+        // Get the local backward direction along the Z axis
+        Vector3 localBackward = new Vector3(0, 0, -1);
 
         // Kickback
-        transform.localPosition -= localUp * kickbackAmount;
+        transform.localPosition += localBackward * kickbackAmount;
 
         // Wait for reset delay
         yield return new WaitForSeconds(resetDelay);
