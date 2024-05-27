@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
 {
+    [SerializeField] private GameObject player;
+
     [Header("Weapon Settings")]
     //[SerializeField] private int gunDamage = 1;
     [SerializeField] private float fireRate = 0.2f;
@@ -37,13 +39,14 @@ public class RaycastShoot : MonoBehaviour
     private WFX_LightFlicker wfxLightScript;
     private float nextFire;
     
-    private CameraShake cameraShake;
+    private FPSController fpsController;
 
     void Start()
     {
         gunAudio = GetComponent<AudioSource>();
         fpsCam = GetComponentInParent<Camera>();
-        cameraShake = fpsCam.GetComponent<CameraShake>();
+
+        fpsController = player.GetComponent<FPSController>();
         wfxLightScript = muzzleLight.GetComponent<WFX_LightFlicker>();
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
@@ -57,7 +60,7 @@ public class RaycastShoot : MonoBehaviour
 
             StartCoroutine(ShotEffect());
             StartCoroutine(KickbackAndReset());
-            StartCoroutine(cameraShake.Shake(shakeAmount, shakeDuration));
+            StartCoroutine(fpsController.ShakeCamera(shakeAmount, shakeRiseDuration, shakeFallDuration));
 
             for (int i = 0; i < numberOfBullets; i++)
             {

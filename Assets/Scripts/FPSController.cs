@@ -22,6 +22,8 @@ public class FPSController : MonoBehaviour
 
     private CharacterController _characterController;
 
+    private Quaternion shakeOffset = Quaternion.identity;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +71,7 @@ public class FPSController : MonoBehaviour
         if (_canMove) {
             _rotationX += -Input.GetAxis("Mouse Y") * _lookSpeed;
             _rotationX = Mathf.Clamp(_rotationX, -_lookXLimit, _lookXLimit);
-            _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
+            _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0) * shakeOffset;
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeed, 0);
         }
 
@@ -102,5 +104,40 @@ public class FPSController : MonoBehaviour
 
         // Apply the push
         body.velocity = pushDir * _pushPower;
+    }
+
+    public IEnumerator ShakeCamera(float shakeAmount, float shakeRiseDuration, float shakeFallDuration)
+    {
+        float elapsed = 0.0f;
+        float currentShakeAmount = 0.0f;
+
+        // Shake the camera
+        while (elapsed < shakeRiseDuration)
+        {
+            float t = elapsed / shakeRiseDuration; // Calculate interpolation parameter
+            currentShakeAmount = Mathf.Lerp(0, shakeAmount, t);
+            shakeOffset = Quaternion.Euler(-currentShakeAmount, 0, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final rotation is the target rotation
+        shakeOffset = Quaternion.Euler(-shakeAmount, 0, 0);
+
+        // Reset the elapsed time
+        elapsed = 0.0f;
+
+        // Smoothly interpolate back to original rotation
+        while (elapsed < shakeFallDuration)
+        {
+            float t = elapsed / shakeFallDuration; // Calculate interpolation parameter
+            currentShakeAmount = Mathf.Lerp(shakeAmount, 0, t);
+            shakeOffset = Quaternion.Euler(-currentShakeAmount, 0, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure final rotation is exactly the original one
+        shakeOffset = Quaternion.identity;
     }
 }
