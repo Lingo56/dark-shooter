@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4818448777015067522}
-  - component: {fileID: 6156301979756402584}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -33,26 +32,6 @@ Transform:
   - {fileID: 1338421733692770206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6156301979756402584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434449128857556379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567abbdceac98c84c949fc140b615599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  hoverSpeed: 2
-  backwardForce: 100
-  hitDistance: 1
-  rotationSpeed: 2
-  stutterDuration: 0.5
-  stutterScaleFactor: 1.2
-  stutterFrequency: 10
 --- !u!1001 &1520455276872261749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +79,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1018664272722485354, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+      propertyPath: m_Name
+      value: Mesh
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
       propertyPath: m_Name
@@ -175,27 +158,50 @@ PrefabInstance:
     - {fileID: -8700617353114198275, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: -1018664272722485354, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 588408239241083154}
+      addedObject: {fileID: 7320306552187216178}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 502495151465509077}
   m_SourcePrefab: {fileID: 100100000, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
 --- !u!4 &1338421733692770206 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
   m_PrefabInstance: {fileID: 1520455276872261749}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7261284987757428707 stripped
+--- !u!1 &1862475756397649188 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: -1018664272722485354, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
   m_PrefabInstance: {fileID: 1520455276872261749}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &588408239241083154
+--- !u!114 &7320306552187216178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862475756397649188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567abbdceac98c84c949fc140b615599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  hoverSpeed: 2
+  backwardForce: 20
+  hitDistance: 5
+  rotationSpeed: 2
+  stutterDuration: 0.5
+  stutterScaleFactor: 1.5
+  stutterFrequency: 10
+--- !u!136 &502495151465509077
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7261284987757428707}
+  m_GameObject: {fileID: 1862475756397649188}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -208,7 +214,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.02
-  m_Height: 1.53
+  m_Radius: 1.5
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: -0.10252547, y: 1.76, z: -0.78}
+  m_Center: {x: -0.1, y: 1.7, z: -1.5}
