@@ -6,6 +6,7 @@ using UnityEngine;
 public class RaycastShoot : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject bulletTrailPrefab;
 
     [Header("Weapon Settings")]
     //[SerializeField] private int gunDamage = 1;
@@ -14,6 +15,7 @@ public class RaycastShoot : MonoBehaviour
     [SerializeField] private float hitForce = 100f;
     [SerializeField] private int numberOfBullets = 10;
     [SerializeField] private float spreadAngle = 10f;
+    [SerializeField] private float bulletTrailDuration = 0.1f;
     [SerializeField] private Transform gunBarrelExit;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject muzzleLight;
@@ -103,7 +105,44 @@ public class RaycastShoot : MonoBehaviour
             {
                 enemyMovement.ApplyHitNormal(hit.normal);
             }
+
+            CreateBulletTrail(gunBarrelExit.position, hit.point);
         }
+    }
+
+    public void CreateBulletTrail(Vector3 start, Vector3 end)
+    {
+        GameObject bulletTrail = Instantiate(bulletTrailPrefab, start, Quaternion.identity);
+        LineRenderer lineRenderer = bulletTrail.GetComponent<LineRenderer>();
+
+        StartCoroutine(MoveBulletTrail(lineRenderer, start, end));
+    }
+
+    private IEnumerator MoveBulletTrail(LineRenderer lineRenderer, Vector3 start, Vector3 end)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < bulletTrailDuration)
+        {
+            // Calculate interpolation factor (0 to 1)
+            float t = elapsedTime / bulletTrailDuration;
+
+            // Lerp the points from start to end
+            Vector3 lerpedStartPoint = Vector3.Lerp(start, end, t - 0.25f); // Using t * t for smoother movement
+            Vector3 lerpedEndPoint = Vector3.Lerp(start, end, t);
+
+            // Update the positions of the LineRenderer
+            lineRenderer.SetPosition(0, lerpedStartPoint);
+            lineRenderer.SetPosition(1, lerpedEndPoint);
+
+            // Increment elapsed time
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // Deactivate or destroy the GameObject containing the LineRenderer
+        Destroy(lineRenderer.gameObject);
     }
 
     private IEnumerator ShotEffect()
