@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class RaycastShoot : MonoBehaviour
@@ -93,7 +91,7 @@ public class RaycastShoot : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(origin, direction, out hit, weaponRange))
         {
-            Instantiate(bulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            
 
             if (hit.rigidbody != null)
             {
@@ -106,19 +104,19 @@ public class RaycastShoot : MonoBehaviour
                 enemyMovement.ApplyHitNormal(hit.normal);
             }
 
-            CreateBulletTrail(gunBarrelExit.position, hit.point);
+            CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
         }
     }
 
-    public void CreateBulletTrail(Vector3 start, Vector3 end)
+    public void CreateBulletTrail(Vector3 start, Vector3 end, Vector3 hitPoint, Vector3 hitNormal)
     {
         GameObject bulletTrail = Instantiate(bulletTrailPrefab, start, Quaternion.identity);
         LineRenderer lineRenderer = bulletTrail.GetComponent<LineRenderer>();
 
-        StartCoroutine(MoveBulletTrail(lineRenderer, start, end));
+        StartCoroutine(MoveBulletTrail(lineRenderer, start, end, hitPoint, hitNormal));
     }
 
-    private IEnumerator MoveBulletTrail(LineRenderer lineRenderer, Vector3 start, Vector3 end)
+    private IEnumerator MoveBulletTrail(LineRenderer lineRenderer, Vector3 start, Vector3 end, Vector3 hitPoint, Vector3 hitNormal)
     {
         float elapsedTime = 0f;
 
@@ -137,9 +135,10 @@ public class RaycastShoot : MonoBehaviour
 
             // Increment elapsed time
             elapsedTime += Time.deltaTime;
-
             yield return null;
         }
+
+        Instantiate(bulletImpact, hitPoint, Quaternion.LookRotation(hitNormal));
 
         // Deactivate or destroy the GameObject containing the LineRenderer
         Destroy(lineRenderer.gameObject);

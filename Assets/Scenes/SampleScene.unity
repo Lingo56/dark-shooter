@@ -1726,7 +1726,7 @@ MonoBehaviour:
   hitForce: 55
   numberOfBullets: 10
   spreadAngle: 4
-  bulletTrailDuration: 0.1
+  bulletTrailDuration: 0.05
   gunBarrelExit: {fileID: 969144947}
   muzzleFlash: {fileID: 2047824594}
   muzzleLight: {fileID: 244111845}
