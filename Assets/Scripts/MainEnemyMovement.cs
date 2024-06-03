@@ -1,17 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainEnemyMovement : MonoBehaviour
 {
     [SerializeField] private Transform player; // Reference to the player's transform
-    [SerializeField] private float hoverSpeed = 2f; // Speed at which the enemy hovers towards the player
-    [SerializeField] private float backwardForce = 100f; // Force applied when hit by the gun
-    [SerializeField] private float hitDistance = 1f; // Distance to move when hit
+    [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
+    [SerializeField] private float acceleration = 1f; // Acceleration rate
+    [SerializeField] private float deceleration = 2f; // Deceleration rate
+    [SerializeField] private float hitForce = 10f; // Force applied when hit by the gun
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
 
     private bool isHit = false; // Flag to indicate if the enemy is hit by the gun
+    private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 direction;
     private Vector3 targetPosition;
     private Vector3 originalScale; // Store the original scale of the enemy
@@ -24,109 +26,42 @@ public class MainEnemyMovement : MonoBehaviour
 
     void Start()
     {
-        originalScale = transform.localScale; // Initialize the original scale
+
     }
 
     void Update()
     {
-        if (player != null)
+        // Calculate direction to the player
+        Vector3 direction = (player.position - transform.position).normalized;
+
+        // Accelerate towards the player
+        velocity += direction * acceleration * Time.deltaTime;
+
+        // Clamp the velocity to the maximum speed
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+
+        // Move the enemy
+        transform.position += velocity * Time.deltaTime;
+
+        // Rotate the enemy to face the direction it's moving
+        if (velocity != Vector3.zero)
         {
-            if (!isHit)
-            {
-                // Calculate the direction from the enemy to the player
-                direction = (player.position - transform.position).normalized;
-
-                // Calculate the target position
-                targetPosition = player.position - direction;
-
-                // Move the enemy towards the target position based on hover speed
-                transform.position += direction * hoverSpeed * Time.deltaTime;
-
-                // Smoothly rotate the enemy to face the player
-                Quaternion lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-            }
-            else
-            {
-                // Lerp the enemy towards the target position based on shot force
-                transform.position = Vector3.Lerp(transform.position, targetPosition, backwardForce * Time.deltaTime);
-            }
-
-            // Calculate the distance between current and target position
-            float distance = Vector3.Distance(transform.position, targetPosition);
-
-            if (distance <= 0.5f && isHit == true)
-                isHit = false;
-
-            // Clamp the distance to prevent overshooting
-            if (Vector3.Distance(transform.position, targetPosition) > distance)
-            {
-                transform.position = targetPosition;
-            }
+            transform.rotation = Quaternion.LookRotation(velocity);
         }
     }
 
-    public void ApplyHitNormal(Vector3 hitNormal)
+    void OnCollisionEnter(Collision collision)
     {
-        // Add hit normal to the list
-        hitNormals.Add(hitNormal);
-    }
-
-    public void ApplyAccumulatedForce()
-    {
-        if (hitNormals.Count > 0)
+        if (collision.gameObject.CompareTag("Floor"))
         {
-            // Calculate the average direction from all hit normals
-            direction = Vector3.zero;
-            foreach (Vector3 normal in hitNormals)
-            {
-                direction += normal;
-            }
-            direction /= hitNormals.Count;
+            // Reflect the velocity vector off the floor
+            Vector3 normal = collision.contacts[0].normal;
+            velocity = Vector3.Reflect(velocity, normal);
 
-            // Calculate the target position
-            targetPosition = transform.position - direction * hitDistance;
-
-            isHit = true;
-
-            // Clear the list of hit normals
-            hitNormals.Clear();
-
-            // Start the stutter effect
-            StartCoroutine(StutterEffect());
+            // Optional: Adjust position to avoid getting stuck in the floor
+            Vector3 newPosition = transform.position;
+            newPosition.y = Mathf.Max(newPosition.y, collision.contacts[0].point.y + transform.localScale.y / 2);
+            transform.position = newPosition;
         }
-    }
-
-    private IEnumerator StutterEffect()
-    {
-        Vector3 targetScaleUp = originalScale * stutterScaleFactor;
-        Vector3 targetScaleDown = originalScale;
-        float halfDuration = stutterDuration / (2 * stutterFrequency);
-
-        for (int i = 0; i < stutterFrequency; i++)
-        {
-            // Lerp scale up
-            float elapsedTime = 0f;
-            while (elapsedTime < halfDuration)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScaleUp, elapsedTime / halfDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScaleUp;
-
-            // Lerp scale down
-            elapsedTime = 0f;
-            while (elapsedTime < halfDuration)
-            {
-                transform.localScale = Vector3.Lerp(targetScaleUp, targetScaleDown, elapsedTime / halfDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScaleDown;
-        }
-
-        // Ensure the scale is reset to original after the stutter effect
-        transform.localScale = originalScale;
     }
 }

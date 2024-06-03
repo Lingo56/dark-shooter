@@ -2642,8 +2642,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 321602120}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+      propertyPath: maxSpeed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: hitDistance
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+      propertyPath: acceleration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: backwardForce

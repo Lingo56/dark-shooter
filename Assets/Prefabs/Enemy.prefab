@@ -188,9 +188,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  hoverSpeed: 2
-  backwardForce: 20
-  hitDistance: 5
+  maxSpeed: 2
+  acceleration: 1
+  deceleration: 2
+  hitForce: 10
   rotationSpeed: 2
   stutterDuration: 0.5
   stutterScaleFactor: 1.5

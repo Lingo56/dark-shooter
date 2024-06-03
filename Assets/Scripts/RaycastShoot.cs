@@ -71,7 +71,7 @@ public class RaycastShoot : MonoBehaviour
             MainEnemyMovement[] enemies = FindObjectsOfType<MainEnemyMovement>();
             foreach (var enemy in enemies)
             {
-                enemy.ApplyAccumulatedForce();
+                //enemy.ApplyAccumulatedForce();
             }
         }
     }
@@ -101,7 +101,7 @@ public class RaycastShoot : MonoBehaviour
             MainEnemyMovement enemyMovement = hit.collider.GetComponent<MainEnemyMovement>();
             if (enemyMovement != null)
             {
-                enemyMovement.ApplyHitNormal(hit.normal);
+                //enemyMovement.ApplyHitNormal(hit.normal);
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
