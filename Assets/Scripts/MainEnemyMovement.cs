@@ -52,16 +52,11 @@ public class MainEnemyMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("colliding with something");
+
         if (collision.gameObject.CompareTag("Floor"))
         {
-            // Reflect the velocity vector off the floor
-            Vector3 normal = collision.contacts[0].normal;
-            velocity = Vector3.Reflect(velocity, normal);
-
-            // Optional: Adjust position to avoid getting stuck in the floor
-            Vector3 newPosition = transform.position;
-            newPosition.y = Mathf.Max(newPosition.y, collision.contacts[0].point.y + transform.localScale.y / 2);
-            transform.position = newPosition;
+            Debug.Log("colliding with floor");
         }
     }
 }
