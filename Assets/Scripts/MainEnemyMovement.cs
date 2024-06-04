@@ -97,12 +97,6 @@ public class MainEnemyMovement : MonoBehaviour
             // Reflect the velocity vector off the floor
             Vector3 normal = collision.contacts[0].normal;
             velocity = Vector3.Reflect(velocity, normal);
-
-            // Adjust position to avoid getting stuck in the floor
-            Vector3 newPosition = transform.position;
-            float distanceToFloor = Mathf.Abs(Vector3.Dot(normal, transform.position - collision.contacts[0].point));
-            newPosition += normal * (distanceToFloor + 0.1f); // Adjust 0.1f as needed
-            transform.position = newPosition;
         }
     }
 
@@ -129,6 +123,7 @@ public class MainEnemyMovement : MonoBehaviour
 
             // Clear the list of hit normals
             hitNormals.Clear();
+            followVelocity = Vector3.zero;
 
             // Start the stutter effect
             //StartCoroutine(StutterEffect());
