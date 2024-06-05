@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class MainEnemyMovement : MonoBehaviour
 {
@@ -23,6 +22,8 @@ public class MainEnemyMovement : MonoBehaviour
     [SerializeField] private int stutterFrequency = 10; // Number of times the scale stutters
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
+
+    public FlashEnemy flashEffect;
 
     void Start()
     {
@@ -127,6 +128,8 @@ public class MainEnemyMovement : MonoBehaviour
 
             // Start the stutter effect
             //StartCoroutine(StutterEffect());
+
+            flashEffect.Flash(0.4f, 1);
         }
     }
 
@@ -162,4 +165,6 @@ public class MainEnemyMovement : MonoBehaviour
         // Ensure the scale is reset to original after the stutter effect
         transform.localScale = originalScale;
     }
+
+
 }
