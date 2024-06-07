@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainEnemyMovement : MonoBehaviour
+public class EnemyMainMovement : MonoBehaviour
 {
     [SerializeField] private Transform player; // Reference to the player's transform
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
@@ -23,8 +23,8 @@ public class MainEnemyMovement : MonoBehaviour
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
-    public FlashEnemy flashEffect;
-    [SerializeField] private AudioSource hitAudio;
+    public EnemyMainHitFlash flashEffect;
+    private AudioSource hitAudio;
 
     void Start()
     {

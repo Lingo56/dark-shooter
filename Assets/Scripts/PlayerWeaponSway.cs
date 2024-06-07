@@ -6,7 +6,7 @@ using UnityEngine;
 // This video shows translation.
 // https://youtu.be/DR4fTllQnXg?si=IzaeJ4yVMUwhAGsB
 
-public class WeaponSway : MonoBehaviour
+public class PlayerWeaponSway : MonoBehaviour
 {
     [Header("Sway Settings")]
     [SerializeField] private float _swayStep = 0.01f;

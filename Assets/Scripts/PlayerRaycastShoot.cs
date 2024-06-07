@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-public class RaycastShoot : MonoBehaviour
+public class PlayerRaycastShoot : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletTrailPrefab;
 
     [Header("Weapon Settings")]
-    //[SerializeField] private int gunDamage = 1;
+    [SerializeField] private int gunDamage = 2;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
     [SerializeField] private float hitForce = 100f;
@@ -38,14 +38,14 @@ public class RaycastShoot : MonoBehaviour
     private WFX_LightFlicker wfxLightScript;
     private float nextFire;
     
-    private FPSController fpsController;
+    private PlayerMovementController fpsController;
 
     void Start()
     {
         gunAudio = GetComponent<AudioSource>();
         fpsCam = GetComponentInParent<Camera>();
 
-        fpsController = player.GetComponent<FPSController>();
+        fpsController = player.GetComponent<PlayerMovementController>();
         wfxLightScript = muzzleLight.GetComponent<WFX_LightFlicker>();
         initialPosition = transform.localPosition;
         initialRotation = transform.localRotation;
@@ -64,11 +64,11 @@ public class RaycastShoot : MonoBehaviour
             for (int i = 0; i < numberOfBullets; i++)
             {
                 Vector3 spread = CalculateSpread(fpsCam.transform.forward, spreadAngle);
-                ShootRay(fpsCam.transform.position, spread);
+                ShootRay(fpsCam.transform.position, spread, gunDamage);
             }
 
             // Apply the accumulated force to all enemies hit
-            MainEnemyMovement[] enemies = FindObjectsOfType<MainEnemyMovement>();
+            EnemyMainMovement[] enemies = FindObjectsOfType<EnemyMainMovement>();
             foreach (var enemy in enemies)
             {
                 enemy.ApplyAccumulatedForce();
@@ -86,15 +86,18 @@ public class RaycastShoot : MonoBehaviour
         return fpsCam.transform.TransformDirection(spread);
     }
 
-    private void ShootRay(Vector3 origin, Vector3 direction)
+    private void ShootRay(Vector3 origin, Vector3 direction, int damage)
     {
         RaycastHit hit;
         if (Physics.Raycast(origin, direction, out hit, weaponRange))
         {
-            MainEnemyMovement enemyMovement = hit.collider.GetComponent<MainEnemyMovement>();
+            EnemyMainMovement enemyMovement = hit.collider.GetComponent<EnemyMainMovement>();
+            EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
+
             if (enemyMovement != null)
             {
                 enemyMovement.ApplyHitNormal(hit.normal);
+                enemyController.ApplyDamage(damage);
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);

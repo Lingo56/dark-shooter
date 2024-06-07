@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashEnemy : MonoBehaviour
+public class EnemyMainHitFlash : MonoBehaviour
 {
     private Renderer rend;
     private Material originalMaterial;

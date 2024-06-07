@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class FPSController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private Camera _playerCamera;
     [SerializeField] private float _walkSpeed = 6f;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class DrawCrosshair : Graphic
+public class UIDrawCrosshair : Graphic
 {
     [System.Obsolete]
     protected override void OnFillVBO(List<UIVertex> vbo)
