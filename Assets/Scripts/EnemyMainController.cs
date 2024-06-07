@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class EnemyMainController : MonoBehaviour
@@ -25,7 +26,9 @@ public class EnemyMainController : MonoBehaviour
 
         if (health < 0)
         {
-            Destroy(gameObject);
+            EnemyMainMovement enemyMovement = gameObject.GetComponent<EnemyMainMovement>();
+
+            enemyMovement.StopFollowingAndEnableGravity();
         }
     }
 

@@ -17,18 +17,17 @@ public class EnemyMainMovement : MonoBehaviour
     private Vector3 hitAcceleration = Vector3.zero; // Accumulated acceleration from hits
     private Vector3 originalScale; // Store the original scale of the enemy
 
-    [SerializeField] private float stutterDuration = 0.5f; // Duration of the stutter effect
-    [SerializeField] private float stutterScaleFactor = 1.2f; // Scale factor for the stutter effect
-    [SerializeField] private int stutterFrequency = 10; // Number of times the scale stutters
-
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
     public EnemyMainHitFlash flashEffect;
     private AudioSource hitAudio;
+    private Rigidbody rb;
+    private bool alive = true;
 
     void Start()
     {
         hitAudio = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();
 
         originalScale = transform.localScale;
     }
@@ -45,49 +44,51 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        #region Follow Movement
+        if (alive) {
+            #region Follow Movement
 
-        // Calculate direction to the player
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            // Calculate direction to the player
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
 
-        // Accelerate towards the player
-        Vector3 accelerationVector = directionToPlayer * acceleration * Time.fixedDeltaTime;
+            // Accelerate towards the player
+            Vector3 accelerationVector = directionToPlayer * acceleration * Time.fixedDeltaTime;
 
-        // Apply acceleration towards the player
-        followVelocity += accelerationVector;
+            // Apply acceleration towards the player
+            followVelocity += accelerationVector;
 
-        // Clamp the velocity to the maximum speed
-        followVelocity = Vector3.ClampMagnitude(followVelocity, maxSpeed);
+            // Clamp the velocity to the maximum speed
+            followVelocity = Vector3.ClampMagnitude(followVelocity, maxSpeed);
 
-        #endregion
+            #endregion
 
-        #region Hit Movement
+            #region Hit Movement
 
-        // Apply acceleration from hits
-        hitVelocity += hitAcceleration;
+            // Apply acceleration from hits
+            hitVelocity += hitAcceleration;
 
-        // Reduce hit acceleration over time
-        hitVelocity *= hitDamping;
-        hitAcceleration *= hitDamping;
+            // Reduce hit acceleration over time
+            hitVelocity *= hitDamping;
+            hitAcceleration *= hitDamping;
 
-        #endregion
+            #endregion
 
-        velocity = followVelocity + hitVelocity;
+            velocity = followVelocity + hitVelocity;
 
-        // Move the enemy
-        transform.position += velocity * Time.deltaTime;
+            // Move the enemy
+            transform.position += velocity * Time.deltaTime;
 
-        // Stop the hit acceleration completely if it is very small
-        if (hitAcceleration.magnitude < 0.01f)
-        {
-            hitAcceleration = Vector3.zero;
+            // Stop the hit acceleration completely if it is very small
+            if (hitAcceleration.magnitude < 0.01f)
+            {
+                hitAcceleration = Vector3.zero;
+            }
+
+            Vector3 startPosition = transform.position;
+            Vector3 endPosition = startPosition + velocity;
+            Color lineColor = Color.red; // Choose a color for the line
+
+            Debug.DrawLine(startPosition, endPosition, lineColor);
         }
-
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + velocity;
-        Color lineColor = Color.red; // Choose a color for the line
-
-        Debug.DrawLine(startPosition, endPosition, lineColor);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -130,6 +131,15 @@ public class EnemyMainMovement : MonoBehaviour
         }
     }
 
+    public void StopFollowingAndEnableGravity()
+    {
+        alive = false;
 
+        // Stop the follow acceleration/velocity
+        followVelocity = Vector3.zero;
 
+        // Enable gravity on the Rigidbody
+        rb.useGravity = true;
+        rb.velocity = velocity;
+    }
 }
