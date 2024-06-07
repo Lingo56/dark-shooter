@@ -24,9 +24,12 @@ public class MainEnemyMovement : MonoBehaviour
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
     public FlashEnemy flashEffect;
+    [SerializeField] private AudioSource hitAudio;
 
     void Start()
     {
+        hitAudio = GetComponent<AudioSource>();
+
         originalScale = transform.localScale;
     }
 
@@ -89,12 +92,8 @@ public class MainEnemyMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("colliding with something");
-
         if (collision.gameObject.CompareTag("Floor"))
         {
-            Debug.Log("colliding with floor");
-
             // Reflect the velocity vector off the floor
             Vector3 normal = collision.contacts[0].normal;
             velocity = Vector3.Reflect(velocity, normal);
@@ -130,6 +129,7 @@ public class MainEnemyMovement : MonoBehaviour
             //StartCoroutine(StutterEffect());
 
             flashEffect.Flash(0.4f, 1);
+            hitAudio.Play();
         }
     }
 

@@ -2874,11 +2874,11 @@ PrefabInstance:
       objectReference: {fileID: 321602120}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: hitForce
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: maxSpeed
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: hitDamping
@@ -2894,7 +2894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: acceleration
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: backwardForce
