@@ -125,46 +125,11 @@ public class EnemyMainMovement : MonoBehaviour
             hitNormals.Clear();
             followVelocity = Vector3.zero;
 
-            // Start the stutter effect
-            //StartCoroutine(StutterEffect());
-
             flashEffect.Flash(0.4f, 1);
             hitAudio.Play();
         }
     }
 
-    private IEnumerator StutterEffect()
-    {
-        Vector3 targetScaleUp = originalScale * stutterScaleFactor;
-        Vector3 targetScaleDown = originalScale;
-        float halfDuration = stutterDuration / (2 * stutterFrequency);
-
-        for (int i = 0; i < stutterFrequency; i++)
-        {
-            // Lerp scale up
-            float elapsedTime = 0f;
-            while (elapsedTime < halfDuration)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScaleUp, elapsedTime / halfDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScaleUp;
-
-            // Lerp scale down
-            elapsedTime = 0f;
-            while (elapsedTime < halfDuration)
-            {
-                transform.localScale = Vector3.Lerp(targetScaleUp, targetScaleDown, elapsedTime / halfDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScaleDown;
-        }
-
-        // Ensure the scale is reset to original after the stutter effect
-        transform.localScale = originalScale;
-    }
 
 
 }
