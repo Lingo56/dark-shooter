@@ -91,13 +91,11 @@ public class PlayerRaycastShoot : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(origin, direction, out hit, weaponRange))
         {
-            EnemyMainMovement enemyMovement = hit.collider.GetComponent<EnemyMainMovement>();
             EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
 
-            if (enemyMovement != null)
+            if (enemyController != null)
             {
-                enemyMovement.ApplyHitNormal(hit.normal);
-                enemyController.ApplyDamage(damage);
+                enemyController.ApplyDamage(damage, hit);
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);

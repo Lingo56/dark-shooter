@@ -1870,7 +1870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
---- !u!135 &997695827
+--- !u!135 &997695830
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1890,7 +1890,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.09, y: 1.7, z: -0.91}
 --- !u!4 &1004979941 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2eb143403c39cfa45a859895cca2d6e8, type: 3}
@@ -3077,7 +3077,7 @@ PrefabInstance:
       addedObject: {fileID: 997695821}
     - targetCorrespondingSourceObject: {fileID: 1862475756397649188, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       insertIndex: 2
-      addedObject: {fileID: 997695827}
+      addedObject: {fileID: 997695830}
     - targetCorrespondingSourceObject: {fileID: 1862475756397649188, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       insertIndex: 3
       addedObject: {fileID: 997695826}

@@ -19,7 +19,6 @@ public class EnemyMainMovement : MonoBehaviour
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
-    public EnemyMainHitFlash flashEffect;
     private AudioSource hitAudio;
     private Rigidbody rb;
     private bool alive = true;
@@ -126,7 +125,7 @@ public class EnemyMainMovement : MonoBehaviour
             hitNormals.Clear();
             followVelocity = Vector3.zero;
 
-            flashEffect.Flash(0.4f, 1);
+
             hitAudio.Play();
         }
     }
