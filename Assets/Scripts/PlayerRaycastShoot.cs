@@ -93,7 +93,7 @@ public class PlayerRaycastShoot : MonoBehaviour
         {
             EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
 
-            if (enemyController != null)
+            if (enemyController != null && enemyController.isAlive())
             {
                 enemyController.ApplyDamage(damage, hit);
                 GameEvents.EnemyHit();

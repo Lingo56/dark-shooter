@@ -49,14 +49,14 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        float comboReductionTimer = 0.7f;
+        float comboReductionTimer = 0.5f;
 
         while (hitCount > 0)
         {
             hitCount--;
             UIEvents.HitCountChanged(hitCount); // Update the UI
             yield return new WaitForSeconds(comboReductionTimer); // Adjust the countdown interval as needed
-            comboReductionTimer = comboReductionTimer / 1.4f;
+            comboReductionTimer = comboReductionTimer / 1.25f;
         }
 
         countdownCoroutine = null; // Clear the coroutine reference when done

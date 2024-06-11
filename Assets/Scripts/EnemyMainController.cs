@@ -27,14 +27,18 @@ public class EnemyMainController : MonoBehaviour
     {
         health -= damage;
 
-        if (health < 0)
+        if (isAlive())
         {
-            enemyMovement.StopFollowingAndEnableGravity();
-        }
-        else {
             flashEffect.Flash(0.4f, 1);
             enemyMovement.ApplyHitNormal(hit.normal);
         }
+        else {
+            enemyMovement.StopFollowingAndEnableGravity();
+        }
     }
 
+    public bool isAlive()
+    {
+        return health > 0;
+    }
 }
