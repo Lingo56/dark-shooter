@@ -8,13 +8,14 @@ public class EnemyMainMovement : MonoBehaviour
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
     [SerializeField] private float hitForce = 10f; // Force applied when hit by the gun
+    [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
     [SerializeField] private float hitDamping = 0.95f; // Damping factor for reducing hit acceleration
 
     private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 followVelocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 hitVelocity = Vector3.zero; // Current velocity of the enemy
-    private Vector3 hitAcceleration = Vector3.zero; // Accumulated acceleration from hits
+    private Vector3 hitDeacceleration = Vector3.zero; // Accumulated acceleration from hits
     private Vector3 originalScale; // Store the original scale of the enemy
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
@@ -43,7 +44,8 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (alive) {
+        if (alive)
+        {
             #region Follow Movement
 
             // Calculate direction to the player
@@ -62,12 +64,14 @@ public class EnemyMainMovement : MonoBehaviour
 
             #region Hit Movement
 
-            // Apply acceleration from hits
-            hitVelocity += hitAcceleration;
-
-            // Reduce hit acceleration over time
-            hitVelocity *= hitDamping;
-            hitAcceleration *= hitDamping;
+            if (hitVelocity.magnitude > 0.01f)
+            {
+                hitVelocity *= hitDeaccelerationFactor;
+            }
+            else
+            {
+                hitVelocity = Vector3.zero;
+            }
 
             #endregion
 
@@ -77,9 +81,9 @@ public class EnemyMainMovement : MonoBehaviour
             transform.position += velocity * Time.deltaTime;
 
             // Stop the hit acceleration completely if it is very small
-            if (hitAcceleration.magnitude < 0.01f)
+            if (hitDeacceleration.magnitude < 0.01f)
             {
-                hitAcceleration = Vector3.zero;
+                hitDeacceleration = Vector3.zero;
             }
 
             Vector3 startPosition = transform.position;
@@ -119,12 +123,11 @@ public class EnemyMainMovement : MonoBehaviour
             hitDirection /= hitNormals.Count;
 
             // Apply the hit force as acceleration
-            hitAcceleration = hitDirection * -hitForce;
+            hitVelocity = hitDirection * -hitForce;
 
             // Clear the list of hit normals
             hitNormals.Clear();
             followVelocity = Vector3.zero;
-
 
             hitAudio.Play();
         }
@@ -139,6 +142,14 @@ public class EnemyMainMovement : MonoBehaviour
 
         // Enable gravity on the Rigidbody
         rb.useGravity = true;
-        rb.velocity = velocity;
+
+        Debug.Log(hitVelocity);
+        Debug.Log(hitDeacceleration);
+
+        // Apply the hit velocity as a force to the Rigidbody
+        rb.AddForce(hitDeacceleration, ForceMode.Impulse);
+
+        // Optionally, if you want to apply the force only once
+        hitDeacceleration = Vector3.zero;
     }
 }

@@ -3062,7 +3062,7 @@ PrefabInstance:
       objectReference: {fileID: 321602120}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: hitForce
-      value: 6
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: maxSpeed
@@ -3096,6 +3096,10 @@ PrefabInstance:
       propertyPath: stutterScaleFactor
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7320306552187216178, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+      propertyPath: hitDeaccelerationFactor
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 7434449128857556379, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -3111,6 +3115,10 @@ PrefabInstance:
     - target: {fileID: 7537941134176979138, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7609124124323685975, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+      propertyPath: maxHealth
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 7827703767132112503, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
       propertyPath: m_LocalPosition.x

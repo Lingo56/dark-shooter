@@ -20,19 +20,25 @@ public class EnemyMainController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void ApplyDamage(int damage, RaycastHit hit) 
+    // TODO: Issue
+    // StopFollowingAndEnableGravity is run before ApplyAccumulatedForce is
+    // Can run ApplyAccumulatedForce in StopFollowingAndEnableGravity
+    // But then it wouldn't count the bullets that hit the enemy after it died
+    public void ApplyDamage(int damage, RaycastHit hit)
     {
         health -= damage;
+        enemyMovement.ApplyHitNormal(hit.normal);
 
         if (isAlive())
         {
             flashEffect.Flash(0.4f, 1);
-            enemyMovement.ApplyHitNormal(hit.normal);
         }
-        else {
+        else
+        {
+            Debug.Log("dead");
             enemyMovement.StopFollowingAndEnableGravity();
         }
     }

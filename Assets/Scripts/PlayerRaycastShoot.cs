@@ -37,7 +37,7 @@ public class PlayerRaycastShoot : MonoBehaviour
     private AudioSource gunAudio;
     private WFX_LightFlicker wfxLightScript;
     private float nextFire;
-    
+
     private PlayerMovementController fpsController;
 
     void Start()
