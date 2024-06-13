@@ -11,20 +11,12 @@ public class EnemyMainController : MonoBehaviour
     [SerializeField] private EnemyMainMovement enemyMovement;
     [SerializeField] private EnemyMainHitFlash flashEffect;
 
-    // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    // TODO: Issue
-    // StopFollowingAndEnableGravity is run before ApplyAccumulatedForce is
+    // TODO: StopFollowingAndEnableGravity is run before ApplyAccumulatedForce is
     // Can run ApplyAccumulatedForce in StopFollowingAndEnableGravity
     // But then it wouldn't count the bullets that hit the enemy after it died
     public void ApplyDamage(int damage, RaycastHit hit)

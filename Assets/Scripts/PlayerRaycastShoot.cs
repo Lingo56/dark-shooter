@@ -97,6 +97,7 @@ public class PlayerRaycastShoot : MonoBehaviour
             {
                 enemyController.ApplyDamage(damage, hit);
                 GameEvents.EnemyHit();
+                Debug.Log("hit");
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
