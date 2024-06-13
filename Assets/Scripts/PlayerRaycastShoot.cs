@@ -12,7 +12,7 @@ public class PlayerRaycastShoot : MonoBehaviour
     [SerializeField] private int gunDamage = 2;
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
-    [SerializeField] private float hitForce = 100f;
+    [SerializeField] private float bulletHitForce = 1f; // The force of each individual bullet
     [SerializeField] private int numberOfBullets = 10;
     [SerializeField] private float spreadAngle = 10f;
     [SerializeField] private float bulletTrailDuration = 0.1f;
@@ -98,7 +98,7 @@ public class PlayerRaycastShoot : MonoBehaviour
 
             if (enemyController != null)
             {
-                enemyController.TrackHitDamage(damage, hit);
+                enemyController.ProcessHit(damage, bulletHitForce, hit);
                 hitEnemies.Add(enemyController); // Track this enemy as hit
 
                 if (enemyController.isAlive())

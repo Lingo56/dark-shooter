@@ -10,7 +10,6 @@ public class EnemyMainMovement : MonoBehaviour
     [Header("Enemy Movement Settings")]
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
-    [SerializeField] private float hitForce = 10f; // Force applied when hit by the gun
     [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
     [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
@@ -23,6 +22,7 @@ public class EnemyMainMovement : MonoBehaviour
 
     private AudioSource hitAudio;
     private Rigidbody rb;
+    private float hitForce; // Force applied when hit by the gun
     private bool alive = true;
 
     void Start()
@@ -43,6 +43,8 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        ShowVelocityDebugLine();
+
         if (alive)
         {
             #region Hit Movement
@@ -78,11 +80,15 @@ public class EnemyMainMovement : MonoBehaviour
 
             rb.velocity = velocity;
         }
-        else {
+        else
+        {
             rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
             hitVelocity = Vector3.zero;
         }
+    }
 
+    private void ShowVelocityDebugLine()
+    {
         Vector3 startPosition = transform.position;
         Vector3 endPosition = startPosition + velocity;
         Color lineColor = Color.red; // Choose a color for the line
@@ -100,10 +106,12 @@ public class EnemyMainMovement : MonoBehaviour
         }
     }
 
-    public void ApplyHitNormal(Vector3 hitNormal)
+    public void HandleBulletImpact(Vector3 hitNormal, float bulletHitForce)
     {
         // Add hit normal to the list
         hitNormals.Add(hitNormal);
+        hitForce += bulletHitForce;
+        Debug.Log(hitForce);
     }
 
     public void ApplyAccumulatedForce()
@@ -123,6 +131,7 @@ public class EnemyMainMovement : MonoBehaviour
 
             // Clear the list of hit normals
             hitNormals.Clear();
+            hitForce = 0;
             followVelocity = Vector3.zero;
 
             hitAudio.Play();

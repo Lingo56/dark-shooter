@@ -20,10 +20,10 @@ public class EnemyMainController : MonoBehaviour
         health = maxHealth;
     }
 
-    public void TrackHitDamage(int damage, RaycastHit hit)
+    public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
     {
         totalDamage += damage;
-        enemyMovement.ApplyHitNormal(hit.normal);
+        enemyMovement.HandleBulletImpact(hit.normal, bulletHitForce);
 
         if (isAlive())
         {
