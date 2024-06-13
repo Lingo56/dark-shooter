@@ -21,8 +21,8 @@ public class EnemyMainController : MonoBehaviour
     }
 
     // TODO: Fix bullet velocity not being sent to enemy when they die
-    // StopFollowingAndEnableGravity is run before ApplyAccumulatedForce is
-    // Can run ApplyAccumulatedForce in StopFollowingAndEnableGravity
+    // EnableDeathMovement is run before ApplyAccumulatedForce is
+    // Can run ApplyAccumulatedForce in EnableDeathMovement
     // But then it wouldn't count the bullets that hit the enemy after it died
     public void TrackHitDamage(int damage, RaycastHit hit)
     {
@@ -50,7 +50,7 @@ public class EnemyMainController : MonoBehaviour
         enemyMovement.ApplyAccumulatedForce();
 
         if (!isAlive() && !initializedDeath) {
-            enemyMovement.StopFollowingAndEnableGravity();
+            enemyMovement.EnableDeathMovement();
             initializedDeath = true;
         }
     }

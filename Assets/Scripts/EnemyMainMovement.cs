@@ -44,23 +44,21 @@ public class EnemyMainMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // TODO: Implement some interpolation so that this code looks smooth at higher framerates
-        #region Hit Movement
-
-        if (hitVelocity.magnitude > 0.01f)
-        {
-            hitVelocity *= hitDeaccelerationFactor;
-        }
-        else
-        {
-            hitVelocity = Vector3.zero;
-        }
-
-        #endregion
-
-        velocity = followVelocity + hitVelocity;
-
         if (alive)
         {
+            #region Hit Movement
+
+            if (hitVelocity.magnitude > 0.01f)
+            {
+                hitVelocity *= hitDeaccelerationFactor;
+            }
+            else
+            {
+                hitVelocity = Vector3.zero;
+            }
+
+            #endregion
+
             #region Follow Movement
 
             // Calculate direction to the player
@@ -77,10 +75,13 @@ public class EnemyMainMovement : MonoBehaviour
 
             #endregion
 
-            rb.AddForce(velocity, ForceMode.VelocityChange);
+            velocity = followVelocity + hitVelocity;
+
+            rb.velocity = velocity;
         }
         else {
             rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
+            hitVelocity = Vector3.zero;
         }
 
         Vector3 startPosition = transform.position;
@@ -129,7 +130,7 @@ public class EnemyMainMovement : MonoBehaviour
         }
     }
 
-    public void StopFollowingAndEnableGravity()
+    public void EnableDeathMovement()
     {
         alive = false;
 
@@ -143,5 +144,6 @@ public class EnemyMainMovement : MonoBehaviour
 
         // Apply the hit velocity as a force to the Rigidbody
         rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
+        hitVelocity = Vector3.zero;
     }
 }
