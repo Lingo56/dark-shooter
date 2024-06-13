@@ -20,10 +20,6 @@ public class EnemyMainController : MonoBehaviour
         health = maxHealth;
     }
 
-    // TODO: Fix bullet velocity not being sent to enemy when they die
-    // EnableDeathMovement is run before ApplyAccumulatedForce is
-    // Can run ApplyAccumulatedForce in EnableDeathMovement
-    // But then it wouldn't count the bullets that hit the enemy after it died
     public void TrackHitDamage(int damage, RaycastHit hit)
     {
         totalDamage += damage;

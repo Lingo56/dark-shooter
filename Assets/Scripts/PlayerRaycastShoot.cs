@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerRaycastShoot : MonoBehaviour
@@ -62,16 +63,16 @@ public class PlayerRaycastShoot : MonoBehaviour
             StartCoroutine(KickbackAndReset());
             StartCoroutine(fpsController.ShakeCamera(shakeAmount, shakeRiseDuration, shakeFallDuration));
 
+            HashSet<EnemyMainController> hitEnemies = new HashSet<EnemyMainController>();
+
             for (int i = 0; i < numberOfBullets; i++)
             {
                 Vector3 spread = CalculateSpread(fpsCam.transform.forward, spreadAngle);
-                ShootRay(fpsCam.transform.position, spread, gunDamage);
+                ShootRay(fpsCam.transform.position, spread, gunDamage, hitEnemies);
             }
 
             // Apply the accumulated force to all enemies hit
-            // TODO: Optimize this so that it only loops through enemies hit
-            EnemyMainController[] enemies = FindObjectsOfType<EnemyMainController>();
-            foreach (var enemy in enemies)
+            foreach (var enemy in hitEnemies)
             {
                 enemy.HandleEnemyDamage();
             }
@@ -88,7 +89,7 @@ public class PlayerRaycastShoot : MonoBehaviour
         return fpsCam.transform.TransformDirection(spread);
     }
 
-    private void ShootRay(Vector3 origin, Vector3 direction, int damage)
+    private void ShootRay(Vector3 origin, Vector3 direction, int damage, HashSet<EnemyMainController> hitEnemies)
     {
         RaycastHit hit;
         if (Physics.Raycast(origin, direction, out hit, weaponRange))
@@ -98,6 +99,7 @@ public class PlayerRaycastShoot : MonoBehaviour
             if (enemyController != null)
             {
                 enemyController.TrackHitDamage(damage, hit);
+                hitEnemies.Add(enemyController); // Track this enemy as hit
 
                 if (enemyController.isAlive())
                 {

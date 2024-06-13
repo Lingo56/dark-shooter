@@ -43,7 +43,6 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // TODO: Implement some interpolation so that this code looks smooth at higher framerates
         if (alive)
         {
             #region Hit Movement
