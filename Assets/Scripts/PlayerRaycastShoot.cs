@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerRaycastShoot : MonoBehaviour
 {
+    [Header("Dependancies")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject bulletTrailPrefab;
 

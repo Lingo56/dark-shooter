@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class EnemyMainController : MonoBehaviour
 {
+    [Header("Dependancies")]
+    [SerializeField] private EnemyMainMovement enemyMovement;
+    [SerializeField] private EnemyMainHitFlash flashEffect;
+
+    [Header("Enemy Settings")]
     [SerializeField] private int maxHealth = 100;
     private int health;
     private int totalDamage;
     private bool initializedDeath = false;
-
-    [SerializeField] private EnemyMainMovement enemyMovement;
-    [SerializeField] private EnemyMainHitFlash flashEffect;
 
     void Start()
     {

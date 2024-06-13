@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class EnemyMainMovement : MonoBehaviour
 {
+    [Header("Dependancies")]
     [SerializeField] private Transform player; // Reference to the player's transform
+
+    [Header("Enemy Movement Settings")]
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
     [SerializeField] private float hitForce = 10f; // Force applied when hit by the gun
     [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
     [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
-    [SerializeField] private float hitDamping = 0.95f; // Damping factor for reducing hit acceleration
 
     private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 followVelocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 hitVelocity = Vector3.zero; // Current velocity of the enemy
-    private Vector3 originalScale; // Store the original scale of the enemy
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
 
@@ -28,8 +29,6 @@ public class EnemyMainMovement : MonoBehaviour
     {
         hitAudio = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
-
-        originalScale = transform.localScale;
     }
 
     void Update()
@@ -44,6 +43,22 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // TODO: Implement some interpolation so that this code looks smooth at higher framerates
+        #region Hit Movement
+
+        if (hitVelocity.magnitude > 0.01f)
+        {
+            hitVelocity *= hitDeaccelerationFactor;
+        }
+        else
+        {
+            hitVelocity = Vector3.zero;
+        }
+
+        #endregion
+
+        velocity = followVelocity + hitVelocity;
+
         if (alive)
         {
             #region Follow Movement
@@ -62,30 +77,17 @@ public class EnemyMainMovement : MonoBehaviour
 
             #endregion
 
-            #region Hit Movement
-
-            if (hitVelocity.magnitude > 0.01f)
-            {
-                hitVelocity *= hitDeaccelerationFactor;
-            }
-            else
-            {
-                hitVelocity = Vector3.zero;
-            }
-
-            #endregion
-
-            velocity = followVelocity + hitVelocity;
-
-            // Move the enemy
-            transform.position += velocity * Time.deltaTime;
-
-            Vector3 startPosition = transform.position;
-            Vector3 endPosition = startPosition + velocity;
-            Color lineColor = Color.red; // Choose a color for the line
-
-            Debug.DrawLine(startPosition, endPosition, lineColor);
+            rb.AddForce(velocity, ForceMode.VelocityChange);
         }
+        else {
+            rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
+        }
+
+        Vector3 startPosition = transform.position;
+        Vector3 endPosition = startPosition + velocity;
+        Color lineColor = Color.red; // Choose a color for the line
+
+        Debug.DrawLine(startPosition, endPosition, lineColor);
     }
 
     void OnCollisionEnter(Collision collision)
