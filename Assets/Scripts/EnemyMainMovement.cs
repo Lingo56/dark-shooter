@@ -9,13 +9,13 @@ public class EnemyMainMovement : MonoBehaviour
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
     [SerializeField] private float hitForce = 10f; // Force applied when hit by the gun
     [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
+    [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
     [SerializeField] private float hitDamping = 0.95f; // Damping factor for reducing hit acceleration
 
     private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 followVelocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 hitVelocity = Vector3.zero; // Current velocity of the enemy
-    private Vector3 hitDeacceleration = Vector3.zero; // Accumulated acceleration from hits
     private Vector3 originalScale; // Store the original scale of the enemy
 
     private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
@@ -80,12 +80,6 @@ public class EnemyMainMovement : MonoBehaviour
             // Move the enemy
             transform.position += velocity * Time.deltaTime;
 
-            // Stop the hit acceleration completely if it is very small
-            if (hitDeacceleration.magnitude < 0.01f)
-            {
-                hitDeacceleration = Vector3.zero;
-            }
-
             Vector3 startPosition = transform.position;
             Vector3 endPosition = startPosition + velocity;
             Color lineColor = Color.red; // Choose a color for the line
@@ -144,12 +138,8 @@ public class EnemyMainMovement : MonoBehaviour
         rb.useGravity = true;
 
         Debug.Log(hitVelocity);
-        Debug.Log(hitDeacceleration);
 
         // Apply the hit velocity as a force to the Rigidbody
-        rb.AddForce(hitDeacceleration, ForceMode.Impulse);
-
-        // Optionally, if you want to apply the force only once
-        hitDeacceleration = Vector3.zero;
+        rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
     }
 }

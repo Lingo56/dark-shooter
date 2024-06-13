@@ -68,10 +68,11 @@ public class PlayerRaycastShoot : MonoBehaviour
             }
 
             // Apply the accumulated force to all enemies hit
-            EnemyMainMovement[] enemies = FindObjectsOfType<EnemyMainMovement>();
+            // TODO: Optimize this so that it only loops through enemies hit
+            EnemyMainController[] enemies = FindObjectsOfType<EnemyMainController>();
             foreach (var enemy in enemies)
             {
-                enemy.ApplyAccumulatedForce();
+                enemy.HandleEnemyDamage();
             }
         }
     }
@@ -95,7 +96,7 @@ public class PlayerRaycastShoot : MonoBehaviour
 
             if (enemyController != null && enemyController.isAlive())
             {
-                enemyController.ApplyDamage(damage, hit);
+                enemyController.TrackHitDamage(damage, hit);
                 GameEvents.EnemyHit();
                 Debug.Log("hit");
             }
