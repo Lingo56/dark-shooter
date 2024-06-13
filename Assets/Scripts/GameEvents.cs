@@ -5,7 +5,7 @@ public static class GameEvents
 {
     public static event Action OnEnemyHit;
 
-    public static void EnemyHit()
+    public static void EnemyHitAlive()
     {
         OnEnemyHit?.Invoke();
     }

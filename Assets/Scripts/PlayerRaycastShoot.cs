@@ -94,11 +94,14 @@ public class PlayerRaycastShoot : MonoBehaviour
         {
             EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
 
-            if (enemyController != null && enemyController.isAlive())
+            if (enemyController != null)
             {
                 enemyController.TrackHitDamage(damage, hit);
-                GameEvents.EnemyHit();
-                Debug.Log("hit");
+
+                if (enemyController.isAlive())
+                {
+                    GameEvents.EnemyHitAlive();
+                }
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);

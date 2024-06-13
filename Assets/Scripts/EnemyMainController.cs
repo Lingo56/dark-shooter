@@ -38,6 +38,8 @@ public class EnemyMainController : MonoBehaviour
         return health > 0;
     }
 
+    // TODO: Use Physics.IgnoreCollision to ignore colliding with the player once enemy dies
+    // Could maybe be pointless depending on if the enemies just disappear a couple seconds after death
     public void HandleEnemyDamage() 
     {
         health -= totalDamage;
