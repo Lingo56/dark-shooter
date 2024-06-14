@@ -101,7 +101,7 @@ public class PlayerRaycastShoot : MonoBehaviour
                 enemyController.ProcessHit(damage, bulletHitForce, hit);
                 hitEnemies.Add(enemyController); // Track this enemy as hit
 
-                if (enemyController.isAlive())
+                if (enemyController.IsAlive())
                 {
                     GameEvents.EnemyHitAlive();
                 }

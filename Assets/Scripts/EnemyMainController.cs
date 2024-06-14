@@ -25,13 +25,13 @@ public class EnemyMainController : MonoBehaviour
         totalDamage += damage;
         enemyMovement.HandleBulletImpact(hit.normal, bulletHitForce);
 
-        if (isAlive())
+        if (IsAlive())
         {
             flashEffect.Flash(0.4f, 1);
         }
     }
 
-    public bool isAlive()
+    public bool IsAlive()
     {
         return health > 0;
     }
@@ -45,7 +45,7 @@ public class EnemyMainController : MonoBehaviour
 
         enemyMovement.ApplyAccumulatedForce();
 
-        if (!isAlive() && !initializedDeath) {
+        if (!IsAlive() && !initializedDeath) {
             enemyMovement.EnableDeathMovement();
             initializedDeath = true;
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMainMovement : MonoBehaviour
 {
     [Header("Dependancies")]
-    [SerializeField] private Transform player; // Reference to the player's transform
+    private Transform player; // Reference to the player's transform
 
     [Header("Enemy Movement Settings")]
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
@@ -27,6 +27,17 @@ public class EnemyMainMovement : MonoBehaviour
 
     void Start()
     {
+        // Find the GameObject tagged as "Player" and get its Transform component
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player object not found! Make sure the player is tagged as 'Player'.");
+        }
+
         hitAudio = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
     }
@@ -111,7 +122,6 @@ public class EnemyMainMovement : MonoBehaviour
         // Add hit normal to the list
         hitNormals.Add(hitNormal);
         hitForce += bulletHitForce;
-        Debug.Log(hitForce);
     }
 
     public void ApplyAccumulatedForce()
