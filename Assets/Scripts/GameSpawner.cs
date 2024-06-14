@@ -18,7 +18,7 @@ public class GameSpawner : MonoBehaviour
         }
         else
         {
-            InvokeRepeating("SpawnObject", 0f, spawnInterval);
+            InvokeRepeating(nameof(SpawnObject), 0f, spawnInterval);
         }
     }
 

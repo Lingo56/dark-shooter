@@ -35,7 +35,7 @@ public class PlayerRaycastShoot : MonoBehaviour
     private Quaternion initialRotation;
 
     private Camera fpsCam;
-    private WaitForSeconds shotDuration = new WaitForSeconds(.5f);
+    private WaitForSeconds shotDuration = new(.5f);
     private AudioSource gunAudio;
     private WFX_LightFlicker wfxLightScript;
     private float nextFire;
@@ -63,7 +63,7 @@ public class PlayerRaycastShoot : MonoBehaviour
             StartCoroutine(KickbackAndReset());
             StartCoroutine(fpsController.ShakeCamera(shakeAmount, shakeRiseDuration, shakeFallDuration));
 
-            HashSet<EnemyMainController> hitEnemies = new HashSet<EnemyMainController>();
+            HashSet<EnemyMainController> hitEnemies = new();
 
             for (int i = 0; i < numberOfBullets; i++)
             {
@@ -91,8 +91,7 @@ public class PlayerRaycastShoot : MonoBehaviour
 
     private void ShootRay(Vector3 origin, Vector3 direction, int damage, HashSet<EnemyMainController> hitEnemies)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(origin, direction, out hit, weaponRange))
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, weaponRange))
         {
             EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
 
@@ -100,11 +99,6 @@ public class PlayerRaycastShoot : MonoBehaviour
             {
                 enemyController.ProcessHit(damage, bulletHitForce, hit);
                 hitEnemies.Add(enemyController); // Track this enemy as hit
-
-                if (enemyController.IsAlive())
-                {
-                    GameEvents.EnemyHitAlive();
-                }
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);

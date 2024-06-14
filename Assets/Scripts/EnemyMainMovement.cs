@@ -18,7 +18,7 @@ public class EnemyMainMovement : MonoBehaviour
     private Vector3 followVelocity = Vector3.zero; // Current velocity of the enemy
     private Vector3 hitVelocity = Vector3.zero; // Current velocity of the enemy
 
-    private List<Vector3> hitNormals = new List<Vector3>(); // List to store hit normals
+    private List<Vector3> hitNormals = new(); // List to store hit normals
 
     private AudioSource hitAudio;
     private Rigidbody rb;
@@ -77,7 +77,7 @@ public class EnemyMainMovement : MonoBehaviour
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
 
             // Accelerate towards the player
-            Vector3 accelerationVector = directionToPlayer * acceleration * Time.fixedDeltaTime;
+            Vector3 accelerationVector = acceleration * Time.fixedDeltaTime * directionToPlayer;
 
             // Apply acceleration towards the player
             followVelocity += accelerationVector;

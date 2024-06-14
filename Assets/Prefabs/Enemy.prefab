@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 7320306552187216178}
   flashEffect: {fileID: 1179736795670257999}
-  maxHealth: 50
+  maxHealth: 10
 --- !u!114 &7320306552187216178
 MonoBehaviour:
   m_ObjectHideFlags: 0

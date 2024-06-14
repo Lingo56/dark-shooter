@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     private int hitCount;
+    private int score;
     private Coroutine countdownCoroutine; // To store the reference to the running coroutine
 
     private void Awake()
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             GameEvents.OnEnemyHit += RegisterHit; // Subscribe to the event
+            GameEvents.OnEnemyDeath += RegisterDeath;
         }
         else
         {
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
         if (Instance == this)
         {
             GameEvents.OnEnemyHit -= RegisterHit; // Unsubscribe from the event
+            GameEvents.OnEnemyDeath -= RegisterDeath;
         }
     }
 
@@ -45,6 +48,12 @@ public class GameManager : MonoBehaviour
         countdownCoroutine = StartCoroutine(CountdownHitCount());
     }
 
+    public void RegisterDeath()
+    {
+        score++;
+        UIEvents.ScoreChanged(score);
+    }
+
     private IEnumerator CountdownHitCount()
     {
         yield return new WaitForSeconds(2f);
@@ -56,7 +65,7 @@ public class GameManager : MonoBehaviour
             hitCount--;
             UIEvents.HitCountChanged(hitCount); // Update the UI
             yield return new WaitForSeconds(comboReductionTimer); // Adjust the countdown interval as needed
-            comboReductionTimer = comboReductionTimer / 1.25f;
+            comboReductionTimer /= 1.25f;
         }
 
         countdownCoroutine = null; // Clear the coroutine reference when done
