@@ -4,7 +4,7 @@ Shader "Custom/RadialTimerShader"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cutoff ("Fill Amount", Range(0,1)) = 0.0
-        _EdgeFadeDistance ("Edge Fade Distance", Range(0, 0.5)) = 0.1
+        _EdgeFadeDistance ("Edge Fade Distance", Range(0, 0.575)) = 0.1
     }
     SubShader
     {
@@ -23,10 +23,10 @@ Shader "Custom/RadialTimerShader"
             float _EdgeFadeDistance;
 
             static const float dither[16] = {
-                0.0625, 0.5625, 0.3125, 0.8125,
-                0.8125, 0.3125, 0.5625, 0.0625,
-                0.4375, 0.9375, 0.1875, 0.6875,
-                0.6875, 0.1875, 0.9375, 0.4375
+                0.1, 0.3, 0.2, 0.4,
+                0.6, 0.9, 0.7, 0.5,
+                0.8, 0.1, 0.3, 0.2,
+                0.4, 0.6, 0.8, 1.0
             };
 
             struct appdata
@@ -77,7 +77,10 @@ Shader "Custom/RadialTimerShader"
                 int index = x + y * 4;
                 float threshold = dither[index];
 
-                if (texColorAlphaRef.a < _Cutoff * threshold)
+                // Modulate threshold by distance from center to amplify dither effect towards edges
+                float amplifiedThreshold = threshold * (1.0 - i.distToCenter);
+
+                if (texColorAlphaRef.a < _Cutoff * amplifiedThreshold)
                     discard;
 
                 return texColor;
