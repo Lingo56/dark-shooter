@@ -22,6 +22,13 @@ Shader "Custom/RadialTimerShader"
             float _Cutoff;
             float _EdgeFadeDistance;
 
+            static const float dither[16] = {
+                0.0,  0.8,  0.2,  1.0,
+                0.6,  0.4,  0.8,  0.2,
+                0.2,  1.0,  0.6,  0.4,
+                0.8,  0.2,  0.4,  0.6
+            };
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -54,16 +61,23 @@ Shader "Custom/RadialTimerShader"
                 float edgeFade = 1.0 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter);
 
                 half4 texColor = tex2D(_MainTex, i.uv);
-                
                 // Adjust alpha based on angle cutoff and edge fade
                 float angle = atan2(i.uv.y - 0.5, i.uv.x - 0.5) / (2 * 3.14159265358979323846);
                 if (angle < 0) angle += 1;
 
                 if (angle > _Cutoff)
                     discard;
-
+                
                 // Apply edge fading to alpha
                 texColor.a *= edgeFade;
+
+                int x = int(i.vertex.x) % 4;
+                int y = int(i.vertex.y) % 4;
+                int index = x + y * 4;
+                float threshold = dither[index];
+
+                if (texColor.a < _Cutoff * threshold)
+                    discard;
 
                 return texColor;
             }

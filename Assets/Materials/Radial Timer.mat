@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Radial Timer
-  m_Shader: {fileID: 4800000, guid: db4ba62026d389b42b45c399312d1f16, type: 3}
+  m_Shader: {fileID: 4800000, guid: b53bfff72d31a8d40b078403ecdb6520, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ca7314b6987d41242915962b33440b3b, type: 3}
+        m_Texture: {fileID: 2800000, guid: bbde78473e3c32c4a8444168e94b275f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -104,6 +104,7 @@ Material:
     - _DitherStrength: 0.679
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EdgeFadeDistance: 0.5
     - _EdgeWidth: 0.267
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
