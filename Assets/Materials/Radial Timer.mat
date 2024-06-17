@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DitherTex:
-        m_Texture: {fileID: 2800000, guid: 44a1485dbf9b2aa44b3f25966563e90e, type: 3}
+        m_Texture: {fileID: 2800000, guid: ca7314b6987d41242915962b33440b3b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: bbde78473e3c32c4a8444168e94b275f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0938b4bdb94798b4896d7a4ab653e85e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -104,7 +104,7 @@ Material:
     - _DitherStrength: 0.679
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeFadeDistance: 0.5
+    - _EdgeFadeDistance: 0.575
     - _EdgeWidth: 0.267
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0

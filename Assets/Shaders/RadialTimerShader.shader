@@ -66,9 +66,33 @@ Shader "Custom/RadialTimerShader"
                 float angle = atan2(i.uv.y - 0.5, i.uv.x - 0.5) / (2 * 3.14159265358979323846);
                 if (angle < 0) angle += 1;
 
+                // Calculate gradient based on _Cutoff
+                float gradiation = 0.1;  // Default value for when _Cutoff < 0.9
+                if (_Cutoff >= 0.9)
+                {
+                    gradiation = lerp(0.1, 0.005, (_Cutoff - 0.9) / 0.1);
+                }
+
                 if (angle > _Cutoff)
+                {
                     discard;
-                
+                }   
+                else if (_Cutoff >= 0.9 && angle > _Cutoff - gradiation)
+                {
+                    float fadeAmount = (_Cutoff - angle) / gradiation;
+                    texColorAlphaRef.a *= fadeAmount;
+                }
+                else if (angle > _Cutoff - gradiation)
+                {
+                    float fadeAmount = (_Cutoff - angle) / gradiation;
+                    texColorAlphaRef.a *= fadeAmount;
+                } 
+                else if (angle < 0.005)
+                {
+                    float fadeAmount = angle / 0.005;
+                    texColorAlphaRef.a *= fadeAmount;
+                }
+
                 // Apply edge fading to alpha
                 texColorAlphaRef.a *= edgeFade;
 
@@ -80,7 +104,7 @@ Shader "Custom/RadialTimerShader"
                 // Modulate threshold by distance from center to amplify dither effect towards edges
                 float amplifiedThreshold = threshold * (1.0 - i.distToCenter);
 
-                if (texColorAlphaRef.a < _Cutoff * amplifiedThreshold)
+                if (texColorAlphaRef.a < amplifiedThreshold)
                     discard;
 
                 return texColor;

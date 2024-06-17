@@ -48,10 +48,10 @@ Material:
     - _Color_Burn: 18.7
     - _Color_Burn_Strength: 0.6
     - _Color_Resolution: 256
-    - _Dither_Opacity: 0.00002
+    - _Dither_Opacity: 0
     - _Dither_Spread: 4
     - _Dither_Tiling: 8
-    - _Pixelate: 256
+    - _Pixelate: 238
     - _Pixelate_Strength: 1
     - _Steps: 3.63
     m_Colors:
