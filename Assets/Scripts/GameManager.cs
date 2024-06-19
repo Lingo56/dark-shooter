@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     private int hitCount;
     private int score;
     private Coroutine countdownCoroutine; // To store the reference to the running coroutine
+    [SerializeField] private float timerDuration = 10f; // Duration of the timer in seconds
+    private float elapsedTime = 0f;
 
     private void Awake()
     {
@@ -31,6 +33,11 @@ public class GameManager : MonoBehaviour
             GameEvents.OnEnemyHit -= RegisterHit; // Unsubscribe from the event
             GameEvents.OnEnemyDeath -= RegisterDeath;
         }
+    }
+
+    void Update()
+    {
+        RunGameTimer();
     }
 
     public void RegisterHit()
@@ -74,5 +81,19 @@ public class GameManager : MonoBehaviour
     public int GetHitCount()
     {
         return hitCount;
+    }
+
+    private void RunGameTimer()
+    {
+        if (elapsedTime < timerDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            GameEvents.TimerUpdate(elapsedTime, timerDuration);
+        }
+        else
+        {
+            // Timer has finished
+            // You can trigger any event you want here
+        }
     }
 }

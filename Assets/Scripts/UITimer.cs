@@ -5,28 +5,25 @@ using UnityEngine;
 public class UITimer : MonoBehaviour
 {
     public Material radialMaterial; // The material with the radial shader
-    public float timerDuration = 10f; // Duration of the timer in seconds
 
-    private float elapsedTime = 0f;
-
-    void Update()
+    private void OnEnable()
     {
-        if (elapsedTime < timerDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float fillAmount = elapsedTime / timerDuration;
-            radialMaterial.SetFloat("_Cutoff", 1 - fillAmount);
-        }
-        else
-        {
-            // Timer has finished
-            // You can trigger any event you want here
-        }
+        GameEvents.OnTimerUpdate += UpdateTimer; // Subscribe to the event
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
+    }
+
+    public void UpdateTimer(float elapsedTime, float timerDuration)
+    {
+        float fillAmount = elapsedTime / timerDuration;
+        radialMaterial.SetFloat("_Cutoff", 1 - fillAmount);
     }
 
     public void ResetTimer()
     {
-        elapsedTime = 0f;
         radialMaterial.SetFloat("_Cutoff", 1);
     }
 }
