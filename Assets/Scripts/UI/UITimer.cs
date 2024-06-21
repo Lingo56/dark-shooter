@@ -12,6 +12,7 @@ public class UITimer : MonoBehaviour
     private void OnDisable()
     {
         GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
+        ResetTimer();
     }
 
     public void UpdateTimer(float elapsedTime, float timerDuration)
