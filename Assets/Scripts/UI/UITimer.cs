@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UITimer : MonoBehaviour
 {
-    public Material radialMaterial; // The material with the radial shader
+    [SerializeField] private Material radialMaterial; // The material with the radial shader
 
     private void OnEnable()
     {
