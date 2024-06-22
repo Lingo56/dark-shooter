@@ -41,6 +41,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 4818448777015067522}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 625bc5015dd321c47b95e5cc804219aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -195,9 +207,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862475756397649188}
   serializedVersion: 4
-  m_Mass: 15
-  m_Drag: 0.5
-  m_AngularDrag: 0.05
+  m_Mass: 60
+  m_Drag: 0
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -249,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 7320306552187216178}
   flashEffect: {fileID: 1179736795670257999}
-  maxHealth: 10
+  maxHealth: 100
 --- !u!114 &7320306552187216178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,7 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 4
   acceleration: 6
-  hitDeaccelerationFactor: 0.5
+  hitDeaccelerationFactor: 0.3
   deathForceMultiplier: 1
   rotationSpeed: 2
 --- !u!82 &7057269445310007049

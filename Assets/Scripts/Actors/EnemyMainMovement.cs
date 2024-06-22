@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Fix enemies not kicking back enough when dead
 public class EnemyMainMovement : MonoBehaviour
 {
     [Header("Dependancies")]
@@ -9,6 +9,7 @@ public class EnemyMainMovement : MonoBehaviour
 
     [Header("Enemy Movement Settings")]
     [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
+
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
     [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
     [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
@@ -25,7 +26,7 @@ public class EnemyMainMovement : MonoBehaviour
     private float hitForce; // Force applied when hit by the gun
     private bool alive = true;
 
-    void Start()
+    private void Start()
     {
         // Find the GameObject tagged as "Player" and get its Transform component
         GameObject playerObject = GameObject.FindWithTag("Player");
@@ -42,7 +43,7 @@ public class EnemyMainMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    private void Update()
     {
         // Rotate the enemy to face the direction it's moving
         if (followVelocity != Vector3.zero)
@@ -69,7 +70,7 @@ public class EnemyMainMovement : MonoBehaviour
                 hitVelocity = Vector3.zero;
             }
 
-            #endregion
+            #endregion Hit Movement
 
             #region Follow Movement
 
@@ -85,7 +86,7 @@ public class EnemyMainMovement : MonoBehaviour
             // Clamp the velocity to the maximum speed
             followVelocity = Vector3.ClampMagnitude(followVelocity, maxSpeed);
 
-            #endregion
+            #endregion Follow Movement
 
             velocity = followVelocity + hitVelocity;
 
@@ -93,8 +94,7 @@ public class EnemyMainMovement : MonoBehaviour
         }
         else
         {
-            rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
-            hitVelocity = Vector3.zero;
+            ApplyDeathHit();
         }
     }
 
@@ -107,7 +107,7 @@ public class EnemyMainMovement : MonoBehaviour
         Debug.DrawLine(startPosition, endPosition, lineColor);
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
@@ -159,7 +159,11 @@ public class EnemyMainMovement : MonoBehaviour
         rb.useGravity = true;
 
         Debug.Log(hitVelocity);
+        ApplyDeathHit();
+    }
 
+    private void ApplyDeathHit()
+    {
         // Apply the hit velocity as a force to the Rigidbody
         rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
         hitVelocity = Vector3.zero;
