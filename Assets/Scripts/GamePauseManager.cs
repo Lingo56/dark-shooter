@@ -4,14 +4,16 @@ using UnityEngine;
 public class GamePauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseScreen;  // Assign the UI Canvas with black screen and text here
+    [SerializeField] private GameObject endScreen;  // Assign the UI Canvas with black screen and text here
     [SerializeField] private TextMeshProUGUI scoreText;  // Assign the UI Canvas with black screen and text here
 
     private bool isPaused = false;
+    private bool isEnded = false;
 
     // Toggle function to pause/resume the game
     public void TogglePause(int score)
     {
-        if (isPaused)
+        if (isPaused && !isEnded)
         {
             ResumeGame();
         }
@@ -38,8 +40,8 @@ public class GamePauseManager : MonoBehaviour
     public void EndGame(int score)
     {
         Time.timeScale = 0;  // Pause the game
-        pauseScreen.SetActive(true);  // Show the pause screen
+        endScreen.SetActive(true);  // Show the pause screen
         scoreText.text = "Score: " + score.ToString();
-        isPaused = true;
+        isEnded = true;
     }
 }

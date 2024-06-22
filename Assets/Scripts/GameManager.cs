@@ -100,8 +100,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Timer has finished
-            // You can trigger any event you want here
+            pauseManager.EndGame(score);
         }
     }
 }
