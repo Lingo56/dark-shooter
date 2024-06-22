@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -25,7 +24,7 @@ public class PlayerMovementController : MonoBehaviour
     private Quaternion shakeOffset = Quaternion.identity;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _characterController = GetComponent<CharacterController>();
 
@@ -34,9 +33,12 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        if (Time.timeScale == 0) return; // Disable controls if game paused
+
         #region Move
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -47,39 +49,42 @@ public class PlayerMovementController : MonoBehaviour
         float movementDirectionY = _moveDirection.y;
         _moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-        #endregion
+        #endregion Move
 
         #region Jump
+
         if (Input.GetButton("Jump") && _canMove && _characterController.isGrounded)
         {
             _moveDirection.y = _jumpForce;
         }
-        else 
+        else
         {
             _moveDirection.y = movementDirectionY;
         }
 
-        if (!_characterController.isGrounded) {
+        if (!_characterController.isGrounded)
+        {
             _moveDirection.y -= _gravity * Time.deltaTime;
         }
 
-        #endregion
+        #endregion Jump
 
         #region Camera
+
         _characterController.Move(_moveDirection * Time.deltaTime);
 
-        if (_canMove) {
+        if (_canMove)
+        {
             _rotationX += -Input.GetAxis("Mouse Y") * _lookSpeed;
             _rotationX = Mathf.Clamp(_rotationX, -_lookXLimit, _lookXLimit);
             _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0) * shakeOffset;
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeed, 0);
         }
 
-        #endregion
-
+        #endregion Camera
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody body = hit.collider.attachedRigidbody;
 

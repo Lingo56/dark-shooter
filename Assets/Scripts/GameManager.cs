@@ -5,10 +5,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [SerializeField] private float timerDuration = 10f; // In seconds
+    [SerializeField] private GamePauseManager pauseManager;
+
     private int hitCount;
     private int score;
     private Coroutine countdownCoroutine; // To store the reference to the running coroutine
-    [SerializeField] private float timerDuration = 10f; // Duration of the timer in seconds
     private float elapsedTime = 0f;
 
     private void Awake()
@@ -17,8 +19,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            GameEvents.OnEnemyHit += RegisterHit; // Subscribe to the event
-            GameEvents.OnEnemyDeath += RegisterDeath;
+            GameEvents.OnEnemyHit += RegisterEnemyHit; // Subscribe to the event
+            GameEvents.OnEnemyDeath += RegisterEnemyDeath;
         }
         else
         {
@@ -30,17 +32,23 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == this)
         {
-            GameEvents.OnEnemyHit -= RegisterHit; // Unsubscribe from the event
-            GameEvents.OnEnemyDeath -= RegisterDeath;
+            GameEvents.OnEnemyHit -= RegisterEnemyHit; // Unsubscribe from the event
+            GameEvents.OnEnemyDeath -= RegisterEnemyDeath;
         }
     }
 
-    void Update()
+    private void Update()
     {
         RunGameTimer();
+
+        // Example to trigger pause (e.g., pressing the 'P' key)
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            pauseManager.TogglePause(score);
+        }
     }
 
-    public void RegisterHit()
+    public void RegisterEnemyHit()
     {
         hitCount++;
         UIEvents.HitCountChanged(hitCount); // Trigger the UI event
@@ -55,7 +63,7 @@ public class GameManager : MonoBehaviour
         countdownCoroutine = StartCoroutine(CountdownHitCount());
     }
 
-    public void RegisterDeath()
+    public void RegisterEnemyDeath()
     {
         score++;
         UIEvents.ScoreChanged(score);

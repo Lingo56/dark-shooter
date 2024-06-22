@@ -1,9 +1,5 @@
 using UnityEngine;
 
-// TODO: Want sway to do translation as well as rotation. Currently only does rotation.
-// This video shows translation.
-// https://youtu.be/DR4fTllQnXg?si=IzaeJ4yVMUwhAGsB
-
 public class PlayerWeaponSway : MonoBehaviour
 {
     [Header("Sway Settings")]
