@@ -167,7 +167,8 @@ MonoBehaviour:
   maxSpeed: 4
   acceleration: 6
   hitDeaccelerationFactor: 0.3
-  deathForceMultiplier: 1
+  deathForceMultiplier: 20
+  deathLaunchPeriod: 0.5
   rotationSpeed: 2
 --- !u!114 &8173315287063801522
 MonoBehaviour:

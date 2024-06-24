@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class EnemyMainMovement : MonoBehaviour
     [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
     [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
     [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
+    [SerializeField] private float deathLaunchPeriod = 1f; // How long to wait before enemy launches from death
     [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
 
     private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
@@ -25,6 +27,7 @@ public class EnemyMainMovement : MonoBehaviour
     private Rigidbody rb;
     private float hitForce; // Force applied when hit by the gun
     private bool alive = true;
+    private bool isWaiting = false;
 
     private void Start()
     {
@@ -57,7 +60,7 @@ public class EnemyMainMovement : MonoBehaviour
     {
         ShowVelocityDebugLine();
 
-        if (alive)
+        if (alive && !isWaiting)
         {
             #region Hit Movement
 
@@ -92,7 +95,7 @@ public class EnemyMainMovement : MonoBehaviour
 
             rb.velocity = velocity;
         }
-        else
+        else if (!alive && !isWaiting)
         {
             ApplyDeathHit();
         }
@@ -148,12 +151,17 @@ public class EnemyMainMovement : MonoBehaviour
         }
     }
 
-    public void EnableDeathMovement()
+    public IEnumerator EnableDeathMovement()
     {
         alive = false;
+        isWaiting = true;
 
         // Stop the follow acceleration/velocity
         followVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+
+        yield return new WaitForSeconds(deathLaunchPeriod);
+        isWaiting = false;
 
         // Enable gravity on the Rigidbody
         rb.useGravity = true;

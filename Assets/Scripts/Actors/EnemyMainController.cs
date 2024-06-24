@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class EnemyMainController : MonoBehaviour
 {
     [Header("Dependancies")]
     [SerializeField] private EnemyMainMovement enemyMovement;
+
     [SerializeField] private EnemyMainHitFlash flashEffect;
 
     [Header("Enemy Settings")]
     [SerializeField] private int maxHealth = 100;
+
     private int health;
     private int totalDamage;
     private bool initializedDeath = false;
 
-    void Start()
+    private void Start()
     {
         health = maxHealth;
     }
@@ -39,16 +38,18 @@ public class EnemyMainController : MonoBehaviour
 
     // TODO: Use Physics.IgnoreCollision to ignore colliding with the player once enemy dies
     // Could maybe be pointless depending on if the enemies just disappear a couple seconds after death
-    public void HandleEnemyDamage() 
+    public void HandleEnemyDamage()
     {
         health -= totalDamage;
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
 
-        if (!IsAlive() && !initializedDeath) {
-            enemyMovement.EnableDeathMovement();
+        if (!IsAlive() && !initializedDeath)
+        {
+            StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
+            flashEffect.Flash(5f, 1);
             GameEvents.EnemyDeath();
         }
     }
