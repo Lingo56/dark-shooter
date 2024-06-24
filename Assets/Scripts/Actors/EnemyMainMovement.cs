@@ -177,17 +177,17 @@ public class EnemyMainMovement : MonoBehaviour
         alive = false;
         isWaiting = true;
 
-        // Stop the follow acceleration/velocity
+        // Stop the rigidbody
         followVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
 
+        // Freeze the enemy for a period
         yield return new WaitForSeconds(DeathLaunchPeriod);
+
         isWaiting = false;
 
-        // Enable gravity on the Rigidbody
         rb.useGravity = true;
 
-        Debug.Log(hitVelocity);
         ApplyDeathHit();
     }
 
