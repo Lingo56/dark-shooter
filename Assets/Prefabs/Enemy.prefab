@@ -164,12 +164,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567abbdceac98c84c949fc140b615599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   maxSpeed: 4
   acceleration: 6
   hitDeaccelerationFactor: 0.3
-  deathForceMultiplier: 20
-  deathLaunchPeriod: 0.5
   rotationSpeed: 2
+  deathForceMultiplier: 20
+  deathLaunchPeriod: 0.1
 --- !u!114 &8173315287063801522
 MonoBehaviour:
   m_ObjectHideFlags: 0

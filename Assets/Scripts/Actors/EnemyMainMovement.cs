@@ -5,29 +5,45 @@ using UnityEngine;
 // TODO: Fix enemies not kicking back enough when dead
 public class EnemyMainMovement : MonoBehaviour
 {
+    #region Inspector Properties
+
     [Header("Dependancies")]
-    private Transform player; // Reference to the player's transform
+    [SerializeField] private Transform player;
 
     [Header("Enemy Movement Settings")]
-    [SerializeField] private float maxSpeed = 2f; // Maximum speed of the enemy
+    [SerializeField] private float maxSpeed = 2f;
 
-    [SerializeField] private float acceleration = 1f; // Acceleration rate towards the player
-    [SerializeField] private float hitDeaccelerationFactor = 1f; // Accumulated acceleration from hits
-    [SerializeField] private float deathForceMultiplier = 1f; // Multiplier for how much faster the enemy should kick back when they die
-    [SerializeField] private float deathLaunchPeriod = 1f; // How long to wait before enemy launches from death
-    [SerializeField] private float rotationSpeed = 2f; // Speed at which the enemy resets rotation towards the player
+    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private float hitDeaccelerationFactor = 1f;
+    [SerializeField] private float rotationSpeed = 2f;
 
-    private Vector3 velocity = Vector3.zero; // Current velocity of the enemy
-    private Vector3 followVelocity = Vector3.zero; // Current velocity of the enemy
-    private Vector3 hitVelocity = Vector3.zero; // Current velocity of the enemy
+    [Header("Death Settings")]
+    [SerializeField] private float deathForceMultiplier = 1f;
 
-    private List<Vector3> hitNormals = new(); // List to store hit normals
+    [SerializeField] private float deathLaunchPeriod = 1f;
 
+    public float DeathLaunchPeriod
+    {
+        get => deathLaunchPeriod;
+        set => deathLaunchPeriod = value; // Ensure non-negative value
+    }
+
+    #endregion Inspector Properties
+
+    #region Private Variables
+
+    private Vector3 velocity = Vector3.zero;
+    private Vector3 followVelocity = Vector3.zero;
+    private Vector3 hitVelocity = Vector3.zero;
+
+    private List<Vector3> hitNormals = new List<Vector3>();
     private AudioSource hitAudio;
     private Rigidbody rb;
-    private float hitForce; // Force applied when hit by the gun
+    private float hitForce;
     private bool alive = true;
     private bool isWaiting = false;
+
+    #endregion Private Variables
 
     private void Start()
     {
@@ -101,6 +117,11 @@ public class EnemyMainMovement : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        deathLaunchPeriod = Mathf.Max(0f, deathLaunchPeriod);
+    }
+
     private void ShowVelocityDebugLine()
     {
         Vector3 startPosition = transform.position;
@@ -160,7 +181,7 @@ public class EnemyMainMovement : MonoBehaviour
         followVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
 
-        yield return new WaitForSeconds(deathLaunchPeriod);
+        yield return new WaitForSeconds(DeathLaunchPeriod);
         isWaiting = false;
 
         // Enable gravity on the Rigidbody

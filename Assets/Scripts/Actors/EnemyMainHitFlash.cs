@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMainHitFlash : MonoBehaviour
@@ -9,25 +8,22 @@ public class EnemyMainHitFlash : MonoBehaviour
     [SerializeField] private Material flashMaterial; // Assign a white material in the inspector
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rend = GetComponent<Renderer>();
         originalMaterial = rend.material;
     }
 
-    public void Flash(float duration, int flashes)
+    public void Flash(float duration)
     {
-        StartCoroutine(FlashCoroutine(duration, flashes));
+        rend.material = flashMaterial;
+        StartCoroutine(RevertMaterialAfterDelay(duration));
     }
 
-    private IEnumerator FlashCoroutine(float duration, int flashes)
+    private IEnumerator RevertMaterialAfterDelay(float delay)
     {
-        for (int i = 0; i < flashes; i++)
-        {
-            rend.material = flashMaterial;
-            yield return new WaitForSeconds(duration / (flashes * 2));
-            rend.material = originalMaterial;
-            yield return new WaitForSeconds(duration / (flashes * 2));
-        }
+        yield return new WaitForSeconds(delay);
+        rend.material = originalMaterial;
+        Debug.Log("Material reverted after delay");
     }
 }

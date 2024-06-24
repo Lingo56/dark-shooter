@@ -26,7 +26,6 @@ public class EnemyMainController : MonoBehaviour
 
         if (IsAlive())
         {
-            flashEffect.Flash(0.4f, 1);
             GameEvents.EnemyHitAlive();
         }
     }
@@ -47,10 +46,14 @@ public class EnemyMainController : MonoBehaviour
 
         if (!IsAlive() && !initializedDeath)
         {
+            flashEffect.Flash(enemyMovement.DeathLaunchPeriod);
             StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
-            flashEffect.Flash(5f, 1);
             GameEvents.EnemyDeath();
+        }
+        else if (IsAlive())
+        {
+            flashEffect.Flash(0.1f);
         }
     }
 }
