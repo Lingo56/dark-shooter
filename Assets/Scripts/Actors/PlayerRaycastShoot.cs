@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Simplify and improve this script
 public class PlayerRaycastShoot : MonoBehaviour
 {
     [Header("Dependancies")]
     [SerializeField] private GameObject player;
+
     [SerializeField] private GameObject bulletTrailPrefab;
 
     [Header("Weapon Settings")]
     [SerializeField] private int gunDamage = 2;
+
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float weaponRange = 50f;
     [SerializeField] private float bulletHitForce = 1f; // The force of each individual bullet
@@ -23,11 +26,13 @@ public class PlayerRaycastShoot : MonoBehaviour
 
     [Header("Kickback Animation Settings")]
     [SerializeField] private float kickbackAmount = 0.1f;
+
     [SerializeField] private float kickbackSpeed = 5f;
     [SerializeField] private float resetDelay = 0.1f; // Delay before resetting after kickback
 
     [Header("Screen Shake Settings")]
     [SerializeField] private float shakeAmount = 0.1f; // Amount to shake
+
     [SerializeField] private float shakeRiseDuration = 0.1f; // Duration of shake
     [SerializeField] private float shakeFallDuration = 0.1f; // Duration of shake
 
@@ -42,7 +47,7 @@ public class PlayerRaycastShoot : MonoBehaviour
 
     private PlayerMovementController fpsController;
 
-    void Start()
+    private void Start()
     {
         gunAudio = GetComponent<AudioSource>();
         fpsCam = GetComponentInParent<Camera>();
@@ -53,7 +58,7 @@ public class PlayerRaycastShoot : MonoBehaviour
         initialRotation = transform.localRotation;
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
