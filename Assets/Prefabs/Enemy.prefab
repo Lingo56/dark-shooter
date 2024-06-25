@@ -170,7 +170,7 @@ MonoBehaviour:
   hitDeaccelerationFactor: 0.3
   rotationSpeed: 2
   deathForceMultiplier: 20
-  deathLaunchPeriod: 0.1
+  deathLaunchPeriod: 0.4
 --- !u!114 &8173315287063801522
 MonoBehaviour:
   m_ObjectHideFlags: 0
