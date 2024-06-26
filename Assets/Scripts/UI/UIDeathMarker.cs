@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class UIDeathMarker : MonoBehaviour
 {
     [SerializeField] private RectTransform rectTransform; // Reference to the RectTransform of the UI element
+    [SerializeField] private UICircle uiCircle; // Reference to the UICircle component
 
     private Vector2 initialSize = Vector2.zero; // Initial size (usually starts from 0,0)
     private Vector2 targetSize = new Vector2(30f, 30f); // Target size to reach (30x30)
@@ -31,6 +33,12 @@ public class UIDeathMarker : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
         }
 
+        // Initialize the UICircle if not assigned in the Inspector
+        if (uiCircle == null)
+        {
+            uiCircle = GetComponent<UICircle>();
+        }
+
         initialSize = rectTransform.sizeDelta; // Store initial size
     }
 
@@ -51,6 +59,10 @@ public class UIDeathMarker : MonoBehaviour
                 // Apply the new size to the RectTransform
                 rectTransform.sizeDelta = newSize;
 
+                // Adjust the thickness of the UICircle
+                uiCircle.Thickness = 3; // Example: set thickness to half the width
+                uiCircle.OutlineThickness = 1; // Example: set thickness to half the width
+
                 // Check if animation is complete
                 if (lerpFactor >= 1f)
                 {
@@ -67,6 +79,8 @@ public class UIDeathMarker : MonoBehaviour
                 if (timer >= postAnimationDelay)
                 {
                     rectTransform.sizeDelta = Vector2.zero; // Reset to zero after delay
+                    uiCircle.Thickness = 0; // Reset the thickness to 0
+                    uiCircle.OutlineThickness = 0;
                     isAnimating = false;
                     hasCompletedAnimation = false;
                     timer = 0f;
