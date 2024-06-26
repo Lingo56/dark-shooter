@@ -24,6 +24,5 @@ public class EnemyMainHitFlash : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         rend.material = originalMaterial;
-        Debug.Log("Material reverted after delay");
     }
 }

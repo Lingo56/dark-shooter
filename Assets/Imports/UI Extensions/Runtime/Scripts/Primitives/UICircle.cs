@@ -1,22 +1,3 @@
-/// Credit zge, jeremie sellam
-/// Sourced from - http://forum.unity3d.com/threads/draw-circles-or-primitives-on-the-new-ui-canvas.272488/#post-2293224
-/// Updated from - https://bitbucket.org/SimonDarksideJ/unity-ui-extensions/issues/65/a-better-uicircle
-
-/// Update 10.9.2017 (tswalker, https://bitbucket.org/tswalker/)
-/// 
-/// * Modified component to utilize vertex stream instead of quads
-/// * Improved accuracy of geometry fill to prevent edge "sliding" and redundant tris
-/// * Added progress capability to allow component to be used as an indicator
-/// * Added methods for use during runtime and event system(s) with other components
-/// * Change some terminology of members to reflect other component property changes
-/// * Added padding capability
-/// * Only utilizes UV0 set for sprite/texture mapping (maps UV to geometry 0,1 boundary)
-/// * Sample usage in scene "UICircleProgress"
-/// Note: moving the pivot around from center to an edge can cause strange things
-///       as well as having the RectTransform be smaller than the Thickness and/or Padding.
-///       When making an initial layout for the component, it would be best to test multiple
-///       aspect ratios and resolutions to ensure consistent behaviour.
-
 using System.Collections.Generic;
 
 namespace UnityEngine.UI.Extensions
@@ -42,12 +23,22 @@ namespace UnityEngine.UI.Extensions
         [Tooltip("The Progress property allows the primitive to be used as a progression indicator.")]
         [Range(0, 1)]
         public float Progress = 0;
+
         private float _progress = 0;
 
         public Color ProgressColor = new Color(255, 255, 255, 255);
         public bool Fill = true; //solid circle
         public float Thickness = 5;
         public int Padding = 0;
+
+        [Tooltip("Enable or disable the outline around the circle.")]
+        public bool EnableOutline = true;
+
+        [Tooltip("Outline thickness around the circle.")]
+        public float OutlineThickness = 2;
+
+        [Tooltip("Outline color around the circle.")]
+        public Color OutlineColor = Color.black;
 
         private List<int> indices = new List<int>();  //ordered list of vertices per tri
         private List<UIVertex> vertices = new List<UIVertex>();
@@ -120,7 +111,7 @@ namespace UnityEngine.UI.Extensions
                 {
                     indices.Add(i);
                     indices.Add(j + 1);
-                    //Fills (solid circle) with progress require an additional vertex to 
+                    //Fills (solid circle) with progress require an additional vertex to
                     // prevent the base circle from becoming a gradient from center to edge
                     if (counter > _progress)
                     {
@@ -144,11 +135,58 @@ namespace UnityEngine.UI.Extensions
                 vertex.uv0 = uvCenter;
                 vertices.Add(vertex);
             }
+
+            // Draw the outlines if enabled
+            if (EnableOutline && OutlineThickness > 0)
+            {
+                // Outside outline
+                DrawOutline(vh, outerDiameter, outerDiameter + OutlineThickness, _inversion, stepDegree, ArcRotation, OutlineColor);
+
+                // Inside outline
+                DrawOutline(vh, innerDiameter - OutlineThickness, innerDiameter, _inversion, stepDegree, ArcRotation, OutlineColor);
+            }
+
             vh.AddUIVertexStream(vertices, indices);
         }
 
-        //the following methods may be used during run-time
-        //to update the properties of the component
+        private void DrawOutline(VertexHelper vh, float innerDiameter, float outerDiameter, int inversion, float stepDegree, int arcRotation, Color outlineColor)
+        {
+            int outlineStartIndex = vertices.Count;
+
+            for (int counter = 0; counter <= ArcSteps; counter++)
+            {
+                float rad = inversion * Mathf.Deg2Rad * (counter * stepDegree + arcRotation);
+                float X = Mathf.Cos(rad);
+                float Y = Mathf.Sin(rad);
+
+                var vertex = UIVertex.simpleVert;
+                vertex.color = outlineColor;
+
+                // Outer vertex
+                vertex.position = new Vector2(outerDiameter * X, outerDiameter * Y);
+                vertex.uv0 = new Vector2(vertex.position.x / outerDiameter + 0.5f, vertex.position.y / outerDiameter + 0.5f);
+                vertices.Add(vertex);
+
+                // Inner vertex
+                vertex.position = new Vector2(innerDiameter * X, innerDiameter * Y);
+                vertex.uv0 = new Vector2(vertex.position.x / innerDiameter + 0.5f, vertex.position.y / innerDiameter + 0.5f);
+                vertices.Add(vertex);
+
+                if (counter > 0)
+                {
+                    indices.Add(outlineStartIndex + (counter - 1) * 2);
+                    indices.Add(outlineStartIndex + counter * 2);
+                    indices.Add(outlineStartIndex + (counter - 1) * 2 + 1);
+
+                    indices.Add(outlineStartIndex + counter * 2);
+                    indices.Add(outlineStartIndex + counter * 2 + 1);
+                    indices.Add(outlineStartIndex + (counter - 1) * 2 + 1);
+                }
+            }
+        }
+
+        // The following methods may be used during run-time
+        // to update the properties of the component
         public void SetProgress(float progress)
         {
             Progress = progress;
@@ -220,6 +258,24 @@ namespace UnityEngine.UI.Extensions
         public void SetThickness(int thickness)
         {
             Thickness = thickness;
+            SetVerticesDirty();
+        }
+
+        public void SetEnableOutline(bool enable)
+        {
+            EnableOutline = enable;
+            SetVerticesDirty();
+        }
+
+        public void SetOutlineThickness(float thickness)
+        {
+            OutlineThickness = thickness;
+            SetVerticesDirty();
+        }
+
+        public void SetOutlineColor(Color color)
+        {
+            OutlineColor = color;
             SetVerticesDirty();
         }
     }

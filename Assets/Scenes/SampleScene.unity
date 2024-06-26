@@ -375,8 +375,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 146148539}
-  animationDuration: 0.05
-  postAnimationDelay: 0.15
+  animationDuration: 0.1
+  postAnimationDelay: 0.2
 --- !u!114 &146148541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,10 +406,13 @@ MonoBehaviour:
   ArcSteps: 10
   ArcRotation: 0
   Progress: 0
-  ProgressColor: {r: 255, g: 255, b: 255, a: 255}
+  ProgressColor: {r: 1, g: 1, b: 1, a: 255}
   Fill: 0
-  Thickness: 1
+  Thickness: 3
   Padding: 0
+  EnableOutline: 1
+  OutlineThickness: 1
+  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!222 &146148542
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -888,6 +891,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
+  - {fileID: 464994989}
+  - {fileID: 547298496}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &321602121
@@ -986,6 +991,9 @@ MonoBehaviour:
   Fill: 1
   Thickness: 5
   Padding: 0
+  EnableOutline: 0
+  OutlineThickness: 0
+  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!222 &384520065
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1170,11 +1178,11 @@ Transform:
   m_GameObject: {fileID: 464994988}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 963194228}
+  m_Father: {fileID: 321602120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &464994990
 CapsuleCollider:
@@ -1276,11 +1284,11 @@ Transform:
   m_GameObject: {fileID: 547298495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.48, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01999998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 963194228}
+  m_Father: {fileID: 321602120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &547298497
 MonoBehaviour:
@@ -1497,11 +1505,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581376875}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1329158921}
   m_Father: {fileID: 963194228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &703024926
@@ -1853,10 +1862,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 464994989}
-  - {fileID: 547298496}
   - {fileID: 581376879}
-  - {fileID: 1329158921}
   m_Father: {fileID: 321602120}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
@@ -2501,6 +2507,9 @@ MonoBehaviour:
   Fill: 1
   Thickness: 5
   Padding: 0
+  EnableOutline: 0
+  OutlineThickness: 0
+  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!222 &1106253824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2540,7 +2549,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1004979941}
-  m_Father: {fileID: 963194228}
+  m_Father: {fileID: 581376879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1329158922
 MonoBehaviour:
@@ -3530,8 +3539,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 384520063}
-  - {fileID: 146148539}
   - {fileID: 1106253822}
+  - {fileID: 146148539}
   - {fileID: 1534809424}
   - {fileID: 987305484}
   - {fileID: 1501168276}
