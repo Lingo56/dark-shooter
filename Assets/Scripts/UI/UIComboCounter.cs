@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 
-// TODO: Maybe the cleanest way to do this would be to instantiate or setup an object pool of death markers
 public class UIComboCounter : MonoBehaviour
 {
     public TextMeshProUGUI comboCountText;

@@ -35,9 +35,9 @@ public class UIComboTrackerCrosshair : MonoBehaviour
     {
         if (currentCombo > 10)
         {
+            rectTransform.sizeDelta = new Vector2(currentCombo / 2, currentCombo / 2);
             uiCircle.Thickness = 3; // Example: set thickness to half the width
             uiCircle.OutlineThickness = 1; // Example: set thickness to half the width
-            rectTransform.sizeDelta = new Vector2(currentCombo, currentCombo);
         }
         else
         {

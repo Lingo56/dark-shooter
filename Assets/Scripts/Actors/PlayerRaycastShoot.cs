@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: Simplify and improve this script
+// TODO: Fix this from firing when the game is over
 public class PlayerRaycastShoot : MonoBehaviour
 {
     [Header("Dependancies")]
