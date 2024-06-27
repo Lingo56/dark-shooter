@@ -4,7 +4,7 @@ Shader "Custom/RadialTimerShader"
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
         _Cutoff ("Fill Amount", Range(0,1)) = 0.0
-        _EdgeFadeDistance ("Edge Fade Distance", Range(0, 0.575)) = 0.1
+        _EdgeFadeDistance ("Edge Fade Distance", Range(0, 1)) = 0.1
     }
     SubShader
     {

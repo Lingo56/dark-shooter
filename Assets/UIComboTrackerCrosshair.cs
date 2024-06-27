@@ -3,9 +3,16 @@ using UnityEngine.UI.Extensions;
 
 public class UIComboTrackerCrosshair : MonoBehaviour
 {
+    [Header("Dependancies")]
     [SerializeField] private RectTransform rectTransform; // Reference to the RectTransform of the UI element
+
     [SerializeField] private RectTransform crosshairRectTransform; // Reference to the RectTransform of the UI element
     [SerializeField] private UICircle uiCircle; // Reference to the UICircle component
+
+    [Header("Tracker Circle Config")]
+    [SerializeField] private float trackerThickness; // Reference to the UICircle component
+
+    [SerializeField] private float outlineThickness; // Reference to the UICircle component
 
     private void OnEnable()
     {
@@ -36,9 +43,9 @@ public class UIComboTrackerCrosshair : MonoBehaviour
     {
         if (currentCombo > 10)
         {
-            rectTransform.sizeDelta = crosshairRectTransform.sizeDelta + new Vector2(currentCombo / 2, currentCombo / 2);
-            uiCircle.Thickness = 3; // Example: set thickness to half the width
-            uiCircle.OutlineThickness = 1; // Example: set thickness to half the width
+            rectTransform.sizeDelta = crosshairRectTransform.sizeDelta + new Vector2(currentCombo / 3, currentCombo / 3);
+            uiCircle.Thickness = trackerThickness;
+            uiCircle.OutlineThickness = outlineThickness;
         }
         else
         {

@@ -105,7 +105,7 @@ Material:
     - _DitherStrength: 0.679
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EdgeFadeDistance: 0.575
+    - _EdgeFadeDistance: 0.39
     - _EdgeWidth: 0.267
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
