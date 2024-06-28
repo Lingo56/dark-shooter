@@ -10,6 +10,7 @@ public class EnemyMainController : MonoBehaviour
     [Header("Enemy Settings")]
     [SerializeField] private int maxHealth = 100;
 
+    private ObjectPool objectPool;  // Reference to the Object Pool
     private int health;
     private int totalDamage;
     private bool initializedDeath = false;
@@ -17,6 +18,11 @@ public class EnemyMainController : MonoBehaviour
     private void Start()
     {
         health = maxHealth;
+    }
+
+    public void SetObjectPool(ObjectPool pool)
+    {
+        objectPool = pool;
     }
 
     public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
@@ -35,8 +41,6 @@ public class EnemyMainController : MonoBehaviour
         return health > 0;
     }
 
-    // TODO: Use Physics.IgnoreCollision to ignore colliding with the player once enemy dies
-    // Could maybe be pointless depending on if the enemies just disappear a couple seconds after death
     public void HandleEnemyDamage()
     {
         health -= totalDamage;
