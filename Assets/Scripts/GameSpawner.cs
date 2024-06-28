@@ -1,13 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSpawner : MonoBehaviour
 {
-    [SerializeField] private ObjectPool objectPool;  // Reference to the Object Pool
+    [SerializeField] private GameObject SpawnEnemy;
     [SerializeField] private float spawnInterval = 2f;  // Time in seconds between each spawn
     private GameObject playerObject;
 
     private void Start()
     {
+        // Assign the class-level playerObject
         playerObject = GameObject.FindWithTag("Player");
         if (playerObject == null)
         {
@@ -17,43 +20,21 @@ public class GameSpawner : MonoBehaviour
         {
             InvokeRepeating(nameof(SpawnObject), 0f, spawnInterval);
         }
-
-        GameEvents.OnSpecificEnemyDeath += HandleSpecificEnemyDeath;
     }
 
-    private void OnDestroy()
-    {
-        GameEvents.OnSpecificEnemyDeath -= HandleSpecificEnemyDeath;
-    }
-
-    private void SpawnObject()
+    void SpawnObject()
     {
         if (playerObject != null)
         {
+            // Calculate rotation to look at the player
             Vector3 directionToPlayer = playerObject.transform.position - transform.position;
             Quaternion spawnRotation = Quaternion.LookRotation(directionToPlayer);
 
-            GameObject enemy = objectPool.GetObject();
-            enemy.transform.position = transform.position;
-            enemy.transform.rotation = spawnRotation;
-
-            EnemyMainController enemyController = enemy.GetComponent<EnemyMainController>();
-            if (enemyController != null)
-            {
-                enemyController.SetObjectPool(objectPool);  // Set the Object Pool reference
-            }
+            Instantiate(SpawnEnemy, transform.position, spawnRotation);
         }
         else
         {
             Debug.LogError("Player object is not assigned.");
-        }
-    }
-
-    private void HandleSpecificEnemyDeath(GameObject enemy)
-    {
-        if (objectPool != null)
-        {
-            objectPool.ReturnObject(enemy);
         }
     }
 }

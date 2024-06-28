@@ -2946,9 +2946,8 @@ GameObject:
   - component: {fileID: 1472833018}
   - component: {fileID: 1472833017}
   - component: {fileID: 1472833016}
-  - component: {fileID: 1472833020}
   - component: {fileID: 1472833019}
-  - component: {fileID: 1472833021}
+  - component: {fileID: 1472833020}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -3033,7 +3032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d598eabc19347454e8dd98fd5ccb7b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectPool: {fileID: 1472833021}
+  SpawnEnemy: {fileID: 7434449128857556379, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
   spawnInterval: 5
 --- !u!65 &1472833020
 BoxCollider:
@@ -3056,20 +3055,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1472833021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472833014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae2b5a1bb3b2db648be0d46d4881b761, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectPrefab: {fileID: 7434449128857556379, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
-  poolSize: 10
 --- !u!1 &1501168275
 GameObject:
   m_ObjectHideFlags: 0
