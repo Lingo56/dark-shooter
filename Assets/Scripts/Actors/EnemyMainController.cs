@@ -49,7 +49,7 @@ public class EnemyMainController : MonoBehaviour
             flashEffect.Flash(enemyMovement.DeathLaunchPeriod);
             StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
-            GameEvents.EnemyDeath();
+            GameEvents.SpecificEnemyDeath(gameObject);
         }
         else if (IsAlive())
         {
