@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSpawner : MonoBehaviour
@@ -22,7 +20,7 @@ public class GameSpawner : MonoBehaviour
         }
     }
 
-    void SpawnObject()
+    private void SpawnObject()
     {
         if (playerObject != null)
         {

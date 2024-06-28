@@ -14,9 +14,12 @@ public class EnemyMainController : MonoBehaviour
     private int totalDamage;
     private bool initializedDeath = false;
 
+    private Collider enemyCollider;
+
     private void Start()
     {
         health = maxHealth;
+        enemyCollider = GetComponent<Collider>();
     }
 
     public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
@@ -47,9 +50,17 @@ public class EnemyMainController : MonoBehaviour
         if (!IsAlive() && !initializedDeath)
         {
             flashEffect.Flash(enemyMovement.DeathLaunchPeriod);
+
+            if (enemyCollider != null)
+            {
+                enemyCollider.enabled = false;
+            }
+
             StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
             GameEvents.SpecificEnemyDeath(gameObject);
+
+            Destroy(gameObject, 3.0f);
         }
         else if (IsAlive())
         {
