@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyMainController : MonoBehaviour
@@ -15,6 +16,8 @@ public class EnemyMainController : MonoBehaviour
     private bool initializedDeath = false;
 
     private Collider enemyCollider;
+    private Renderer enemyRenderer;
+    private Material enemyMaterial;
 
     private void Start()
     {
@@ -66,5 +69,21 @@ public class EnemyMainController : MonoBehaviour
         {
             flashEffect.Flash(0.1f);
         }
+    }
+
+    private IEnumerator FadeOutAndDestroy(float duration)
+    {
+        float startTime = Time.time;
+        while (Time.time < startTime + duration)
+        {
+            float t = (Time.time - startTime) / duration;
+            if (enemyMaterial != null)
+            {
+                enemyMaterial.SetFloat("_Fade", t);
+            }
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 }
