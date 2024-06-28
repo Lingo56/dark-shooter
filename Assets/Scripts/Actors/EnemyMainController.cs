@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class EnemyMainController : MonoBehaviour
 {
-    [Header("Dependencies")]
+    [Header("Dependancies")]
     [SerializeField] private EnemyMainMovement enemyMovement;
 
     [SerializeField] private EnemyMainHitFlash flashEffect;
@@ -11,7 +10,7 @@ public class EnemyMainController : MonoBehaviour
     [Header("Enemy Settings")]
     [SerializeField] private int maxHealth = 100;
 
-    private ObjectPool<GameObject> objectPool;  // Reference to the Object Pool
+    private ObjectPool objectPool;  // Reference to the Object Pool
     private int health;
     private int totalDamage;
     private bool initializedDeath = false;
@@ -21,7 +20,7 @@ public class EnemyMainController : MonoBehaviour
         health = maxHealth;
     }
 
-    public void SetObjectPool(ObjectPool<GameObject> pool)
+    public void SetObjectPool(ObjectPool pool)
     {
         objectPool = pool;
     }
@@ -54,26 +53,11 @@ public class EnemyMainController : MonoBehaviour
             flashEffect.Flash(enemyMovement.DeathLaunchPeriod);
             StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
-
-            // Return the enemy object to the pool on death
-            ReturnToPool();
+            GameEvents.SpecificEnemyDeath(gameObject);
         }
         else if (IsAlive())
         {
             flashEffect.Flash(0.1f);
-        }
-    }
-
-    private void ReturnToPool()
-    {
-        if (objectPool != null)
-        {
-            objectPool.Release(gameObject);
-        }
-        else
-        {
-            Debug.LogWarning("Object pool reference is null. Unable to return to pool.");
-            Destroy(gameObject); // Fallback to destroy if pool reference is not set
         }
     }
 }
