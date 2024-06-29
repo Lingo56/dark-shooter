@@ -2,9 +2,9 @@ Shader "Unlit/EnemyShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _Mode ("Mode", Int) = 0 // 0 for Texture, 1 for Color
+        _BaseMap ("Albedo", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
-        _UseColor ("Use Color", Range(0, 1)) = 0
         _Fade ("Fade Amount", Range(0, 1)) = 0
     }
     SubShader
@@ -17,9 +17,9 @@ Shader "Unlit/EnemyShader"
             #pragma vertex vert
             #pragma fragment frag
 
-            sampler2D _MainTex;
+            sampler2D _BaseMap;
             float4 _Color;
-            float _UseColor;
+            int _Mode;
             float _Fade;
 
             float ditherMatrix[16] = {
@@ -51,8 +51,8 @@ Shader "Unlit/EnemyShader"
 
             float4 frag(v2f i) : SV_Target
             {
-                float4 c = tex2D(_MainTex, i.uv);
-                if (_UseColor > 0.5)
+                float4 c = tex2D(_BaseMap, i.uv);
+                if (_Mode == 1) // Use Color
                 {
                     c = _Color;
                 }
@@ -65,6 +65,8 @@ Shader "Unlit/EnemyShader"
 
                 if (_Fade < threshold)
                     c.a = 0;
+                else
+                    c.a *= _Fade; // Scale alpha with the fade amount
 
                 return c;
             }
@@ -72,4 +74,5 @@ Shader "Unlit/EnemyShader"
         }
     }
     FallBack "Diffuse"
+    CustomEditor "CustomShaderGUI"
 }
