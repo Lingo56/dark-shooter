@@ -7,22 +7,32 @@ public class EnemyMainController : MonoBehaviour
     [SerializeField] private EnemyMainMovement enemyMovement;
 
     [SerializeField] private EnemyMainHitFlash flashEffect;
-    [SerializeField] private Material enemyMaterial;
 
     [Header("Enemy Settings")]
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private float maxHealth = 100f;
 
-    private int health;
+    private float health;
     private int totalDamage;
     private bool initializedDeath = false;
 
     private Collider enemyCollider;
     private Renderer enemyRenderer;
+    private Material enemyMaterial;
 
     private void Start()
     {
         health = maxHealth;
         enemyCollider = GetComponent<Collider>();
+
+        enemyRenderer = GetComponent<Renderer>();
+        if (enemyRenderer != null)
+        {
+            enemyMaterial = enemyRenderer.material;
+        }
+        else
+        {
+            Debug.LogError("Renderer component not found on enemy GameObject!");
+        }
     }
 
     public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
@@ -47,6 +57,7 @@ public class EnemyMainController : MonoBehaviour
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
+        enemyMaterial.SetFloat("_Fade", health / 100f);
 
         if (!IsAlive() && !initializedDeath)
         {
@@ -57,11 +68,10 @@ public class EnemyMainController : MonoBehaviour
                 enemyCollider.enabled = false;
             }
 
+            StartCoroutine(FadeOutAndDestroy(1f));
             StartCoroutine(enemyMovement.EnableDeathMovement());
             initializedDeath = true;
             GameEvents.SpecificEnemyDeath(gameObject);
-
-            Destroy(gameObject, 3.0f);
         }
         else if (IsAlive())
         {
@@ -74,7 +84,7 @@ public class EnemyMainController : MonoBehaviour
         float startTime = Time.time;
         while (Time.time < startTime + duration)
         {
-            float t = (Time.time - startTime) / duration;
+            float t = 1 - ((Time.time - startTime) / duration);
             if (enemyMaterial != null)
             {
                 enemyMaterial.SetFloat("_Fade", t);
