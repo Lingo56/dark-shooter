@@ -7,6 +7,7 @@ public class EnemyMainController : MonoBehaviour
     [SerializeField] private EnemyMainMovement enemyMovement;
 
     [SerializeField] private EnemyMainHitFlash flashEffect;
+    [SerializeField] private Material enemyMaterial;
 
     [Header("Enemy Settings")]
     [SerializeField] private int maxHealth = 100;
@@ -17,7 +18,6 @@ public class EnemyMainController : MonoBehaviour
 
     private Collider enemyCollider;
     private Renderer enemyRenderer;
-    private Material enemyMaterial;
 
     private void Start()
     {
@@ -41,8 +41,6 @@ public class EnemyMainController : MonoBehaviour
         return health > 0;
     }
 
-    // TODO: Use Physics.IgnoreCollision to ignore colliding with the player once enemy dies
-    // Could maybe be pointless depending on if the enemies just disappear a couple seconds after death
     public void HandleEnemyDamage()
     {
         health -= totalDamage;

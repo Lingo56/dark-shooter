@@ -21,20 +21,10 @@ Shader "Unlit/EnemyShader"
 
             #include "UnityCG.cginc"
 
-            //TODO Fix dither not working
-            // Interesting shader effect is happening though
             sampler2D _BaseMap;
             float4 _Color;
             int _Mode;
             float _Fade;
-
-            // Screen-door transparency matrix
-            float4x4 thresholdMatrix = float4x4(
-                1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
-                13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
-                4.0 / 17.0,  12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
-                16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
-            );
 
             struct appdata
             {
@@ -58,21 +48,37 @@ Shader "Unlit/EnemyShader"
                 return o;
             }
 
+            float isDithered(float2 pos, float alpha) 
+            {
+                pos *= _ScreenParams.xy;
+
+                float DITHER_THRESHOLDS[16] =
+                {
+                    1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+                    13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+                    4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+                    16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+                };
+
+                int index = (int(pos.x) % 4) * 4 + int(pos.y) % 4;
+                return alpha - DITHER_THRESHOLDS[index];
+            }
+
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 c;
                 if (_Mode == 0) // Texture mode
                 {
-                    c = tex2D(_BaseMap, i.spos.xy); // Sample texture using normalized screen coordinates
+                    c = tex2D(_BaseMap, i.spos.xy / i.spos.w); // Sample texture using screen coordinates
                 }
                 else // Color mode
                 {
                     c = _Color;
                 }
 
-                // Apply screen-door transparency effect
-                float threshold = thresholdMatrix[(int)(i.spos.x) % 4][(int)(i.spos.y) % 4];
-                clip(_Fade - threshold);
+                c.a = _Fade;
+
+                clip(isDithered(i.spos.xy / i.spos.w, c.a));
 
                 return c;
             }
