@@ -72,7 +72,7 @@ Shader "Unlit/EnemyShader"
 
                 // Apply screen-door transparency effect
                 float threshold = thresholdMatrix[(int)(i.spos.x) % 4][(int)(i.spos.y) % 4];
-                clip(c.a - threshold);
+                clip(_Fade - threshold);
 
                 return c;
             }
