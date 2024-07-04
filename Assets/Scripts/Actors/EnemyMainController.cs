@@ -57,7 +57,6 @@ public class EnemyMainController : MonoBehaviour
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
-        enemyMaterial.SetFloat("_Fade", health / 100f);
 
         if (!IsAlive() && !initializedDeath)
         {

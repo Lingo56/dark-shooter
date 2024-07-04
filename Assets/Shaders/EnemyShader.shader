@@ -64,13 +64,6 @@ Shader "Unlit/EnemyShader"
                 return alpha - DITHER_THRESHOLDS[index];
             }
 
-            float handleDithering(fixed4 c)
-            {
-                c.a = _Fade;
-
-                return clip(isDithered(i.spos.xy / i.spos.w, c.a));
-            }
-
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 c;
@@ -83,7 +76,10 @@ Shader "Unlit/EnemyShader"
                     c = _Color;
                 }
 
-                c = handleDithering(c);
+                c.a = _Fade;
+
+                float ditherValue = isDithered(i.spos.xy / i.spos.w, c.a);
+                clip(ditherValue);
 
                 return c;
             }

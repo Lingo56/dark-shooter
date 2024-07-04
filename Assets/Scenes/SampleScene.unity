@@ -3032,7 +3032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d598eabc19347454e8dd98fd5ccb7b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnEnemy: {fileID: 7434449128857556379, guid: 64495fed8ce26e043904f2aa5237a03f, type: 3}
+  SpawnEnemy: {fileID: 3668413655437652625, guid: b15afe4c7ee7d4f439686315cfd4b9c5, type: 3}
   spawnInterval: 5
 --- !u!65 &1472833020
 BoxCollider:
