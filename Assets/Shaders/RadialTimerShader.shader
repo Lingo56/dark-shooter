@@ -8,8 +8,7 @@ Shader "Custom/RadialTimerShader"
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
-        Blend SrcAlpha OneMinusSrcAlpha
+        Tags { "Queue"="Geometry" "RenderType"="Opaque" }
         LOD 200
 
         Pass
