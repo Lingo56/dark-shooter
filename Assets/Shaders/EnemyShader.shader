@@ -67,6 +67,7 @@ Shader "Unlit/EnemyShader"
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 c;
+
                 if (_Mode == 0) // Texture mode
                 {
                     c = tex2D(_BaseMap, i.spos.xy / i.spos.w); // Sample texture using screen coordinates

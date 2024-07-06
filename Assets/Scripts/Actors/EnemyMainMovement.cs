@@ -194,7 +194,7 @@ public class EnemyMainMovement : MonoBehaviour
     private void ApplyDeathHit()
     {
         // Apply the hit velocity as a force to the Rigidbody
-        rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
+        //rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
         hitVelocity = Vector3.zero;
     }
 }
