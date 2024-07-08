@@ -60,7 +60,7 @@ public class EnemyMainController : MonoBehaviour
 
         if (!IsAlive() && !initializedDeath)
         {
-            flashEffect.Flash(enemyMovement.DeathLaunchPeriod);
+            flashEffect.Flash(enemyMovement.DeathPausePeriod);
 
             if (enemyCollider != null)
             {

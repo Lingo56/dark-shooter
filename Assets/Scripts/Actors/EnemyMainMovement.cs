@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Fix enemies not kicking back enough when dead
 public class EnemyMainMovement : MonoBehaviour
 {
     #region Inspector Properties
@@ -18,14 +17,12 @@ public class EnemyMainMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 2f;
 
     [Header("Death Settings")]
-    [SerializeField] private float deathForceMultiplier = 1f;
+    [SerializeField] private float deathPausePeriod = 1f;
 
-    [SerializeField] private float deathLaunchPeriod = 1f;
-
-    public float DeathLaunchPeriod
+    public float DeathPausePeriod
     {
-        get => deathLaunchPeriod;
-        set => deathLaunchPeriod = value; // Ensure non-negative value
+        get => deathPausePeriod;
+        set => deathPausePeriod = value; // Ensure non-negative value
     }
 
     #endregion Inspector Properties
@@ -119,7 +116,7 @@ public class EnemyMainMovement : MonoBehaviour
 
     private void OnValidate()
     {
-        deathLaunchPeriod = Mathf.Max(0f, deathLaunchPeriod);
+        deathPausePeriod = Mathf.Max(0f, deathPausePeriod);
     }
 
     private void ShowVelocityDebugLine()
@@ -182,7 +179,7 @@ public class EnemyMainMovement : MonoBehaviour
         rb.velocity = Vector3.zero;
 
         // Freeze the enemy for a period
-        yield return new WaitForSeconds(DeathLaunchPeriod);
+        yield return new WaitForSeconds(DeathPausePeriod);
 
         isWaiting = false;
 
@@ -194,7 +191,6 @@ public class EnemyMainMovement : MonoBehaviour
     private void ApplyDeathHit()
     {
         // Apply the hit velocity as a force to the Rigidbody
-        //rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
         hitVelocity = Vector3.zero;
     }
 }
