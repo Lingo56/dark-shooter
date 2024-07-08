@@ -114,6 +114,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _JitterAmount: 0.103
     - _Metallic: 0
     - _Mode: 1
     - _OcclusionStrength: 1

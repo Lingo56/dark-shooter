@@ -152,7 +152,6 @@ MonoBehaviour:
   enemyMovement: {fileID: 8409222791474562295}
   flashEffect: {fileID: 4454460939223007574}
   maxHealth: 100
-  enemyMaterial: {fileID: 2100000, guid: 7256b79cc334db54495a38b41f35c289, type: 2}
 --- !u!114 &8409222791474562295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,8 +169,7 @@ MonoBehaviour:
   acceleration: 6
   hitDeaccelerationFactor: 0.3
   rotationSpeed: 2
-  deathForceMultiplier: 20
-  deathLaunchPeriod: 0.4
+  deathPausePeriod: 1
 --- !u!114 &4454460939223007574
 MonoBehaviour:
   m_ObjectHideFlags: 0
