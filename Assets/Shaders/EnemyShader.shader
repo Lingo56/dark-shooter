@@ -6,7 +6,7 @@ Shader "Unlit/EnemyShaderURP"
         _BaseMap ("Albedo", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
         _Fade ("Fade Amount", Range(0, 1)) = 0
-        _JitterAmount ("Jitter Amount", Range(0, 1)) = 0.1
+        _GeoRes("Geometric Resolution", Float) = 40
     }
     SubShader
     {
@@ -51,6 +51,7 @@ Shader "Unlit/EnemyShaderURP"
                 int _Mode;
                 float _Fade;
                 float _JitterAmount;
+                float _GeoRes;
             CBUFFER_END
 
             Varyings vert(Attributes v)
@@ -60,6 +61,16 @@ Shader "Unlit/EnemyShaderURP"
                 o.positionHCS = TransformObjectToHClip(v.positionOS.xyz);
                 o.screenPos = ComputeScreenPos(o.positionHCS);
                 o.color = v.color;
+
+                // Transform vertex to world space
+                float4 wp = mul(UNITY_MATRIX_MV, v.positionOS);
+    
+                // Apply geometric resolution
+                wp.xyz = floor(wp.xyz * _GeoRes) / _GeoRes;
+
+                // Transform vertex to clip space
+                float4 sp = mul(UNITY_MATRIX_P, wp);
+                o.positionHCS = sp;
 
                 o.uv = TRANSFORM_TEX(v.uv, _BaseMap);
 
@@ -100,7 +111,7 @@ Shader "Unlit/EnemyShaderURP"
                 float ditherValue = isDithered(i.screenPos.xy / i.screenPos.w, c.a);
                 clip(ditherValue);
 
-                return _Color;
+                return c;
             }
             ENDHLSL
         }

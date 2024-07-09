@@ -7,7 +7,7 @@ public class CustomShaderGUI : ShaderGUI
     private MaterialProperty _baseMap;
     private MaterialProperty _color;
     private MaterialProperty _fade;
-    private MaterialProperty _jitterAmount;
+    private MaterialProperty _geoRes;
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
@@ -16,7 +16,7 @@ public class CustomShaderGUI : ShaderGUI
         _baseMap = FindProperty("_BaseMap", properties);
         _color = FindProperty("_Color", properties);
         _fade = FindProperty("_Fade", properties);
-        _jitterAmount = FindProperty("_JitterAmount", properties);
+        _geoRes = FindProperty("_GeoRes", properties);
 
         EditorGUI.BeginChangeCheck();
 
@@ -35,7 +35,7 @@ public class CustomShaderGUI : ShaderGUI
         }
 
         materialEditor.ShaderProperty(_fade, "Fade Amount");
-        materialEditor.ShaderProperty(_jitterAmount, "Jitter Amount");
+        materialEditor.ShaderProperty(_geoRes, "Geometry Resolution");
 
         if (EditorGUI.EndChangeCheck())
         {
