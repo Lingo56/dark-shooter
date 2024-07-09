@@ -1,4 +1,4 @@
-Shader "Unlit/EnemyShader"
+Shader "Unlit/EnemyShaderURP"
 {
     Properties
     {
@@ -13,55 +13,55 @@ Shader "Unlit/EnemyShader"
         Tags
         {
             "RenderType"="Opaque"
+            "Queue"="Geometry"
         }
+
         Pass
         {
-            CGPROGRAM
+            Name "ForwardLit"
+            Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-            #include "UnityCG.cginc"
-
-            sampler2D _BaseMap;
-            float4 _Color;
-            int _Mode;
-            float _Fade;
-            float _JitterAmount;
-
-            struct appdata
+            struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float4 color : COLOR;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float4 pos : SV_POSITION;
-                float4 col : COLOR;
+                float4 positionHCS : SV_POSITION;
+                float4 color : COLOR;
                 float4 screenPos : TEXCOORD0;
                 float2 uv : TEXCOORD1;
             };
 
-            v2f vert(appdata v)
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseMap_ST;
+                float4 _Color;
+                int _Mode;
+                float _Fade;
+                float _JitterAmount;
+            CBUFFER_END
+
+            Varyings vert(Attributes v)
             {
-                v2f o;
+                Varyings o;
 
-                float time = _Time.y;
+                o.positionHCS = TransformObjectToHClip(v.positionOS.xyz);
+                o.screenPos = ComputeScreenPos(o.positionHCS);
+                o.color = v.color;
 
-                // Apply jitter to vertex position
-                float3 jitter = float3(
-                    (frac(sin(dot(v.vertex.xy + time, float2(12.9898, 78.233))) * 43758.5453) - 0.5) * 2.0,
-                    (frac(sin(dot(v.vertex.yz + time, float2(12.9898, 78.233))) * 43758.5453) - 0.5) * 2.0,
-                    (frac(sin(dot(v.vertex.zx + time, float2(12.9898, 78.233))) * 43758.5453) - 0.5) * 2.0
-                ) * _JitterAmount;
-
-                v.vertex.xyz += jitter;
-
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.col = v.color;
-                o.screenPos = ComputeScreenPos(o.pos); // Calculate screen position
-                o.uv = v.uv;
+                o.uv = TRANSFORM_TEX(v.uv, _BaseMap);
 
                 return o;
             }
@@ -82,13 +82,13 @@ Shader "Unlit/EnemyShader"
                 return alpha - DITHER_THRESHOLDS[index];
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            half4 frag(Varyings i) : SV_Target
             {
-                fixed4 c;
+                half4 c;
 
                 if (_Mode == 0) // Texture mode
                 {
-                    c = tex2D(_BaseMap, i.screenPos.xy / i.screenPos.w); // Sample texture using screen coordinates
+                    c = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, i.uv);
                 }
                 else // Color mode
                 {
@@ -100,11 +100,11 @@ Shader "Unlit/EnemyShader"
                 float ditherValue = isDithered(i.screenPos.xy / i.screenPos.w, c.a);
                 clip(ditherValue);
 
-                return c;
+                return _Color;
             }
-            ENDCG
+            ENDHLSL
         }
     }
-    FallBack "Diffuse"
+    FallBack "Unlit"
     CustomEditor "CustomShaderGUI"
 }
