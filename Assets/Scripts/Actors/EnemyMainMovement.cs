@@ -17,7 +17,9 @@ public class EnemyMainMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 2f;
 
     [Header("Death Settings")]
-    [SerializeField] private float deathPausePeriod = 1f;
+    [SerializeField] private float deathForceMultiplier = 1f;
+
+    [SerializeField] private float deathPausePeriod = 0.3f;
 
     public float DeathPausePeriod
     {
@@ -191,6 +193,7 @@ public class EnemyMainMovement : MonoBehaviour
     private void ApplyDeathHit()
     {
         // Apply the hit velocity as a force to the Rigidbody
+        rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
         hitVelocity = Vector3.zero;
     }
 }

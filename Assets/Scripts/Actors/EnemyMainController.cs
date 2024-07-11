@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-//TODO For some reason the enemies don't fade and fall when dead
 public class EnemyMainController : MonoBehaviour
 {
     [Header("Dependancies")]
@@ -67,8 +66,6 @@ public class EnemyMainController : MonoBehaviour
             {
                 enemyCollider.enabled = false;
             }
-
-            Debug.Log("Working?");
 
             StartCoroutine(FadeOutAndDestroy(1f));
             StartCoroutine(enemyMovement.EnableDeathMovement());
