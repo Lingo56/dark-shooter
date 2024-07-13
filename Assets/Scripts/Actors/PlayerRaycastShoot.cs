@@ -23,7 +23,7 @@ public class PlayerRaycastShoot : MonoBehaviour
     [SerializeField] private Transform gunBarrelExit;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject muzzleLight;
-    [SerializeField] private ParticleSystem bulletImpact;
+    [SerializeField] private ParticleSystem defaultBulletImpact;
 
     [Header("Kickback Animation Settings")]
     [SerializeField] private float kickbackAmount = 0.1f;
@@ -141,7 +141,7 @@ public class PlayerRaycastShoot : MonoBehaviour
             yield return null;
         }
 
-        Instantiate(bulletImpact, hitPoint, Quaternion.LookRotation(hitNormal));
+        Instantiate(defaultBulletImpact, hitPoint, Quaternion.LookRotation(hitNormal));
 
         // Deactivate or destroy the GameObject containing the LineRenderer
         Destroy(lineRenderer.gameObject);
