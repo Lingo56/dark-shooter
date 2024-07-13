@@ -108,6 +108,9 @@ public class PlayerRaycastShoot : MonoBehaviour
             }
 
             CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
+
+            ParticleSystem impactEffect = Instantiate(defaultBulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            impactEffect.transform.SetParent(hit.collider.transform);
         }
     }
 
@@ -140,8 +143,6 @@ public class PlayerRaycastShoot : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
-        Instantiate(defaultBulletImpact, hitPoint, Quaternion.LookRotation(hitNormal));
 
         // Deactivate or destroy the GameObject containing the LineRenderer
         Destroy(lineRenderer.gameObject);
