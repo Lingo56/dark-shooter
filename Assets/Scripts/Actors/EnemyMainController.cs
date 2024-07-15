@@ -7,7 +7,6 @@ public class EnemyMainController : MonoBehaviour
     [SerializeField] private EnemyMainMovement enemyMovement;
 
     [SerializeField] private EnemyMainHitFlash flashEffect;
-    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip hitAudio;
     [SerializeField] private AudioClip deathAudio;
 
@@ -18,6 +17,7 @@ public class EnemyMainController : MonoBehaviour
     private int totalDamage;
     private bool initializedDeath = false;
 
+    private AudioSource audioSource;
     private Collider enemyCollider;
     private Renderer enemyRenderer;
     private Material enemyMaterial;
@@ -66,11 +66,10 @@ public class EnemyMainController : MonoBehaviour
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
-        audioSource.clip = hitAudio;
-        audioSource.Play();
 
         if (!IsAlive() && !initializedDeath)
         {
+            PlayDeathSound();
             flashEffect.Flash(enemyMovement.DeathPausePeriod);
 
             if (enemyCollider != null)
@@ -103,5 +102,17 @@ public class EnemyMainController : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void PlayHitSound()
+    {
+        audioSource.clip = hitAudio;
+        audioSource.Play();
+    }
+
+    private void PlayDeathSound()
+    {
+        audioSource.clip = deathAudio;
+        audioSource.Play();
     }
 }
