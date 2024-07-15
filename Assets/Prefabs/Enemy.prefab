@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMovement: {fileID: 8409222791474562295}
   flashEffect: {fileID: 4454460939223007574}
-  hitAudio: {fileID: 8300000, guid: 9bd915505fa1c534880180137c10a2bc, type: 3}
+  hitAudio: {fileID: 8300000, guid: 9958d1c6f099f4a4d99c4b922b859fd2, type: 3}
   deathAudio: {fileID: 8300000, guid: 7b1fc3d1eda28e342abee5b284dc23c9, type: 3}
   maxHealth: 100
 --- !u!114 &8409222791474562295
@@ -198,7 +198,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9bd915505fa1c534880180137c10a2bc, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

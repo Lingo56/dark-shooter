@@ -66,6 +66,7 @@ public class EnemyMainController : MonoBehaviour
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
+        PlayHitSound();
 
         if (!IsAlive() && !initializedDeath)
         {
