@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Move hit sound audio out of here
 public class EnemyMainMovement : MonoBehaviour
 {
     #region Inspector Properties
