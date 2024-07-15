@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9741638
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,7 +2381,7 @@ MonoBehaviour:
   gunBarrelExit: {fileID: 969144947}
   muzzleFlash: {fileID: 2047824594}
   muzzleLight: {fileID: 244111845}
-  bulletImpact: {fileID: 6378302080324898536, guid: 8daab3ebe4d3a66458e09e067e21b0e5, type: 3}
+  defaultBulletImpact: {fileID: 19886758, guid: 8c27aeead6d968e4ba986702d6b84335, type: 3}
   kickbackAmount: 0.1
   kickbackSpeed: 10
   resetDelay: 0.1

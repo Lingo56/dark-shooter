@@ -7,6 +7,9 @@ public class EnemyMainController : MonoBehaviour
     [SerializeField] private EnemyMainMovement enemyMovement;
 
     [SerializeField] private EnemyMainHitFlash flashEffect;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip hitAudio;
+    [SerializeField] private AudioClip deathAudio;
 
     [Header("Enemy Settings")]
     [SerializeField] private float maxHealth = 100f;
@@ -33,6 +36,12 @@ public class EnemyMainController : MonoBehaviour
         {
             Debug.LogError("Renderer component not found on enemy GameObject!");
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
@@ -57,6 +66,8 @@ public class EnemyMainController : MonoBehaviour
         totalDamage = 0;
 
         enemyMovement.ApplyAccumulatedForce();
+        audioSource.clip = hitAudio;
+        audioSource.Play();
 
         if (!IsAlive() && !initializedDeath)
         {

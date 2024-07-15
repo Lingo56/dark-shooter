@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Move hit sound audio out of here
 public class EnemyMainMovement : MonoBehaviour
 {
     #region Inspector Properties
@@ -36,7 +37,6 @@ public class EnemyMainMovement : MonoBehaviour
     private Vector3 hitVelocity = Vector3.zero;
 
     private List<Vector3> hitNormals = new List<Vector3>();
-    private AudioSource hitAudio;
     private Rigidbody rb;
     private float hitForce;
     private bool alive = true;
@@ -57,7 +57,6 @@ public class EnemyMainMovement : MonoBehaviour
             Debug.LogError("Player object not found! Make sure the player is tagged as 'Player'.");
         }
 
-        hitAudio = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -166,8 +165,6 @@ public class EnemyMainMovement : MonoBehaviour
             hitNormals.Clear();
             hitForce = 0;
             followVelocity = Vector3.zero;
-
-            hitAudio.Play();
         }
     }
 
