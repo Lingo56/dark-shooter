@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9741638
 Transform:
   m_ObjectHideFlags: 0
@@ -150,8 +150,8 @@ Transform:
   m_GameObject: {fileID: 9741637}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
-  m_LocalScale: {x: 6, y: 0.000001, z: 6}
+  m_LocalPosition: {x: 0, y: 0.015, z: 0}
+  m_LocalScale: {x: 10, y: 0.001, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 831124992}
@@ -224,7 +224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &146148539
 RectTransform:
   m_ObjectHideFlags: 0
@@ -257,9 +257,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 146148539}
+  crosshairCircleRectTransform: {fileID: 1106253822}
+  comboTrackerRectTransform: {fileID: 334572878}
   uiCircle: {fileID: 146148541}
-  animationDuration: 0.1
+  animationDuration: 0.05
   postAnimationDelay: 0.2
+  fadeOutDuration: 0.15
 --- !u!114 &146148541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +289,7 @@ MonoBehaviour:
   m_useNativeSize: 1
   ArcInvert: 0
   Arc: 1
-  ArcSteps: 10
+  ArcSteps: 6
   ArcRotation: 0
   Progress: 0
   ProgressColor: {r: 1, g: 1, b: 1, a: 255}
@@ -1664,8 +1667,8 @@ Transform:
   m_GameObject: {fileID: 703024926}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.015, z: 0}
-  m_LocalScale: {x: 10, y: 0.000100000005, z: 10}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalScale: {x: 10, y: 0, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 831124992}
@@ -1766,8 +1769,8 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 703024930}
   - {fileID: 9741638}
+  - {fileID: 703024930}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &831124993
