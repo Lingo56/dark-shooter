@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 146148541}
   - component: {fileID: 146148540}
   m_Layer: 5
-  m_Name: Deathmarker
+  m_Name: HitMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 146148538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 823e578ef676e4d49a656f364815e045, type: 3}
+  m_Script: {fileID: 11500000, guid: 3197e39e2c745724fb42a91499975082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 146148539}
@@ -263,6 +263,7 @@ MonoBehaviour:
   animationDuration: 0.05
   postAnimationDelay: 0.2
   fadeOutDuration: 0.15
+  markerDistance: 15
 --- !u!114 &146148541
 MonoBehaviour:
   m_ObjectHideFlags: 0

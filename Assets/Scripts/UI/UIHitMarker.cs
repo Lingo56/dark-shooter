@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
-// TODO: Remake this so that it updates on hit
-// Also make it so that the circle expands to the current size of the combo meter
-public class UIDeathMarker : MonoBehaviour
+// TODO: Fix marker sticking when firing first shot
+public class UIHitMarker : MonoBehaviour
 {
     [Header("Dependancies")]
     [SerializeField] private RectTransform rectTransform; // Reference to the RectTransform of the UI element
@@ -25,7 +24,7 @@ public class UIDeathMarker : MonoBehaviour
     private bool isFadingOut = false; // Flag to check if fading out
 
     private Vector2 initialSize = Vector2.zero; // Initial size (usually starts from 0,0)
-    private Vector2 targetSize = new Vector2(30f, 30f); // Target size to reach (30x30)
+    private Vector2 targetSize = new(30f, 30f); // Target size to reach (30x30)
 
     private void OnEnable()
     {
@@ -126,8 +125,17 @@ public class UIDeathMarker : MonoBehaviour
 
     private void EnableMarker()
     {
-        initialSize = comboTrackerRectTransform.sizeDelta; // Update initial size
-        targetSize = comboTrackerRectTransform.sizeDelta + new Vector2(markerDistance, markerDistance); // Update target size
+        if (comboTrackerRectTransform.sizeDelta.magnitude > 10)
+        {
+            initialSize = comboTrackerRectTransform.sizeDelta; // Update initial size
+            targetSize = comboTrackerRectTransform.sizeDelta + new Vector2(markerDistance, markerDistance); // Update target size
+        }
+        else
+        {
+            initialSize = crosshairCircleRectTransform.sizeDelta; // Update initial size
+            targetSize = crosshairCircleRectTransform.sizeDelta + new Vector2(markerDistance, markerDistance); // Update target size
+        }
+
         isAnimating = true;
         timer = 0f;
         hasCompletedAnimation = false;
