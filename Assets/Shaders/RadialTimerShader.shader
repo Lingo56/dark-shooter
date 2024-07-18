@@ -3,6 +3,7 @@ Shader "Custom/RadialTimerShader"
     Properties
     {
         _MainTex ("Base (RGB)", 2D) = "white" {}
+        _TintColor ("Tint Color", Color) = (1,1,1,1)
         _Cutoff ("Fill Amount", Range(0,1)) = 0.0
         _EdgeFadeDistance ("Edge Fade Distance", Range(0, 1)) = 0.1
     }
@@ -20,6 +21,7 @@ Shader "Custom/RadialTimerShader"
             sampler2D _MainTex;
             float _Cutoff;
             float _EdgeFadeDistance;
+            float4 _TintColor;
 
             static const float dither[16] = {
                 0.1, 0.3, 0.2, 0.4,
@@ -61,6 +63,9 @@ Shader "Custom/RadialTimerShader"
 
                 half4 texColor = tex2D(_MainTex, i.uv);
                 half4 texColorAlphaRef = tex2D(_MainTex, i.uv);
+
+                texColor *= _TintColor;
+
                 // Adjust alpha based on angle cutoff and edge fade
                 float angle = atan2(i.uv.y - 0.5, i.uv.x - 0.5) / (2 * 3.14159265358979323846);
                 if (angle < 0) angle += 1;
