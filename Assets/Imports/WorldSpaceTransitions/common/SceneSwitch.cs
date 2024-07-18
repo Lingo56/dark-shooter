@@ -2,8 +2,8 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-public class SceneSwitch : MonoBehaviour {
+public class SceneSwitch : MonoBehaviour
+{
     private static SceneSwitch switchInstance;
     public Dropdown sceneDropdown;
 
@@ -12,7 +12,9 @@ public class SceneSwitch : MonoBehaviour {
         if (val == SceneManager.GetActiveScene().buildIndex) return; //toggle buttons change twice
         SceneManager.LoadSceneAsync(val);
     }
-	void Awake () {
+
+    private void Awake()
+    {
         DontDestroyOnLoad(this);
         if (switchInstance == null)
         {
@@ -20,10 +22,11 @@ public class SceneSwitch : MonoBehaviour {
         }
         else
         {
-            DestroyObject(gameObject);
+            Destroy(gameObject);
         }
-	}
-    void Update()
+    }
+
+    private void Update()
     {
         if (Input.GetKey("escape"))
         {
