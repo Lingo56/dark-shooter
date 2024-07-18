@@ -69,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: d262a8a6c3000f443b10548fff3356e6, type: 3}
+        m_Texture: {fileID: 2800000, guid: c4b84befc08dbd8499f563d797ffb5bf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -113,8 +113,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FadeEnd: -17.36
-    - _FadeStart: 5.22
+    - _FadeEnd: -8.31
+    - _FadeStart: 2.55
     - _FlowSpeed: 1
     - _GlossMapScale: 0.339
     - _Glossiness: 0
@@ -129,13 +129,13 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 0.01
+    - _Speed: 0.15
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _TilingFactor: 0.01
+    - _TilingFactor: 1
     - _UVSec: 0
-    - _WaveHeight: -0
+    - _WaveHeight: 0.03
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
@@ -152,5 +152,5 @@ Material:
     - _StartPosition1: {r: 0, g: 0, b: 0, a: 1}
     - _StartPosition2: {r: 0, g: 0, b: 0, a: 1}
     - _StartPosition3: {r: 0, g: 0, b: 0, a: 1}
-    - _UVScale: {r: 9, g: 1, b: 0, a: 0}
+    - _UVScale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
