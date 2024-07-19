@@ -13,8 +13,8 @@ Shader "Custom/FadeWaveEffect"
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
-        LOD 100
+        Tags { "Queue"="Geometry" "RenderType"="Opaque" }
+        LOD 200
 
         Pass
         {
@@ -46,6 +46,13 @@ Shader "Custom/FadeWaveEffect"
             float _TilingFactor;
             float2 _UVScale;
 
+            static const float dither[16] = {
+                0.1, 0.3, 0.2, 0.4,
+                0.6, 0.9, 0.7, 0.5,
+                0.8, 0.1, 0.3, 0.2,
+                0.4, 0.6, 0.8, 1.0
+            };
+
             // From: https://github.com/keijiro/NoiseShader/blob/master/Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl
             float wglnoise_mod289(float x)
             {
@@ -76,7 +83,6 @@ Shader "Custom/FadeWaveEffect"
             {
                 return wglnoise_mod289((x * 34 + 1) * x);
             }
-
 
             float3 SimplexNoiseGrad(float2 v)
             {
@@ -151,8 +157,18 @@ Shader "Custom/FadeWaveEffect"
                 float fadeValue = lerp(_FadeStart, _FadeEnd, waveOffset);
                 float fade = saturate((i.worldY - fadeValue) / (_FadeEnd - _FadeStart));
 
+                float4 texColor = (_Color.rgb, _Color.a * fade);
+
+                int x = int(i.pos.x) % 4;
+                int y = int(i.pos.y) % 4;
+                int index = x + y * 4;
+                float threshold = dither[index];
+
+                if (texColor.a < threshold)
+                    discard;
+
                 // Output final color
-                return float4(_Color.rgb, _Color.a * fade);
+                return texColor;
             }
             ENDCG
         }
