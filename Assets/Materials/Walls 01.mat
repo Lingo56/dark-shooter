@@ -110,11 +110,12 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DitherScale: 1.8
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FadeEnd: -8.31
-    - _FadeStart: 2.55
+    - _FadeStart: 3.77
     - _FlowSpeed: 1
     - _GlossMapScale: 0.339
     - _Glossiness: 0
@@ -140,7 +141,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.5396226, g: 0.3777358, b: 0.3777358, a: 1}
+    - _Color: {r: 0.4037736, g: 0.313115, b: 0.313115, a: 1}
     - _ColorA: {r: 0.14899996, g: 0.14099997, b: 0.912, a: 1}
     - _ColorB: {r: 1, g: 0.833, b: 0.22399998, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
