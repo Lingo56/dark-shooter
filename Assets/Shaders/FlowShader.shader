@@ -14,7 +14,7 @@ Shader "Custom/FadeWaveEffect"
     }
     SubShader
     {
-        Tags { "Queue"="Geometry" "RenderType"="Opaque" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         LOD 200
 
         Pass
@@ -163,7 +163,7 @@ Shader "Custom/FadeWaveEffect"
                 float fadeValue = lerp(_FadeStart, _FadeEnd, waveOffset);
                 float fade = saturate((i.worldY - fadeValue) / (_FadeEnd - _FadeStart));
 
-                float4 texColor = (_Color.rgb, _Color.a * fade);
+                float4 texColor = float4(_Color.rgb, _Color.a * fade);
 
                 // Apply Dither
                 float2 ditherCoord = floor(i.pos.xy / _DitherScale) % 8;
