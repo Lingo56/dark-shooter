@@ -6,6 +6,7 @@ Shader "Custom/RadialTimerShader"
         _TintColor ("Tint Color", Color) = (1,1,1,1)
         _Cutoff ("Fill Amount", Range(0,1)) = 0.0
         _EdgeFadeDistance ("Edge Fade Distance", Range(0, 1)) = 0.1
+        _DitherScale ("DitherScale", Float) = 1.0
     }
     SubShader
     {
@@ -22,6 +23,7 @@ Shader "Custom/RadialTimerShader"
             float _Cutoff;
             float _EdgeFadeDistance;
             float4 _TintColor;
+            float _DitherScale;
 
             static const float dither[16] = {
                 0.1, 0.3, 0.2, 0.4,
@@ -39,14 +41,14 @@ Shader "Custom/RadialTimerShader"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
+                float4 pos : SV_POSITION;
                 float distToCenter : TEXCOORD1; // Store distance to center
             };
 
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
 
                 // Calculate distance from UV center (0.5, 0.5)
@@ -100,8 +102,9 @@ Shader "Custom/RadialTimerShader"
                 // Apply edge fading to alpha
                 texColorAlphaRef.a *= edgeFade;
 
-                int x = int(i.vertex.x) % 4;
-                int y = int(i.vertex.y) % 4;
+                float2 ditherCoord = floor(i.pos.xy / _DitherScale) % 4;
+                int x = int(ditherCoord.x) % 4;
+                int y = int(ditherCoord.y) % 4;
                 int index = x + y * 4;
                 float threshold = dither[index];
 
