@@ -95,30 +95,30 @@ public class UIHitMarker : MonoBehaviour
                     timer = 0f;
                 }
             }
+        }
 
-            // Handle fading out
-            if (isFadingOut)
+        // Handle fading out
+        if (isFadingOut)
+        {
+            timer += Time.deltaTime;
+
+            // Calculate lerp factor based on fade out progress
+            float fadeFactor = Mathf.Clamp01(timer / fadeOutDuration);
+
+            // Get current color and set the alpha value based on fadeFactor
+            Color color = uiCircle.color;
+            color.a = Mathf.Lerp(1f, 0f, fadeFactor);
+            uiCircle.color = color;
+
+            // Check if fade out is complete
+            if (fadeFactor >= 1f)
             {
-                timer += Time.deltaTime;
-
-                // Calculate lerp factor based on fade out progress
-                float fadeFactor = Mathf.Clamp01(timer / fadeOutDuration);
-
-                // Get current color and set the alpha value based on fadeFactor
-                Color color = uiCircle.color;
-                color.a = Mathf.Lerp(1f, 0f, fadeFactor);
-                uiCircle.color = color;
-
-                // Check if fade out is complete
-                if (fadeFactor >= 1f)
-                {
-                    // Reset to initial state
-                    rectTransform.sizeDelta = initialSize;
-                    uiCircle.Thickness = 0;
-                    uiCircle.OutlineThickness = 0;
-                    isFadingOut = false;
-                    timer = 0f;
-                }
+                // Reset to initial state
+                rectTransform.sizeDelta = initialSize;
+                uiCircle.Thickness = 0;
+                uiCircle.OutlineThickness = 0;
+                isFadingOut = false;
+                timer = 0f;
             }
         }
     }
