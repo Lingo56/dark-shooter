@@ -61,7 +61,7 @@ Shader "Custom/RadialTimerShader"
             half4 frag (v2f i) : SV_Target
             {
                 // Calculate normalized distance from center to the edge
-                float edgeFade = 1.0 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter);
+                float edgeFade = 0.9 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter); // Start at 0.9 to add a bit of dither to the center
 
                 half4 texColor = tex2D(_MainTex, i.uv);
                 half4 texColorAlphaRef = tex2D(_MainTex, i.uv);
