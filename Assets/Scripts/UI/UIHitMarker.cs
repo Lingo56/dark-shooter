@@ -17,6 +17,8 @@ public class UIHitMarker : MonoBehaviour
     [SerializeField] private float postAnimationDelay = 0.2f; // Delay after animation before resetting to zero
     [SerializeField] private float fadeOutDuration = 0.5f; // Duration of the fade-out effect
     [SerializeField] private float markerDistance = 15f; // How far the hit marker goes
+    [SerializeField] private float markerThickness = 2f; // How far the hit marker goes
+    [SerializeField] private float markerOutlineThickness = 0.5f; // How far the hit marker goes
 
     private float timer = 0f; // Timer to track the animation progress
     private bool isAnimating = false; // Flag to check if animation is running
@@ -49,8 +51,6 @@ public class UIHitMarker : MonoBehaviour
         {
             uiCircle = GetComponent<UICircle>();
         }
-
-        initialSize = crosshairCircleRectTransform.sizeDelta; // Store initial size
     }
 
     private void Update()
@@ -71,8 +71,8 @@ public class UIHitMarker : MonoBehaviour
                 rectTransform.sizeDelta = newSize;
 
                 // Adjust the thickness of the UICircle
-                uiCircle.Thickness = 4; // Example: set thickness to half the width
-                uiCircle.OutlineThickness = 1; // Example: set thickness to half the width
+                uiCircle.Thickness = markerThickness; // Example: set thickness to half the width
+                uiCircle.OutlineThickness = markerOutlineThickness; // Example: set thickness to half the width
 
                 // Check if animation is complete
                 if (lerpFactor >= 1f)
@@ -132,8 +132,8 @@ public class UIHitMarker : MonoBehaviour
         }
         else
         {
-            initialSize = crosshairCircleRectTransform.sizeDelta; // Update initial size
-            targetSize = crosshairCircleRectTransform.sizeDelta + new Vector2(markerDistance, markerDistance); // Update target size
+            initialSize = Vector2.zero; // Update initial size
+            targetSize = initialSize;
         }
 
         isAnimating = true;
