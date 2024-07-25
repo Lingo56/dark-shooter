@@ -39,7 +39,7 @@ Shader "Hidden/CSG/internal/NoZTestGenericLine"
 			
 				#include "UnityCG.cginc"
 
-				struct v2f 
+				struct Interpolators 
 				{
  					float4 vertex			: SV_POSITION;
  					fixed4 color			: COLOR0;
@@ -84,12 +84,12 @@ Shader "Hidden/CSG/internal/NoZTestGenericLine"
 				float _pixelsPerPoint;
 				float _alphaMultiplier;
 				
-				v2f vert(float4 vertex1  : POSITION,
+				Interpolators vert(float4 vertex1  : POSITION,
 						 float3 vertex2  : TEXCOORD0, // second vertex to compute angle with
 						 float3 offset   : TEXCOORD1,
 					     fixed4 color	 : COLOR0)
 				{
-					v2f o;
+					Interpolators o;
 
 					float4	out_vertex1 = UnityObjectToClipPos(       vertex1    );
 					float4	out_vertex2 = UnityObjectToClipPos(float4(vertex2, 1));
@@ -127,7 +127,7 @@ Shader "Hidden/CSG/internal/NoZTestGenericLine"
 					return o;
 				}
 
-				fixed4 frag (v2f i) : SV_Target
+				fixed4 frag (Interpolators i) : SV_Target
 				{
 					fixed4	color = i.color;
 

@@ -26,7 +26,7 @@ Shader "WFX/Multiply Soft Tint"
 			
 			#pragma debug
 			
-			struct v2f
+			struct Interpolators
 			{
 				float4 pos : SV_POSITION;
 				float2 uv : TEXCOORD0;
@@ -46,16 +46,16 @@ Shader "WFX/Multiply Soft Tint"
 			fixed4 _TintColor;
 			sampler2D _MainTex;
 			
-			v2f vert (vdata v)
+			Interpolators vert (vdata v)
 			{
-				v2f o;
+				Interpolators o;
 				o.pos = UnityObjectToClipPos (v.vertex);
 				o.color = v.color;
 				o.uv = v.texcoord;
 				return o;
 			}
 			
-			fixed4 frag (v2f i) : COLOR0
+			fixed4 frag (Interpolators i) : COLOR0
 			{
 //				return tex2D(_MainTex, i.uv) * i.color;
 				fixed4 tex = tex2D(_MainTex, i.uv);

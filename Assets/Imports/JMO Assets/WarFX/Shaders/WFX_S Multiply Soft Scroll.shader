@@ -26,7 +26,7 @@ Shader "WFX/Scroll/Multiply Soft Tint"
 			#pragma fragmentoption ARB_precision_hint_fastest
 			#include "UnityCG.cginc"
 			
-			struct v2f
+			struct Interpolators
 			{
 				float4 pos : SV_POSITION;
 				float2 texcoord : TEXCOORD0;
@@ -47,16 +47,16 @@ Shader "WFX/Scroll/Multiply Soft Tint"
 			sampler2D _MainTex;
 			float _ScrollSpeed;
 			
-			v2f vert (vdata v)
+			Interpolators vert (vdata v)
 			{
-				v2f o;
+				Interpolators o;
 				o.pos = UnityObjectToClipPos (v.vertex);
 				o.color = v.color;
 				o.texcoord = v.texcoord;
 				return o;
 			}
 			
-			fixed4 frag (v2f i) : COLOR0
+			fixed4 frag (Interpolators i) : COLOR0
 			{
 				float mask = tex2D(_MainTex, i.texcoord).a * i.color.a;
 				

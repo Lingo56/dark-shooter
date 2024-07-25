@@ -31,7 +31,7 @@ Shader "Hidden/CSG/internal/ZTestGenericLine_old"
 			
 				#include "UnityCG.cginc"
 
-				struct v2f 
+				struct Interpolators 
 				{
  					float4 vertex	: SV_POSITION;
  					//float2 uv		: TEXCOORD0;
@@ -48,12 +48,12 @@ Shader "Hidden/CSG/internal/ZTestGenericLine_old"
 				//sampler2D _MainTex;
 				//float4 _MainTex_ST;
 
-				v2f vert(float4 vertex1  : POSITION,
+				Interpolators vert(float4 vertex1  : POSITION,
 						 float3 vertex2  : TEXCOORD0, // second vertex to compute angle with
 						 float4 offset   : TEXCOORD1,
 					     fixed4 color	 : COLOR0)
 				{
-					v2f o;
+					Interpolators o;
 
 					float4	out_vertex1 = mul(UNITY_MATRIX_MVP,        vertex1    );
 					float4	out_vertex2 = mul(UNITY_MATRIX_MVP, float4(vertex2, 1));
@@ -118,7 +118,7 @@ Shader "Hidden/CSG/internal/ZTestGenericLine_old"
 					return o;
 				}
 
-				fixed4 frag (v2f i) : SV_Target
+				fixed4 frag (Interpolators i) : SV_Target
 				{
 					fixed4	color = i.color;
 

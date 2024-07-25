@@ -25,7 +25,7 @@ Shader "Hidden/CSG/internal/customThickWire"
 			
 				#include "UnityCG.cginc"
 
-				struct v2f 
+				struct Interpolators 
 				{
  					float4 vertex	: SV_POSITION;
  					fixed4 color	: COLOR0;
@@ -34,7 +34,7 @@ Shader "Hidden/CSG/internal/customThickWire"
 
 				//float thickness;
 
-				v2f vert (appdata_full v)
+				Interpolators vert (appdata_full v)
 				{
 					float width	 = _ScreenParams.x * 0.5f;
 					float height = _ScreenParams.y * 0.5f;
@@ -64,7 +64,7 @@ Shader "Hidden/CSG/internal/customThickWire"
 
 
 
-					v2f o;
+					Interpolators o;
 					float3 diff = normalize(v.texcoord1);
 					float3 cam = normalize(UNITY_MATRIX_IT_MV[2].xyz);//_WorldSpaceCameraPos - v.vertex);
 					//float3 cam = normalize(_WorldSpaceCameraPos - v.vertex);
@@ -84,7 +84,7 @@ Shader "Hidden/CSG/internal/customThickWire"
 					return o;
 				}
 
-				fixed4 frag (v2f input) : SV_Target
+				fixed4 frag (Interpolators input) : SV_Target
 				{
 					fixed4 col = input.color;
 					float f = 1 - abs(input.alpha);

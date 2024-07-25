@@ -31,7 +31,7 @@ Shader "Custom/FadeWaveEffect"
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Interpolators
             {
                 float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
@@ -137,9 +137,9 @@ Shader "Custom/FadeWaveEffect"
                 return SimplexNoiseGrad(v).z;
             }
 
-            v2f vert (appdata v)
+            Interpolators vert (appdata v)
             {
-                v2f o;
+                Interpolators o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv * _UVScale.xy;
                 float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
@@ -147,7 +147,7 @@ Shader "Custom/FadeWaveEffect"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (Interpolators i) : SV_Target
             {
                 // Calculate UV offset with simplex noise
                 float2 noiseUV = i.uv * _TilingFactor;

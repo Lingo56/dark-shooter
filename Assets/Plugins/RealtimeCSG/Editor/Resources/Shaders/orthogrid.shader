@@ -25,15 +25,15 @@ Shader "Hidden/CSG/internal/OrthoGrid"
 				float4 vertex : POSITION;
 				float4 color : COLOR;
 			};
-			struct v2f {
+			struct Interpolators {
 				fixed4 color : COLOR;
 				float4 vertex : SV_POSITION;
 			};
 			float _Alpha;
 			float _Depth;
-			v2f vert (appdata_t v)
+			Interpolators vert (appdata_t v)
 			{
-				v2f o;
+				Interpolators o;
 #if UNITY_VERSION >= 540
 				o.vertex	= UnityObjectToClipPos(v.vertex);
 #else
@@ -45,7 +45,7 @@ Shader "Hidden/CSG/internal/OrthoGrid"
 				return o;
 			}
 
-			fixed4 frag (v2f i) : SV_Target
+			fixed4 frag (Interpolators i) : SV_Target
 			{
 				float4 color = i.color;
 				color.a *= _Alpha;

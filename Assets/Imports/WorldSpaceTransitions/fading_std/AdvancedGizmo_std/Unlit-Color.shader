@@ -28,7 +28,7 @@ SubShader {
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
-			struct v2f {
+			struct Interpolators {
 				float4 vertex : SV_POSITION;
 				UNITY_FOG_COORDS(0)
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -36,9 +36,9 @@ SubShader {
 
 			fixed4 _Color;
 			
-			v2f vert (appdata_t v)
+			Interpolators vert (appdata_t v)
 			{
-				v2f o;
+				Interpolators o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.vertex = UnityObjectToClipPos(v.vertex);
@@ -46,7 +46,7 @@ SubShader {
 				return o;
 			}
 			
-			fixed4 frag (v2f i) : COLOR
+			fixed4 frag (Interpolators i) : COLOR
 			{
 				fixed4 col = _Color;
 				UNITY_APPLY_FOG(i.fogCoord, col);

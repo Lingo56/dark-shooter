@@ -48,7 +48,7 @@ Shader "WFX/Scroll/Additive"
 					float2 texcoord : TEXCOORD0;
 				};
 	
-				struct v2f
+				struct Interpolators
 				{
 					float4 vertex : POSITION;
 					fixed4 color : COLOR;
@@ -60,9 +60,9 @@ Shader "WFX/Scroll/Additive"
 	
 				float4 _MainTex_ST;
 				
-				v2f vert (appdata_t v)
+				Interpolators vert (appdata_t v)
 				{
-					v2f o;
+					Interpolators o;
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					#ifdef SOFTPARTICLES_ON
 					o.projPos = ComputeScreenPos (o.vertex);
@@ -77,7 +77,7 @@ Shader "WFX/Scroll/Additive"
 				float _InvFade;
 				float _ScrollSpeed;
 				
-				fixed4 frag (v2f i) : COLOR
+				fixed4 frag (Interpolators i) : COLOR
 				{
 					#ifdef SOFTPARTICLES_ON
 					float sceneZ = LinearEyeDepth (UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));

@@ -31,7 +31,7 @@ Shader "UI Extensions/UI Image Crop" {
       #pragma fragment frag
       #include "UnityCG.cginc"
     
-      struct v2f {
+      struct Interpolators {
           float4 pos : POSITION;
           fixed4 color : COLOR;
 		  float2 uv 	: TEXCOORD0; //UV1 coord
@@ -42,10 +42,10 @@ Shader "UI Extensions/UI Image Crop" {
 	  uniform float _XCrop;
 	  uniform float _YCrop;
 	  
-      v2f vert (v2f v)
+      Interpolators vert (Interpolators v)
       {
 	  
-          v2f o;
+          Interpolators o;
 		  o.color=v.color;
 		  o.color.a=0.1;
 		  o.pos = UnityObjectToClipPos (v.pos);
@@ -54,7 +54,7 @@ Shader "UI Extensions/UI Image Crop" {
 		 
           return o;
       }
-      fixed4 frag (v2f i) : COLOR
+      fixed4 frag (Interpolators i) : COLOR
 	  { 
 	  
 	  //return fixed4(0.25,0,0,1);

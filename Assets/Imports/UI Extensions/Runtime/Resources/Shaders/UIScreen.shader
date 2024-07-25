@@ -59,7 +59,7 @@ Shader "UI Extensions/UIScreen"
 				float2 texcoord : TEXCOORD0;
 			};
 
-			struct v2f
+			struct Interpolators
 			{
 				float4 vertex   : SV_POSITION;
 				fixed4 color    : COLOR;
@@ -68,9 +68,9 @@ Shader "UI Extensions/UIScreen"
 			
 			fixed4 _Color;
 
-			v2f vert(appdata_t IN)
+			Interpolators vert(appdata_t IN)
 			{
-				v2f OUT;
+				Interpolators OUT;
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
 				OUT.texcoord = IN.texcoord;
 #ifdef UNITY_HALF_TEXEL_OFFSET
@@ -82,7 +82,7 @@ Shader "UI Extensions/UIScreen"
 
 			sampler2D _MainTex;
 
-			fixed4 frag(v2f IN) : SV_Target
+			fixed4 frag(Interpolators IN) : SV_Target
 			{
 				half4 color = tex2D(_MainTex, IN.texcoord) * IN.color;
 				color.rgb *= color.a;

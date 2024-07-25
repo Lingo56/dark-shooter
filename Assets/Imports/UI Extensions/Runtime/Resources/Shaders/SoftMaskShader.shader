@@ -66,7 +66,7 @@ Shader "UI Extensions/SoftMaskShader"
 				float2 texcoord : TEXCOORD0;
 			};
 
-			struct v2f
+			struct Interpolators
 			{
 				float4 vertex   : SV_POSITION;
 				fixed4 color : COLOR;
@@ -89,9 +89,9 @@ Shader "UI Extensions/SoftMaskShader"
 			float4 _AlphaMask_ST;
 			sampler2D _AlphaMask;
 
-			v2f vert(appdata_t IN)
+			Interpolators vert(appdata_t IN)
 			{
-				v2f OUT;
+				Interpolators OUT;
 				float4 wolrdPos = IN.vertex;
 				OUT.maskTexcoord = TRANSFORM_TEX(wolrdPos.xy, _AlphaMask);
 				OUT.vertex = UnityObjectToClipPos(IN.vertex);
@@ -109,7 +109,7 @@ Shader "UI Extensions/SoftMaskShader"
 			bool _HardBlend = false;
 			bool _NoOuterClip = false;
 
-			fixed4 frag(v2f IN) : SV_Target
+			fixed4 frag(Interpolators IN) : SV_Target
 			{
 				half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 				float4 inMask = float4( 

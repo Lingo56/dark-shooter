@@ -24,22 +24,22 @@ Shader "Hidden/CSG/internal/customWire"
 			
 				#include "UnityCG.cginc"
 
-				struct v2f 
+				struct Interpolators 
 				{
  					float4 pos   : SV_POSITION;
  					fixed4 color : COLOR0;
 				};
 
-				v2f vert (appdata_full v)
+				Interpolators vert (appdata_full v)
 				{
-					v2f o;
+					Interpolators o;
 					o.pos	= mul (UNITY_MATRIX_MVP, v.vertex);
 					//o.pos.z += 0.00105f;	// I would use Offset if it actually worked ..
 					o.color = v.color;
 					return o;
 				}
 
-				fixed4 frag (v2f input) : SV_Target
+				fixed4 frag (Interpolators input) : SV_Target
 				{
 					fixed4 col = input.color;
 					col.rgb *= col.a;

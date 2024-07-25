@@ -38,16 +38,16 @@ Shader "Custom/RadialTimerShader"
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Interpolators
             {
                 float2 uv : TEXCOORD0;
                 float4 pos : SV_POSITION;
                 float distToCenter : TEXCOORD1; // Store distance to center
             };
 
-            v2f vert (appdata v)
+            Interpolators vert (appdata v)
             {
-                v2f o;
+                Interpolators o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
 
@@ -58,7 +58,7 @@ Shader "Custom/RadialTimerShader"
                 return o;
             }
 
-            half4 frag (v2f i) : SV_Target
+            half4 frag (Interpolators i) : SV_Target
             {
                 // Calculate normalized distance from center to the edge
                 float edgeFade = 0.9 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter); // Start at 0.9 to add a bit of dither to the center

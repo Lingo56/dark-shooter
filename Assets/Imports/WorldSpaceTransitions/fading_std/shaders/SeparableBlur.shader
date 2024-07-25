@@ -7,7 +7,7 @@ Shader "Hidden/SeparableGlassBlur" {
 
 #include "UnityCG.cginc"
 
-	struct v2f {
+	struct Interpolators {
 		float4 pos : POSITION;
 		float2 uv : TEXCOORD0;
 
@@ -21,8 +21,8 @@ Shader "Hidden/SeparableGlassBlur" {
 	sampler2D _MainTex;
 	float4 _MainTex_TexelSize;//
 
-	v2f vert(appdata_img v) {
-		v2f o;
+	Interpolators vert(appdata_img v) {
+		Interpolators o;
 		o.pos = UnityObjectToClipPos(v.vertex);
 
 		o.uv.xy = v.texcoord.xy;
@@ -34,7 +34,7 @@ Shader "Hidden/SeparableGlassBlur" {
 		return o;
 	}
 
-	half4 frag(v2f i) : COLOR{
+	half4 frag(Interpolators i) : COLOR{
 		half4 color = float4 (0,0,0,0);
 		color += 0.40 * tex2D(_MainTex, i.uv);
 		color += 0.15 * tex2D(_MainTex, i.uv01.xy);
@@ -47,7 +47,7 @@ Shader "Hidden/SeparableGlassBlur" {
 		return color;
 	}
 
-	half4 frag2(v2f i) : COLOR
+	half4 frag2(Interpolators i) : COLOR
 	{
 		half4 color = float4 (0,0,0,0);
 		float2 Texel = _MainTex_TexelSize.xy;
