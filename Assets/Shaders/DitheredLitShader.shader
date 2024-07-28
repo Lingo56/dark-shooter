@@ -48,22 +48,16 @@ Shader "Unlit/DitheredLitShader"
             float _DitherIntensity;
             float _DitherScale;
 
-            // Bayer Dither Matrix
-            float Dither(int x, int y)
-            {
-                static const float dither[64] = {
-                0.0, 0.75, 0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375,
-                0.5, 0.25, 0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375,
-                0.125, 0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375,
-                0.625, 0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375,
-                0.03125, 0.78125, 0.21875, 0.96875, 0.015625, 0.765625, 0.203125, 0.953125,
-                0.53125, 0.28125, 0.71875, 0.46875, 0.515625, 0.265625, 0.703125, 0.453125,
-                0.15625, 0.90625, 0.09375, 0.84375, 0.140625, 0.890625, 0.078125, 0.828125,
-                0.65625, 0.40625, 0.59375, 0.34375, 0.640625, 0.390625, 0.578125, 0.328125
+            static const float dither[64] = {
+                0.0,    0.75,  0.1875, 0.9375, 0.046875, 0.796875, 0.234375, 0.984375,
+                0.5,    0.25,  0.6875, 0.4375, 0.546875, 0.296875, 0.734375, 0.484375,
+                0.125,  0.875, 0.0625, 0.8125, 0.171875, 0.921875, 0.109375, 0.859375,
+                0.625,  0.375, 0.5625, 0.3125, 0.671875, 0.421875, 0.609375, 0.359375,
+                0.03125,0.78125,0.21875,0.96875,0.015625,0.765625,0.203125,0.953125,
+                0.53125,0.28125,0.71875,0.46875,0.515625,0.265625,0.703125,0.453125,
+                0.15625,0.90625,0.09375,0.84375,0.140625,0.890625,0.078125,0.828125,
+                0.65625,0.40625,0.59375,0.34375,0.640625,0.390625,0.578125,0.328125
             };
-                int index = (y & 3) * 8 + (x & 3);
-                return dither[index];
-            }
 
             v2f vert (appdata v)
             {
@@ -119,15 +113,19 @@ Shader "Unlit/DitheredLitShader"
                 // Dither factor depending on light intensity
                 float ditherFactor = saturate((1.0 - lightIntensity) * _DitherIntensity);
 
-                // Dithering
-                float scale = max(_DitherScale, 1.0); // Avoid scale < 1
-                int x = int(i.uv.x * _ScreenParams.x / scale);
-                int y = int(i.uv.y * _ScreenParams.y / scale);
-                float threshold = Dither(x, y);
+                // Calculate dither matrix indices
+                float2 ditherCoord = floor(i.vertex.xy / _DitherScale) % 8;
+                int x = int(ditherCoord.x) % 8;
+                int y = int(ditherCoord.y) % 8;
+                int index = x + y * 8;
+                
+                float threshold = dither[index]; // Use 8x8 matrix for smoother dithering
+
+                // Calculate final color
                 float3 finalColor = surfacedata.albedo;
                 if (ditherFactor > threshold)
                 {
-                    finalColor *= 0.05; // Darken the color when below threshold
+                    finalColor *= 0.05; // Darken the color when below the threshold
                 }
 
                 // Calculate the final fragment color using the Universal PBR function
