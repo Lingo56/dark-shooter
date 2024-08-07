@@ -7,7 +7,7 @@ Shader "Unlit/DitheredLitShader"
         _Smoothness("Smoothness", Range(0,1)) = 0
         _Metallic("Metallic", Range(0,1)) = 0
         _DitherIntensity("Dither Intensity", Range(0,1)) = 0.5
-        _DitherScale("Dither Scale", Float) = 1.0
+        _DitherScale("Dither Scale", Range(1,5)) = 1.0
     }
     SubShader
     {
