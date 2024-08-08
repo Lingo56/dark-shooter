@@ -136,7 +136,7 @@ Material:
     - _Surface: 0
     - _TilingFactor: 1
     - _UVSec: 0
-    - _WaveHeight: 0.03
+    - _WaveHeight: 0.1
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
