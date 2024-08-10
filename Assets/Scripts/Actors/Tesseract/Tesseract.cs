@@ -10,6 +10,9 @@ using System.Collections;
 /// http://lukeholland.me/
 /// </summary>
 
+
+// TODO: Fix this not working if set to a different position besides (0,0,0)
+// TODO: Or think of a work around to make it work at (0,0,0) (maybe just shift the stage down)
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [ExecuteInEditMode]
