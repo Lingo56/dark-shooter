@@ -114,8 +114,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FadeEnd: 0.5
-    - _FadeStart: 2.58
+    - _FadeEnd: -5.91
+    - _FadeStart: -2.28
     - _FlowSpeed: 1
     - _GlossMapScale: 0.339
     - _Glossiness: 0
