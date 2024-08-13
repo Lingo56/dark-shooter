@@ -150,7 +150,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _TintColor: {r: 0.13631958, g: 0.096682124, b: 0.13962269, a: 1}
+    - _TintColor: {r: 0.2528302, g: 0.2475828, b: 0.2475828, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3927227201458103137
 MonoBehaviour:
