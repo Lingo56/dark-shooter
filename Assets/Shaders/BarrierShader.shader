@@ -153,9 +153,6 @@ Shader "Custom/FadeWaveEffect"
                 float2 noiseUV = i.uv * _TilingFactor;
                 float2 uvOffset = noiseUV + float2(_Time.y * _Speed, 0);
 
-                // Sample noise using simplex noise function
-                float noiseValue = SimplexNoise(uvOffset);
-
                 // Apply wave effect
                 float waveOffset = sin(uvOffset.x * 10.0 + _Time.y * _Speed) * _WaveHeight;
 
