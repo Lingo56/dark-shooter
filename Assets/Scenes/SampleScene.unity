@@ -1503,7 +1503,7 @@ MonoBehaviour:
   attackEffect: {fileID: 681133102664280991, guid: 3051ad7982021484a8f73b5b4ad671ad, type: 3}
   ground: {fileID: 373733680}
   spawnInterval: 2
-  heightOffset: 0.01
+  heightOffset: 0.1
 --- !u!1 &464994988
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,6 +3474,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3079865793684241504, guid: f7b70b2a251d46a4bb2c4021c9b44eaf, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3577435209406898415, guid: f7b70b2a251d46a4bb2c4021c9b44eaf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 35

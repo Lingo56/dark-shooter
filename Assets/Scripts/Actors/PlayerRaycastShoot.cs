@@ -97,24 +97,47 @@ public class PlayerRaycastShoot : MonoBehaviour
 
     private void ShootRay(Vector3 origin, Vector3 direction, int damage, HashSet<EnemyMainController> hitEnemies)
     {
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, weaponRange))
+        Vector3 currentOrigin = origin;
+        float remainingRange = weaponRange;
+
+        while (remainingRange > 0)
         {
-            EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
-
-            if (enemyController != null)
+            if (Physics.Raycast(currentOrigin, direction, out RaycastHit hit, remainingRange))
             {
-                enemyController.ProcessHit(damage, bulletHitForce, hit);
-                hitEnemies.Add(enemyController); // Track this enemy as hit
+                // Ignore objects with the "Effect" tag
+                if (hit.collider.CompareTag("Effect"))
+                {
+                    // Move the origin of the ray to the point just past the current hit
+                    currentOrigin = hit.point + direction * 0.01f; // Small offset to avoid re-hitting the same point
+                    remainingRange -= hit.distance;
+                    continue; // Continue casting the ray
+                }
+
+                EnemyMainController enemyController = hit.collider.GetComponent<EnemyMainController>();
+
+                if (enemyController != null)
+                {
+                    enemyController.ProcessHit(damage, bulletHitForce, hit);
+                    hitEnemies.Add(enemyController); // Track this enemy as hit
+                }
+
+                CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
+
+                ParticleSystem impactEffect = Instantiate(defaultBulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                impactEffect.transform.SetParent(hit.collider.transform);
+
+                break; // Stop casting the ray after hitting a valid target
             }
-
-            CreateBulletTrail(gunBarrelExit.position, hit.point, hit.point, hit.normal);
-
-            ParticleSystem impactEffect = Instantiate(defaultBulletImpact, hit.point, Quaternion.LookRotation(hit.normal));
-            impactEffect.transform.SetParent(hit.collider.transform);
+            else
+            {
+                // If no hit, create a bullet trail to the max range
+                CreateBulletTrail(gunBarrelExit.position, origin + direction * weaponRange, origin + direction * weaponRange, Vector3.forward);
+                break; // Exit the loop since we've reached the maximum range
+            }
         }
     }
 
-    public void CreateBulletTrail(Vector3 start, Vector3 end, Vector3 hitPoint, Vector3 hitNormal)
+    private void CreateBulletTrail(Vector3 start, Vector3 end, Vector3 hitPoint, Vector3 hitNormal)
     {
         GameObject bulletTrail = Instantiate(bulletTrailPrefab, start, Quaternion.identity);
         LineRenderer lineRenderer = bulletTrail.GetComponent<LineRenderer>();
@@ -152,12 +175,12 @@ public class PlayerRaycastShoot : MonoBehaviour
     {
         gunAudio.Play();
         muzzleFlash.Play();
-        handleLight();
+        HandleLight();
 
         yield return shotDuration;
     }
 
-    private void handleLight()
+    private void HandleLight()
     {
         if (!muzzleLight.activeSelf)
         {
