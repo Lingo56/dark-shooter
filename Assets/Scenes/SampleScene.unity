@@ -4005,10 +4005,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 256862595}
   - {fileID: 846568891}
   - {fileID: 1004979941}
   - {fileID: 916631429}
-  - {fileID: 256862595}
   m_Father: {fileID: 581376879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1329158922
@@ -4023,13 +4023,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fa0fc20ab417e4c958aa0731a979b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swayStep: 0.035
-  _maxSwayStepDistance: 0.111
+  _swayStep: 0.01
+  _maxSwayStepDistance: 0.025
   _rotationStep: 6
   _maxRotationStep: 5
   _smooth: 7
   _speedCurve: 0
-  _travelLimit: {x: 0.025, y: 0.025, z: 0.025}
+  _travelLimit: {x: 0.01, y: 0.01, z: 0.01}
   _bobLimit: {x: 0.01, y: 0.01, z: 0.01}
   _bobExaggeration: 0
   _multiplier: {x: 0, y: 0, z: 0}
