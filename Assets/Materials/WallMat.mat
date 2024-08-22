@@ -115,7 +115,7 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FadeEnd: -5.91
-    - _FadeStart: -2.28
+    - _FadeStart: -1.52
     - _FlowSpeed: 1
     - _GlossMapScale: 0.339
     - _Glossiness: 0
@@ -136,7 +136,7 @@ Material:
     - _Surface: 0
     - _TilingFactor: 1
     - _UVSec: 0
-    - _WaveHeight: 0.1
+    - _WaveHeight: 0.025
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
