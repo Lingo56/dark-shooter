@@ -2,8 +2,10 @@
 /*some of the code is based on this CPOL (Code Project Open License (CPOL) 1.02) licenced article by andrea contoli
  * https://www.codeproject.com/Articles/838511/Procedural-seamless-noise-texture-generator
 */
+
 using UnityEngine;
-namespace WorldSpaceTransitions
+
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     public enum NoiseType { quad = 0, circ = 1, pixel = 2 };
     public enum TextureSpace { texture2D = 0, texture3D = 1 };//texture3D_Atlas = 1 removed

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     //The software cursor to get recorded in unity recorder
     public class SoftwareCursor : MonoBehaviour

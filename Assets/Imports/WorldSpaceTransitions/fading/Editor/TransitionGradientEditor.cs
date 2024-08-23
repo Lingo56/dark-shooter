@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Imports.WorldSpaceTransitions.fading.scripts;
+using UnityEngine;
 using UnityEditor;
 
 namespace WorldSpaceTransitions

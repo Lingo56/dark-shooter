@@ -1,16 +1,18 @@
 using UnityEngine;
-using System.Collections;
 
-public class CFX_Demo_RotateCamera : MonoBehaviour
+namespace Imports.JMO_Assets.WarFX.Demo.Assets
 {
-	static public bool rotating = true;
-	
-	public float speed = 30.0f;
-	public Transform rotationCenter;
-	
-	void Update ()
+	public class CFX_Demo_RotateCamera : MonoBehaviour
 	{
-		if(rotating)
-			transform.RotateAround(rotationCenter.position, Vector3.up, speed*Time.deltaTime);
+		static public bool rotating = true;
+	
+		public float speed = 30.0f;
+		public Transform rotationCenter;
+	
+		void Update ()
+		{
+			if(rotating)
+				transform.RotateAround(rotationCenter.position, Vector3.up, speed*Time.deltaTime);
+		}
 	}
 }

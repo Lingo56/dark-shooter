@@ -1,119 +1,122 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyMainController : MonoBehaviour
+namespace Actors
 {
-    [Header("Dependancies")]
-    [SerializeField] private EnemyMainMovement enemyMovement;
-
-    [SerializeField] private EnemyMainHitFlash flashEffect;
-    [SerializeField] private AudioClip hitAudio;
-    [SerializeField] private AudioClip deathAudio;
-
-    [Header("Enemy Settings")]
-    [SerializeField] private float maxHealth = 100f;
-
-    private float health;
-    private int totalDamage;
-    private bool initializedDeath = false;
-
-    private AudioSource audioSource;
-    private Collider enemyCollider;
-    private Renderer enemyRenderer;
-    private Material enemyMaterial;
-
-    private void Start()
+    public class EnemyMainController : MonoBehaviour
     {
-        health = maxHealth;
-        enemyCollider = GetComponent<Collider>();
+        [Header("Dependancies")]
+        [SerializeField] private EnemyMainMovement enemyMovement;
 
-        enemyRenderer = GetComponent<Renderer>();
-        if (enemyRenderer != null)
+        [SerializeField] private EnemyMainHitFlash flashEffect;
+        [SerializeField] private AudioClip hitAudio;
+        [SerializeField] private AudioClip deathAudio;
+
+        [Header("Enemy Settings")]
+        [SerializeField] private float maxHealth = 100f;
+
+        private float health;
+        private int totalDamage;
+        private bool initializedDeath = false;
+
+        private AudioSource audioSource;
+        private Collider enemyCollider;
+        private Renderer enemyRenderer;
+        private Material enemyMaterial;
+
+        private void Start()
         {
-            enemyMaterial = enemyRenderer.material;
-        }
-        else
-        {
-            Debug.LogError("Renderer component not found on enemy GameObject!");
-        }
+            health = maxHealth;
+            enemyCollider = GetComponent<Collider>();
 
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-    }
-
-    public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
-    {
-        totalDamage += damage;
-        enemyMovement.HandleBulletImpact(hit.normal, bulletHitForce);
-
-        if (IsAlive())
-        {
-            GameEvents.EnemyHitAlive();
-        }
-    }
-
-    public bool IsAlive()
-    {
-        return health > 0;
-    }
-
-    public void HandleEnemyDamage()
-    {
-        health -= totalDamage;
-        totalDamage = 0;
-
-        enemyMovement.ApplyAccumulatedForce();
-        PlayHitSound();
-
-        if (!IsAlive() && !initializedDeath)
-        {
-            PlayDeathSound();
-            flashEffect.Flash(enemyMovement.DeathPausePeriod);
-
-            if (enemyCollider != null)
+            enemyRenderer = GetComponent<Renderer>();
+            if (enemyRenderer != null)
             {
-                enemyCollider.enabled = false;
+                enemyMaterial = enemyRenderer.material;
+            }
+            else
+            {
+                Debug.LogError("Renderer component not found on enemy GameObject!");
             }
 
-            StartCoroutine(FadeOutAndDestroy(1f));
-            StartCoroutine(enemyMovement.EnableDeathMovement());
-            initializedDeath = true;
-            GameEvents.SpecificEnemyDeath(gameObject);
-        }
-        else if (IsAlive())
-        {
-            flashEffect.Flash(0.1f);
-        }
-    }
-
-    private IEnumerator FadeOutAndDestroy(float duration)
-    {
-        float startTime = Time.time;
-        while (Time.time < startTime + duration)
-        {
-            float t = 1 - ((Time.time - startTime) / duration);
-            if (enemyMaterial != null)
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
             {
-                enemyMaterial.SetFloat("_Fade", t);
+                audioSource = gameObject.AddComponent<AudioSource>();
             }
-            yield return null;
         }
 
-        Destroy(gameObject);
-    }
+        public void ProcessHit(int damage, float bulletHitForce, RaycastHit hit)
+        {
+            totalDamage += damage;
+            enemyMovement.HandleBulletImpact(hit.normal, bulletHitForce);
 
-    private void PlayHitSound()
-    {
-        audioSource.clip = hitAudio;
-        audioSource.Play();
-    }
+            if (IsAlive())
+            {
+                GameEvents.EnemyHitAlive();
+            }
+        }
 
-    private void PlayDeathSound()
-    {
-        audioSource.clip = deathAudio;
-        audioSource.Play();
+        public bool IsAlive()
+        {
+            return health > 0;
+        }
+
+        public void HandleEnemyDamage()
+        {
+            health -= totalDamage;
+            totalDamage = 0;
+
+            enemyMovement.ApplyAccumulatedForce();
+            PlayHitSound();
+
+            if (!IsAlive() && !initializedDeath)
+            {
+                PlayDeathSound();
+                flashEffect.Flash(enemyMovement.DeathPausePeriod);
+
+                if (enemyCollider != null)
+                {
+                    enemyCollider.enabled = false;
+                }
+
+                StartCoroutine(FadeOutAndDestroy(1f));
+                StartCoroutine(enemyMovement.EnableDeathMovement());
+                initializedDeath = true;
+                GameEvents.SpecificEnemyDeath(gameObject);
+            }
+            else if (IsAlive())
+            {
+                flashEffect.Flash(0.1f);
+            }
+        }
+
+        private IEnumerator FadeOutAndDestroy(float duration)
+        {
+            float startTime = Time.time;
+            while (Time.time < startTime + duration)
+            {
+                float t = 1 - ((Time.time - startTime) / duration);
+                if (enemyMaterial != null)
+                {
+                    enemyMaterial.SetFloat("_Fade", t);
+                }
+                yield return null;
+            }
+
+            Destroy(gameObject);
+        }
+
+        private void PlayHitSound()
+        {
+            audioSource.clip = hitAudio;
+            audioSource.Play();
+        }
+
+        private void PlayDeathSound()
+        {
+            audioSource.clip = deathAudio;
+            audioSource.Play();
+        }
     }
 }

@@ -1,34 +1,37 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
-public class CFX_AutoDestructShuriken : MonoBehaviour
+namespace Imports.JMO_Assets.WarFX.Scripts
 {
-	public bool OnlyDeactivate;
-	
-	void OnEnable()
+	[RequireComponent(typeof(ParticleSystem))]
+	public class CFX_AutoDestructShuriken : MonoBehaviour
 	{
-		StartCoroutine("CheckIfAlive");
-	}
+		public bool OnlyDeactivate;
 	
-	IEnumerator CheckIfAlive ()
-	{
-		while(true)
+		void OnEnable()
 		{
-			yield return new WaitForSeconds(0.5f);
-			if(!GetComponent<ParticleSystem>().IsAlive(true))
+			StartCoroutine("CheckIfAlive");
+		}
+	
+		IEnumerator CheckIfAlive ()
+		{
+			while(true)
 			{
-				if(OnlyDeactivate)
+				yield return new WaitForSeconds(0.5f);
+				if(!GetComponent<ParticleSystem>().IsAlive(true))
 				{
-					#if UNITY_3_5
+					if(OnlyDeactivate)
+					{
+#if UNITY_3_5
 						this.gameObject.SetActiveRecursively(false);
-					#else
+#else
 						this.gameObject.SetActive(false);
-					#endif
+#endif
+					}
+					else
+						GameObject.Destroy(this.gameObject);
+					break;
 				}
-				else
-					GameObject.Destroy(this.gameObject);
-				break;
 			}
 		}
 	}

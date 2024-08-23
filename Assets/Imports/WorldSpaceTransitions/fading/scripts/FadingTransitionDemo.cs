@@ -1,12 +1,13 @@
 ﻿//setting the materials and shaders variables with use of UI in playmode
 
-using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using Imports.WorldSpaceTransitions.common;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     public class FadingTransitionDemo : MonoBehaviour
     {

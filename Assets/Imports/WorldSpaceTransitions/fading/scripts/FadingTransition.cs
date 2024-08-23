@@ -1,10 +1,12 @@
 ﻿//setting the global shader variables in inspector in editor
+
+using System.IO;
+using Imports.WorldSpaceTransitions.common;
+using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
-using UnityEditor;
-using System.IO;
 #endif
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     [ExecuteInEditMode]
     public class FadingTransition : MonoBehaviour

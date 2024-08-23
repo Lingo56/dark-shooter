@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using Imports.WorldSpaceTransitions.fading.scripts;
 
 namespace WorldSpaceTransitions
 {

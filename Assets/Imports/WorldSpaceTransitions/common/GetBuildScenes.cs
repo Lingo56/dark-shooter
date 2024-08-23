@@ -1,47 +1,48 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+﻿using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UI;
 #if UNITY_EDITOR
-using UnityEditor;
-using System.IO;
 #endif
 
-[ExecuteInEditMode]
-[RequireComponent(typeof(Dropdown))]
-public class GetBuildScenes : MonoBehaviour {
+namespace Imports.WorldSpaceTransitions.common
+{
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(Dropdown))]
+    public class GetBuildScenes : MonoBehaviour {
     
-    private Dropdown sceneDropdown;
+        private Dropdown sceneDropdown;
 
-    private void Start()
-    {
-        sceneDropdown = GetComponent<Dropdown>();
-        FindAllBuildScenes();
-        //sceneDropdown.onValueChanged.AddListener(delegate { SwitchScene(sceneDropdown.value); });
-    }
-
-    void FindAllBuildScenes()
-    {
-    #if UNITY_EDITOR
-        List<string> sceneNames = new List<string>();
-        foreach (EditorBuildSettingsScene sc in EditorBuildSettings.scenes)
+        private void Start()
         {
-            string sceneName = Path.GetFileNameWithoutExtension(sc.path);
-            if (sceneName == string.Empty) continue;
-            Debug.Log(sceneName);
-            sceneName = sceneName.Replace("_", " ");
-            char[] letters = sceneName.ToCharArray();
-            // upper case the first char
-            letters[0] = char.ToUpper(letters[0]);
-            // return the array made of the new char array
-            sceneName = new string(letters);
-            if (sc.enabled)  sceneNames.Add(sceneName);
-
-
+            sceneDropdown = GetComponent<Dropdown>();
+            FindAllBuildScenes();
+            //sceneDropdown.onValueChanged.AddListener(delegate { SwitchScene(sceneDropdown.value); });
         }
 
+        void FindAllBuildScenes()
+        {
+#if UNITY_EDITOR
+            List<string> sceneNames = new List<string>();
+            foreach (EditorBuildSettingsScene sc in EditorBuildSettings.scenes)
+            {
+                string sceneName = Path.GetFileNameWithoutExtension(sc.path);
+                if (sceneName == string.Empty) continue;
+                Debug.Log(sceneName);
+                sceneName = sceneName.Replace("_", " ");
+                char[] letters = sceneName.ToCharArray();
+                // upper case the first char
+                letters[0] = char.ToUpper(letters[0]);
+                // return the array made of the new char array
+                sceneName = new string(letters);
+                if (sc.enabled)  sceneNames.Add(sceneName);
 
-        /*int n = SceneManager.sceneCountInBuildSettings;
+
+            }
+
+
+            /*int n = SceneManager.sceneCountInBuildSettings;
         for (int i = 0; i < n; i++)
         {
             string sceneName = SceneManager.GetSceneByBuildIndex(i).name;
@@ -55,13 +56,14 @@ public class GetBuildScenes : MonoBehaviour {
             sceneNames.Add(sceneName);
         }
         */
-        sceneDropdown.ClearOptions();
-        sceneDropdown.AddOptions(sceneNames);
-    #endif
-    }
-    private void OnEnable()
-    {
-        sceneDropdown = GetComponent<Dropdown>();
-        FindAllBuildScenes();
+            sceneDropdown.ClearOptions();
+            sceneDropdown.AddOptions(sceneNames);
+#endif
+        }
+        private void OnEnable()
+        {
+            sceneDropdown = GetComponent<Dropdown>();
+            FindAllBuildScenes();
+        }
     }
 }

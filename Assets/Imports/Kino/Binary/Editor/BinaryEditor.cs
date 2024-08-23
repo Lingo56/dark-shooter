@@ -1,6 +1,7 @@
 ﻿// KinoBinary - Binary image effect for Unity
 // https://github.com/keijiro/KinoBinary
 
+using Imports.Kino.Binary;
 using UnityEngine;
 using UnityEditor;
 

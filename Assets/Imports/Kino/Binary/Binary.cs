@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Kino
+namespace Imports.Kino.Binary
 {
     [ExecuteInEditMode]
     [RequireComponent(typeof(Camera))]

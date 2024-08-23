@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace WorldSpaceTransitions.Examples
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     //[ExecuteInEditMode]
     public class EnvironmentTransitionExample : MonoBehaviour

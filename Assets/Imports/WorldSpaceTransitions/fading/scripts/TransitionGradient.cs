@@ -1,16 +1,13 @@
 ﻿//Script to generate the transition gradient textures and save them in .png format inside the Asset folder.
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Rendering;
 
-using UnityEngine;
 using System.IO;
-
-#if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.Rendering;
+#if UNITY_EDITOR
 #endif
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     [ExecuteInEditMode]
     public class TransitionGradient : MonoBehaviour

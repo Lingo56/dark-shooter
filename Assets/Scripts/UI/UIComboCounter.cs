@@ -1,22 +1,25 @@
 using TMPro;
 using UnityEngine;
 
-public class UIComboCounter : MonoBehaviour
+namespace UI
 {
-    public TextMeshProUGUI comboCountText;
-
-    private void OnEnable()
+    public class UIComboCounter : MonoBehaviour
     {
-        UIEvents.OnHitCountChanged += UpdateHitCountUI; // Subscribe to the event
-    }
+        public TextMeshProUGUI comboCountText;
 
-    private void OnDisable()
-    {
-        UIEvents.OnHitCountChanged -= UpdateHitCountUI; // Unsubscribe from the event
-    }
+        private void OnEnable()
+        {
+            UIEvents.OnHitCountChanged += UpdateHitCountUI; // Subscribe to the event
+        }
 
-    private void UpdateHitCountUI(int newHitCount)
-    {
-        comboCountText.text = "" + newHitCount; // Update the UI
+        private void OnDisable()
+        {
+            UIEvents.OnHitCountChanged -= UpdateHitCountUI; // Unsubscribe from the event
+        }
+
+        private void UpdateHitCountUI(int newHitCount)
+        {
+            comboCountText.text = "" + newHitCount; // Update the UI
+        }
     }
 }

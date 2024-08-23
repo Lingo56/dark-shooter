@@ -2,194 +2,197 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMainMovement : MonoBehaviour
+namespace Actors
 {
-    #region Inspector Properties
-
-    [Header("Dependancies")]
-    [SerializeField] private Transform player;
-
-    [Header("Enemy Movement Settings")]
-    [SerializeField] private float maxSpeed = 2f;
-
-    [SerializeField] private float acceleration = 1f;
-    [SerializeField] private float hitDeaccelerationFactor = 1f;
-    [SerializeField] private float rotationSpeed = 2f;
-
-    [Header("Death Settings")]
-    [SerializeField] private float deathForceMultiplier = 1f;
-
-    [SerializeField] private float deathPausePeriod = 0.3f;
-
-    public float DeathPausePeriod
+    public class EnemyMainMovement : MonoBehaviour
     {
-        get => deathPausePeriod;
-        set => deathPausePeriod = value; // Ensure non-negative value
-    }
+        #region Inspector Properties
 
-    #endregion Inspector Properties
+        [Header("Dependancies")]
+        [SerializeField] private Transform player;
 
-    #region Private Variables
+        [Header("Enemy Movement Settings")]
+        [SerializeField] private float maxSpeed = 2f;
 
-    private Vector3 velocity = Vector3.zero;
-    private Vector3 followVelocity = Vector3.zero;
-    private Vector3 hitVelocity = Vector3.zero;
+        [SerializeField] private float acceleration = 1f;
+        [SerializeField] private float hitDeaccelerationFactor = 1f;
+        [SerializeField] private float rotationSpeed = 2f;
 
-    private List<Vector3> hitNormals = new List<Vector3>();
-    private Rigidbody rb;
-    private float hitForce;
-    private bool alive = true;
-    private bool isWaiting = false;
+        [Header("Death Settings")]
+        [SerializeField] private float deathForceMultiplier = 1f;
 
-    #endregion Private Variables
+        [SerializeField] private float deathPausePeriod = 0.3f;
 
-    private void Start()
-    {
-        // Find the GameObject tagged as "Player" and get its Transform component
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject != null)
+        public float DeathPausePeriod
         {
-            player = playerObject.transform;
-        }
-        else
-        {
-            Debug.LogError("Player object not found! Make sure the player is tagged as 'Player'.");
+            get => deathPausePeriod;
+            set => deathPausePeriod = value; // Ensure non-negative value
         }
 
-        rb = GetComponent<Rigidbody>();
-    }
+        #endregion Inspector Properties
 
-    private void Update()
-    {
-        // Rotate the enemy to face the direction it's moving
-        if (followVelocity != Vector3.zero)
+        #region Private Variables
+
+        private Vector3 velocity = Vector3.zero;
+        private Vector3 followVelocity = Vector3.zero;
+        private Vector3 hitVelocity = Vector3.zero;
+
+        private List<Vector3> hitNormals = new List<Vector3>();
+        private Rigidbody rb;
+        private float hitForce;
+        private bool alive = true;
+        private bool isWaiting = false;
+
+        #endregion Private Variables
+
+        private void Start()
         {
-            Quaternion targetRotation = Quaternion.LookRotation(followVelocity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        ShowVelocityDebugLine();
-
-        if (alive && !isWaiting)
-        {
-            #region Hit Movement
-
-            if (hitVelocity.magnitude > 0.01f)
+            // Find the GameObject tagged as "Player" and get its Transform component
+            GameObject playerObject = GameObject.FindWithTag("Player");
+            if (playerObject != null)
             {
-                hitVelocity *= hitDeaccelerationFactor;
+                player = playerObject.transform;
             }
             else
             {
-                hitVelocity = Vector3.zero;
+                Debug.LogError("Player object not found! Make sure the player is tagged as 'Player'.");
             }
 
-            #endregion Hit Movement
-
-            #region Follow Movement
-
-            // Calculate direction to the player
-            Vector3 directionToPlayer = (player.position - transform.position).normalized;
-
-            // Accelerate towards the player
-            Vector3 accelerationVector = acceleration * Time.fixedDeltaTime * directionToPlayer;
-
-            // Apply acceleration towards the player
-            followVelocity += accelerationVector;
-
-            // Clamp the velocity to the maximum speed
-            followVelocity = Vector3.ClampMagnitude(followVelocity, maxSpeed);
-
-            #endregion Follow Movement
-
-            velocity = followVelocity + hitVelocity;
-
-            rb.velocity = velocity;
+            rb = GetComponent<Rigidbody>();
         }
-        else if (!alive && !isWaiting)
+
+        private void Update()
         {
+            // Rotate the enemy to face the direction it's moving
+            if (followVelocity != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(followVelocity);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            ShowVelocityDebugLine();
+
+            if (alive && !isWaiting)
+            {
+                #region Hit Movement
+
+                if (hitVelocity.magnitude > 0.01f)
+                {
+                    hitVelocity *= hitDeaccelerationFactor;
+                }
+                else
+                {
+                    hitVelocity = Vector3.zero;
+                }
+
+                #endregion Hit Movement
+
+                #region Follow Movement
+
+                // Calculate direction to the player
+                Vector3 directionToPlayer = (player.position - transform.position).normalized;
+
+                // Accelerate towards the player
+                Vector3 accelerationVector = acceleration * Time.fixedDeltaTime * directionToPlayer;
+
+                // Apply acceleration towards the player
+                followVelocity += accelerationVector;
+
+                // Clamp the velocity to the maximum speed
+                followVelocity = Vector3.ClampMagnitude(followVelocity, maxSpeed);
+
+                #endregion Follow Movement
+
+                velocity = followVelocity + hitVelocity;
+
+                rb.velocity = velocity;
+            }
+            else if (!alive && !isWaiting)
+            {
+                ApplyDeathHit();
+            }
+        }
+
+        private void OnValidate()
+        {
+            deathPausePeriod = Mathf.Max(0f, deathPausePeriod);
+        }
+
+        private void ShowVelocityDebugLine()
+        {
+            Vector3 startPosition = transform.position;
+            Vector3 endPosition = startPosition + velocity;
+            Color lineColor = Color.red; // Choose a color for the line
+
+            Debug.DrawLine(startPosition, endPosition, lineColor);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Floor"))
+            {
+                // Reflect the velocity vector off the floor
+                Vector3 normal = collision.contacts[0].normal;
+                velocity = Vector3.Reflect(velocity, normal);
+            }
+        }
+
+        public void HandleBulletImpact(Vector3 hitNormal, float bulletHitForce)
+        {
+            // Add hit normal to the list
+            hitNormals.Add(hitNormal);
+            hitForce += bulletHitForce;
+        }
+
+        public void ApplyAccumulatedForce()
+        {
+            if (hitNormals.Count > 0)
+            {
+                // Calculate the average direction from all hit normals
+                Vector3 hitDirection = Vector3.zero;
+                foreach (Vector3 normal in hitNormals)
+                {
+                    hitDirection += normal;
+                }
+                hitDirection /= hitNormals.Count;
+
+                // Apply the hit force as acceleration
+                hitVelocity = hitDirection * -hitForce;
+
+                // Clear the list of hit normals
+                hitNormals.Clear();
+                hitForce = 0;
+                followVelocity = Vector3.zero;
+            }
+        }
+
+        public IEnumerator EnableDeathMovement()
+        {
+            alive = false;
+            isWaiting = true;
+
+            // Stop the rigidbody
+            followVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
+
+            // Freeze the enemy for a period
+            yield return new WaitForSeconds(DeathPausePeriod);
+
+            isWaiting = false;
+
+            rb.useGravity = true;
+
             ApplyDeathHit();
         }
-    }
 
-    private void OnValidate()
-    {
-        deathPausePeriod = Mathf.Max(0f, deathPausePeriod);
-    }
-
-    private void ShowVelocityDebugLine()
-    {
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + velocity;
-        Color lineColor = Color.red; // Choose a color for the line
-
-        Debug.DrawLine(startPosition, endPosition, lineColor);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
+        private void ApplyDeathHit()
         {
-            // Reflect the velocity vector off the floor
-            Vector3 normal = collision.contacts[0].normal;
-            velocity = Vector3.Reflect(velocity, normal);
+            // Apply the hit velocity as a force to the Rigidbody
+            rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
+            hitVelocity = Vector3.zero;
         }
-    }
-
-    public void HandleBulletImpact(Vector3 hitNormal, float bulletHitForce)
-    {
-        // Add hit normal to the list
-        hitNormals.Add(hitNormal);
-        hitForce += bulletHitForce;
-    }
-
-    public void ApplyAccumulatedForce()
-    {
-        if (hitNormals.Count > 0)
-        {
-            // Calculate the average direction from all hit normals
-            Vector3 hitDirection = Vector3.zero;
-            foreach (Vector3 normal in hitNormals)
-            {
-                hitDirection += normal;
-            }
-            hitDirection /= hitNormals.Count;
-
-            // Apply the hit force as acceleration
-            hitVelocity = hitDirection * -hitForce;
-
-            // Clear the list of hit normals
-            hitNormals.Clear();
-            hitForce = 0;
-            followVelocity = Vector3.zero;
-        }
-    }
-
-    public IEnumerator EnableDeathMovement()
-    {
-        alive = false;
-        isWaiting = true;
-
-        // Stop the rigidbody
-        followVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
-
-        // Freeze the enemy for a period
-        yield return new WaitForSeconds(DeathPausePeriod);
-
-        isWaiting = false;
-
-        rb.useGravity = true;
-
-        ApplyDeathHit();
-    }
-
-    private void ApplyDeathHit()
-    {
-        // Apply the hit velocity as a force to the Rigidbody
-        rb.AddForce(hitVelocity * deathForceMultiplier, ForceMode.Impulse);
-        hitVelocity = Vector3.zero;
     }
 }

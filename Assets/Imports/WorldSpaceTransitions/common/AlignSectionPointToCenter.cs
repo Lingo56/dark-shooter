@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 //Global shader properties can be overriden on the material level
-namespace WorldSpaceTransitions.Examples
+namespace Imports.WorldSpaceTransitions.common
 {
     public class AlignSectionPointToCenter : MonoBehaviour
     {

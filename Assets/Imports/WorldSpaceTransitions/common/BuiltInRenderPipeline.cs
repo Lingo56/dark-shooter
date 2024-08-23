@@ -1,7 +1,7 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering;
-namespace WorldSpaceTransitions
+
+namespace Imports.WorldSpaceTransitions.common
 {
     [ExecuteInEditMode]
     //switch off other render pipelines when opening a scene for the built in renderpipeline.

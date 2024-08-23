@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class UITimer : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private Material radialMaterial; // The material with the radial shader
-
-    private void OnEnable()
+    public class UITimer : MonoBehaviour
     {
-        GameEvents.OnTimerUpdate += UpdateTimer; // Subscribe to the event
-    }
+        [SerializeField] private Material radialMaterial; // The material with the radial shader
 
-    private void OnDisable()
-    {
-        GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
-        ResetTimer();
-    }
+        private void OnEnable()
+        {
+            GameEvents.OnTimerUpdate += UpdateTimer; // Subscribe to the event
+        }
 
-    public void UpdateTimer(float elapsedTime, float timerDuration)
-    {
-        float fillAmount = elapsedTime / timerDuration;
-        radialMaterial.SetFloat("_Cutoff", 1 - fillAmount);
-    }
+        private void OnDisable()
+        {
+            GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
+            ResetTimer();
+        }
 
-    public void ResetTimer()
-    {
-        radialMaterial.SetFloat("_Cutoff", 1);
+        public void UpdateTimer(float elapsedTime, float timerDuration)
+        {
+            float fillAmount = elapsedTime / timerDuration;
+            radialMaterial.SetFloat("_Cutoff", 1 - fillAmount);
+        }
+
+        public void ResetTimer()
+        {
+            radialMaterial.SetFloat("_Cutoff", 1);
+        }
     }
 }

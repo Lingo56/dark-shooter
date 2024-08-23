@@ -2,36 +2,39 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneSwitch : MonoBehaviour
+namespace Imports.WorldSpaceTransitions.common
 {
-    private static SceneSwitch switchInstance;
-    public Dropdown sceneDropdown;
-
-    public void SwitchScene(int val)
+    public class SceneSwitch : MonoBehaviour
     {
-        if (val == SceneManager.GetActiveScene().buildIndex) return; //toggle buttons change twice
-        SceneManager.LoadSceneAsync(val);
-    }
+        private static SceneSwitch switchInstance;
+        public Dropdown sceneDropdown;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-        if (switchInstance == null)
+        public void SwitchScene(int val)
         {
-            switchInstance = this;
+            if (val == SceneManager.GetActiveScene().buildIndex) return; //toggle buttons change twice
+            SceneManager.LoadSceneAsync(val);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
-    private void Update()
-    {
-        if (Input.GetKey("escape"))
+        private void Awake()
         {
-            //Debug.Log("escape");
-            Application.Quit();
+            DontDestroyOnLoad(this);
+            if (switchInstance == null)
+            {
+                switchInstance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void Update()
+        {
+            if (Input.GetKey("escape"))
+            {
+                //Debug.Log("escape");
+                Application.Quit();
+            }
         }
     }
 }

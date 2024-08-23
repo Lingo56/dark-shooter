@@ -1,11 +1,11 @@
 ﻿//Script to store the dissolving noise textures and set a selected one as global shader texture variables at play time.
+
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     [RequireComponent(typeof(Dropdown))]
     public class TextureSelector : MonoBehaviour

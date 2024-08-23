@@ -1,22 +1,25 @@
 using TMPro;
 using UnityEngine;
 
-public class UIHUDTimer : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private TextMeshProUGUI timerText;
-
-    private void OnEnable()
+    public class UIHUDTimer : MonoBehaviour
     {
-        GameEvents.OnTimerUpdate += UpdateTimer; // Subscribe to the event
-    }
+        [SerializeField] private TextMeshProUGUI timerText;
 
-    private void OnDisable()
-    {
-        GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
-    }
+        private void OnEnable()
+        {
+            GameEvents.OnTimerUpdate += UpdateTimer; // Subscribe to the event
+        }
 
-    public void UpdateTimer(float elapsedTime, float timerDuration)
-    {
-        timerText.text = elapsedTime.ToString();
+        private void OnDisable()
+        {
+            GameEvents.OnTimerUpdate -= UpdateTimer; // Subscribe to the event
+        }
+
+        public void UpdateTimer(float elapsedTime, float timerDuration)
+        {
+            timerText.text = elapsedTime.ToString();
+        }
     }
 }

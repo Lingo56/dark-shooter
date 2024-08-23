@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.common
 {
     public class LocalTransition : MonoBehaviour
     {

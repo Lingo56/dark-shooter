@@ -1,9 +1,10 @@
 ﻿//Script to store the transition gradient textures and set a selected one as "_TransitionGradient" global shader variable at play time.
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     public class GradientSelector : MonoBehaviour
     {

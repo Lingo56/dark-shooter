@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
-public class ReadOnlyAttribute : PropertyAttribute
+namespace Imports.WorldSpaceTransitions.common
 {
+    public class ReadOnlyAttribute : PropertyAttribute
+    {
+    }
 }

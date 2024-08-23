@@ -1,24 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UIScoreCounter : MonoBehaviour
+namespace UI
 {
-    public TextMeshProUGUI scoreCountText;
-
-    private void OnEnable()
+    public class UIScoreCounter : MonoBehaviour
     {
-        UIEvents.OnScoreChanged += UpdateScoreUI; // Subscribe to the event
-    }
+        public TextMeshProUGUI scoreCountText;
 
-    private void OnDisable()
-    {
-        UIEvents.OnScoreChanged -= UpdateScoreUI; // Unsubscribe from the event
-    }
+        private void OnEnable()
+        {
+            UIEvents.OnScoreChanged += UpdateScoreUI; // Subscribe to the event
+        }
 
-    private void UpdateScoreUI(int newScore)
-    {
-        scoreCountText.text = "" + newScore; // Update the UI
+        private void OnDisable()
+        {
+            UIEvents.OnScoreChanged -= UpdateScoreUI; // Unsubscribe from the event
+        }
+
+        private void UpdateScoreUI(int newScore)
+        {
+            scoreCountText.text = "" + newScore; // Update the UI
+        }
     }
 }

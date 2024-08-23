@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-namespace AdvancedGizmo
+namespace Imports.WorldSpaceTransitions.AdvancedGizmo
 {
     public class Hover : MonoBehaviour
     {

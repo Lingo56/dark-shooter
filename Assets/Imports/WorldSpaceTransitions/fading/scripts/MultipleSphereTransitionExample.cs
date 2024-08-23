@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Linq;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace WorldSpaceTransitions
+namespace Imports.WorldSpaceTransitions.fading.scripts
 {
     [ExecuteInEditMode]
     public class MultipleSphereTransitionExample : MonoBehaviour
