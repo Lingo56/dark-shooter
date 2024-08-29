@@ -69,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: c4b84befc08dbd8499f563d797ffb5bf, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0222cf22d86c564478c638e6a41576e6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -114,8 +114,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FadeEnd: -5.91
-    - _FadeStart: 3.29
+    - _FadeEnd: -15.11
+    - _FadeStart: 2.01
     - _FlowSpeed: 1
     - _GlossMapScale: 0.339
     - _Glossiness: 0

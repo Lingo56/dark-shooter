@@ -71,7 +71,7 @@ Shader "Unlit/AOEShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 // Calculate normalized distance from center to the edge
-                float edgeFade = smoothstep(_EdgeFadeDistance, 0.0, i.distToCenter);
+                float edgeFade = 0.9 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter);
 
                 // Sample the texture
                 half4 texColor = tex2D(_MainTex, i.uv);
