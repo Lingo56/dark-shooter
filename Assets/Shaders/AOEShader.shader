@@ -9,8 +9,10 @@ Shader "Unlit/AOEShader"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" }
         LOD 100
+        
+        //Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -69,16 +71,14 @@ Shader "Unlit/AOEShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 // Calculate normalized distance from center to the edge
-                float edgeFade = 0.9 - smoothstep(0.0, _EdgeFadeDistance, i.distToCenter); // Start at 0.9 to add a bit of dither to the center
-                
-                // sample the texture
-                half4 texColor = tex2D(_MainTex, i.uv);
-                half4 texColorAlphaRef = tex2D(_MainTex, i.uv);
+                float edgeFade = smoothstep(_EdgeFadeDistance, 0.0, i.distToCenter);
 
+                // Sample the texture
+                half4 texColor = tex2D(_MainTex, i.uv);
                 texColor *= _TintColor;
 
-                // Apply edge fading to alpha
-                texColorAlphaRef.a *= edgeFade;
+                // Apply initial fade to alpha
+                texColor.a *= edgeFade; // Removed initialFade for simplification
 
                 float2 ditherCoord = floor(i.vertex.xy / _DitherScale) % 4;
                 int x = int(ditherCoord.x) % 4;
@@ -89,10 +89,13 @@ Shader "Unlit/AOEShader"
                 // Modulate threshold by distance from center to amplify dither effect towards edges
                 float amplifiedThreshold = threshold * (1.0 - i.distToCenter);
 
-                if (texColorAlphaRef.a < amplifiedThreshold)
+                const float epsilon = 0.00001; // Small value for precision issues
+                if (texColor.a < amplifiedThreshold + epsilon)
+                {
                     discard;
-                
-                // apply fog
+                }
+
+                // Apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return texColor;
             }
