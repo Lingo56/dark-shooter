@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class AOEAttackController : MonoBehaviour
 {
-    public float minDistance = 0.67f; // Minimum value for _EdgeFadeDistance
-    public float maxDistance = 1.0f; // Maximum value for _EdgeFadeDistance
-    public float speed = 1.0f; // Speed of the oscillation
+    [SerializeField] private float transitionDuration = 2.0f; // Duration for fading in and out
+    
+    [Header("Idle Animation")]
+    [SerializeField] private float idleDuration = 2.0f; // Duration to stay idle
+    [SerializeField] private float idleAnimationSpeed = 1.0f; // Speed of the oscillation (if used)
+    [SerializeField] private float idleOscillationAmplitude = 0.1f; // Amplitude of the oscillation
 
     private Material material;
-    private float time;
+    private float stateTime; // Tracks time within the current state
+    private float edgeFadeValue; // Tracks the current value of _EdgeFadeDistance
+    private float startValue; // Tracks the starting value for each transition
+
+    private enum State { FadeIn, Idle, FadeOut }
+    private State currentState = State.FadeIn;
 
     void Start()
     {
@@ -17,26 +25,78 @@ public class AOEAttackController : MonoBehaviour
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
-            material = renderer.material;
+            material = renderer.sharedMaterial; // Use sharedMaterial to avoid material instantiation
         }
         else
         {
             Debug.LogError("No Renderer found on the current GameObject.");
         }
+
+        edgeFadeValue = 0f;
+        stateTime = 0f;
+        currentState = State.FadeIn;
+        startValue = edgeFadeValue;
     }
 
     void Update()
     {
-        if (material != null)
+        if (material == null) return;
+
+        stateTime += Time.deltaTime;
+
+        switch (currentState)
         {
-            // Increment time
-            time += Time.deltaTime * speed;
+            case State.FadeIn:
+                HandleFadeIn();
+                break;
+            case State.Idle:
+                HandleIdle();
+                break;
+            case State.FadeOut:
+                HandleFadeOut();
+                break;
+        }
 
-            // Calculate the new value using a sinusoidal function
-            float newValue = Mathf.Lerp(minDistance, maxDistance, (Mathf.Sin(time) + 1.0f) / 2.0f);
+        material.SetFloat("_EdgeFadeDistance", edgeFadeValue);
+    }
+    
+    void HandleFadeIn()
+    {
+        float t = stateTime / transitionDuration;
+        edgeFadeValue = Mathf.Lerp(startValue, 1.0f, t);
 
-            // Apply the new value to the _EdgeFadeDistance property of the material
-            material.SetFloat("_EdgeFadeDistance", newValue);
+        if (t >= 1.0f)
+        {
+            stateTime = 0f;
+            startValue = edgeFadeValue; // Set start value for Idle
+            currentState = State.Idle;
+        }
+    }
+
+    void HandleIdle()
+    {
+        // Oscillate around the startValue from FadeIn
+        float oscillation = Mathf.Sin(stateTime * idleAnimationSpeed) * idleOscillationAmplitude;
+        edgeFadeValue = startValue + oscillation;
+
+        if (stateTime >= idleDuration)
+        {
+            stateTime = 0f;
+            startValue = edgeFadeValue; // Set start value for FadeOut
+            currentState = State.FadeOut;
+        }
+    }
+
+    void HandleFadeOut()
+    {
+        float t = stateTime / transitionDuration;
+        edgeFadeValue = Mathf.Lerp(startValue, 0f, t);
+
+        if (t >= 1.0f)
+        {
+            stateTime = 0f;
+            startValue = edgeFadeValue; // Reset start value for next FadeIn
+            currentState = State.FadeIn;
         }
     }
 }
