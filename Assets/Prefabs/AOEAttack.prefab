@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1603964963608214451}
   - component: {fileID: 2269861907822426125}
   - component: {fileID: 8418283989281635593}
+  - component: {fileID: 305859621682064127}
   m_Layer: 0
   m_Name: AOEAttack
   m_TagString: Effect
@@ -125,6 +126,27 @@ MonoBehaviour:
   idleDuration: 2
   idleAnimationSpeed: 1
   idleOscillationAmplitude: 0.1
+--- !u!95 &305859621682064127
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681133102664280991}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9d6f4361a0da3f74ba8cbbf1dbc6157c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5387542515288834065
 GameObject:
   m_ObjectHideFlags: 0

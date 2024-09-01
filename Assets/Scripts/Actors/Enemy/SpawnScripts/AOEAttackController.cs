@@ -4,99 +4,64 @@ using UnityEngine;
 
 public class AOEAttackController : MonoBehaviour
 {
-    [SerializeField] private float transitionDuration = 2.0f; // Duration for fading in and out
-    
-    [Header("Idle Animation")]
-    [SerializeField] private float idleDuration = 2.0f; // Duration to stay idle
-    [SerializeField] private float idleAnimationSpeed = 1.0f; // Speed of the oscillation (if used)
-    [SerializeField] private float idleOscillationAmplitude = 0.1f; // Amplitude of the oscillation
-
+    private Animator animator;
     private Material material;
-    private float stateTime; // Tracks time within the current state
-    private float edgeFadeValue; // Tracks the current value of _EdgeFadeDistance
-    private float startValue; // Tracks the starting value for each transition
-
-    private enum State { FadeIn, Idle, FadeOut }
-    private State currentState = State.FadeIn;
 
     void Start()
     {
-        // Get the material of the current object
+        animator = GetComponent<Animator>();
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
-            material = renderer.sharedMaterial; // Use sharedMaterial to avoid material instantiation
+            material = renderer.sharedMaterial;
         }
         else
         {
             Debug.LogError("No Renderer found on the current GameObject.");
         }
-
-        edgeFadeValue = 0f;
-        stateTime = 0f;
-        currentState = State.FadeIn;
-        startValue = edgeFadeValue;
     }
 
     void Update()
     {
         if (material == null) return;
 
-        stateTime += Time.deltaTime;
-
-        switch (currentState)
+        // Check the Animator's current state and synchronize with the script logic
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        
+        if (stateInfo.IsName("AOEFadeIn"))
         {
-            case State.FadeIn:
-                HandleFadeIn();
-                break;
-            case State.Idle:
-                HandleIdle();
-                break;
-            case State.FadeOut:
-                HandleFadeOut();
-                break;
+            HandleFadeIn();
         }
-
-        material.SetFloat("_EdgeFadeDistance", edgeFadeValue);
+        else if (stateInfo.IsName("AOEIdle"))
+        {
+            HandleIdle();
+        }
+        else if (stateInfo.IsName("AOEFadeOut"))
+        {
+            HandleFadeOut();
+        } else if (stateInfo.IsName("AOEComplete"))
+        {
+            HandleComplete();
+        }
     }
-    
+
     void HandleFadeIn()
     {
-        float t = stateTime / transitionDuration;
-        edgeFadeValue = Mathf.Lerp(startValue, 1.0f, t);
-
-        if (t >= 1.0f)
-        {
-            stateTime = 0f;
-            startValue = edgeFadeValue; // Set start value for Idle
-            currentState = State.Idle;
-        }
+        // Add any additional logic needed during the FadeIn state
     }
 
     void HandleIdle()
     {
-        // Oscillate around the startValue from FadeIn
-        float oscillation = Mathf.Sin(stateTime * idleAnimationSpeed) * idleOscillationAmplitude;
-        edgeFadeValue = startValue + oscillation;
-
-        if (stateTime >= idleDuration)
-        {
-            stateTime = 0f;
-            startValue = edgeFadeValue; // Set start value for FadeOut
-            currentState = State.FadeOut;
-        }
+        // Add any additional logic needed during the Idle state
     }
 
     void HandleFadeOut()
     {
-        float t = stateTime / transitionDuration;
-        edgeFadeValue = Mathf.Lerp(startValue, 0f, t);
-
-        if (t >= 1.0f)
-        {
-            stateTime = 0f;
-            startValue = edgeFadeValue; // Reset start value for next FadeIn
-            currentState = State.FadeIn;
-        }
+        // Add any additional logic needed during the FadeOut state
+    }
+    
+    void HandleComplete()
+    {
+        Destroy(gameObject);
     }
 }
