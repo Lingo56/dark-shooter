@@ -2006,6 +2006,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AOEAttack
       objectReference: {fileID: 0}
+    - target: {fileID: 681133102664280991, guid: 3051ad7982021484a8f73b5b4ad671ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1235502973479514675, guid: 3051ad7982021484a8f73b5b4ad671ad, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
@@ -2671,7 +2675,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426954140}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fd6ad0afcfef7240a49d46c2d631593, type: 3}
   m_Name: 
