@@ -132,7 +132,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Albedo: {r: 1, g: 1, b: 1, a: 0}
-    - _BaseColor: {r: 1, g: 0.8482038, b: 0, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.6830188, g: 0.55028117, b: 0.55028117, a: 1}
     - _ColorTint: {r: 1, g: 1, b: 1, a: 1}
     - _EColor: {r: 0, g: 0, b: 0, a: 1}
